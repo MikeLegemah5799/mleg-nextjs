@@ -1,0 +1,142 @@
+/* CONTACT PAGE */
+
+.contactMain {
+  min-height: calc(100vh - 68px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* LEFT PANEL */
+.contactLeft {
+  background: var(--bg-deep);
+  border-right: 1px solid var(--border);
+  padding: 72px 64px;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.contactLeft::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,216,102,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,216,102,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at 30% 50%, black, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at 30% 50%, black, transparent 80%);
+  pointer-events: none;
+}
+.g1 { position: absolute; width: 380px; height: 380px; background: rgba(255,216,102,0.06); bottom: -80px; left: -80px; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+.g2 { position: absolute; width: 260px; height: 260px; background: rgba(120,220,232,0.05); top: 60px; right: -40px; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+.clInner { position: relative; z-index: 2; }
+
+.clTitle { font-family: var(--font-serif); font-size: clamp(36px,3.5vw,58px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 18px; }
+.clTitleEm { font-style: italic; background: linear-gradient(120deg, var(--yellow), var(--orange)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.clSub { font-size: 16px; color: var(--soft); line-height: 1.78; margin-bottom: 48px; max-width: 420px; }
+
+/* METHOD CARDS */
+.contactMethods { display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px; }
+.methodCard {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px 22px;
+  display: flex; align-items: center; gap: 16px;
+  text-decoration: none;
+  transition: border-color 0.25s, transform 0.2s;
+}
+.methodCard:hover { transform: translateX(4px); }
+.mcEmail:hover  { border-color: rgba(255,216,102,0.4); }
+.mcPhone:hover  { border-color: rgba(120,220,232,0.4); }
+.mcGh:hover     { border-color: rgba(169,220,118,0.4); }
+.mcLi:hover     { border-color: rgba(171,157,242,0.4); }
+
+.methodIcon { width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.iconY  { background: rgba(255,216,102,0.12); border: 1px solid rgba(255,216,102,0.2); }
+.iconC  { background: rgba(120,220,232,0.12); border: 1px solid rgba(120,220,232,0.2); }
+.iconG  { background: rgba(169,220,118,0.12); border: 1px solid rgba(169,220,118,0.2); }
+.iconP  { background: rgba(171,157,242,0.12); border: 1px solid rgba(171,157,242,0.2); }
+
+.methodInfo { flex: 1; }
+.methodType { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.methodVal { font-family: var(--font-mono); font-size: 14px; color: var(--text); }
+.mcEmail .methodVal { color: var(--yellow); }
+.mcPhone .methodVal { color: var(--cyan); }
+.mcGh    .methodVal { color: var(--green); }
+.mcLi    .methodVal { color: var(--purple); }
+.methodArrow { font-size: 14px; color: var(--muted); }
+
+/* AVAILABILITY BADGE */
+.availBadge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(169,220,118,0.08);
+  border: 1px solid rgba(169,220,118,0.2);
+  border-radius: 8px; padding: 14px 20px;
+}
+.availDot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse-ring 2s infinite; }
+.availText { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; }
+.availText strong { color: var(--green); }
+.availText span { color: var(--muted); }
+
+/* RIGHT PANEL */
+.contactRight {
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px; position: relative; overflow: hidden;
+}
+.contactRight::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(120,220,232,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120,220,232,0.025) 1px, transparent 1px);
+  background-size: 60px 60px; pointer-events: none;
+}
+.g3 { position: absolute; width: 500px; height: 500px; background: rgba(171,157,242,0.05); top: -100px; right: -100px; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+.g4 { position: absolute; width: 300px; height: 300px; background: rgba(255,97,136,0.05); bottom: -60px; left: 0; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+
+.contactCard {
+  position: relative; z-index: 2;
+  background: var(--bg-deep); border: 1px solid var(--border-md);
+  border-radius: 16px; padding: 44px; max-width: 400px; width: 100%;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+}
+.ccStatus {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px;
+}
+.ccStatus::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse-ring 2s infinite; }
+.ccGreeting { font-family: var(--font-serif); font-size: 28px; line-height: 1.2; margin-bottom: 10px; }
+.ccDesc { font-size: 14px; color: var(--soft); line-height: 1.7; margin-bottom: 28px; }
+
+.ccList { list-style: none; margin-bottom: 32px; }
+.ccList li {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 0; border-bottom: 1px solid var(--border);
+  font-size: 14px; color: var(--soft);
+}
+.ccList li:last-child { border-bottom: none; }
+.ccList li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.liY  li::before, li.liY::before  { background: var(--yellow); }
+li.liY::before  { background: var(--yellow); }
+li.liC::before  { background: var(--cyan); }
+li.liG::before  { background: var(--green); }
+li.liP::before  { background: var(--purple); }
+li.liPk::before { background: var(--pink); }
+
+.ccCta {
+  background: var(--yellow); color: var(--bg-deep);
+  padding: 14px 0; border-radius: 6px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; font-weight: 500;
+  display: block; text-align: center;
+  transition: box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 0 28px rgba(255,216,102,0.2);
+}
+.ccCta:hover { box-shadow: 0 0 44px rgba(255,216,102,0.4); transform: translateY(-1px); color: var(--bg-deep); }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .contactMain { grid-template-columns: 1fr; }
+  .contactRight { display: none; }
+  .contactLeft { padding: 56px 24px 60px; border-right: none; }
+}
+@media (max-width: 480px) {
+  .methodVal { font-size: 12px; word-break: break-all; }
+}
