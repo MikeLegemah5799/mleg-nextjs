@@ -70,6 +70,7 @@
   border-radius: 8px; padding: 14px 20px;
 }
 .availDot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse-ring 2s infinite; }
+@keyframes pulse-ring{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(169,220,118,.4);}50%{opacity:.7;box-shadow:0 0 0 6px rgba(169,220,118,0);}}
 .availText { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; }
 .availText strong { color: var(--green); }
 .availText span { color: var(--muted); }

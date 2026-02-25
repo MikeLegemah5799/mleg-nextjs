@@ -7,14 +7,14 @@ import { useReveal } from '@/components/useReveal';
 import s from '@/styles/about.module.css';
 
 const FOCUS_PILLS = [
-  { label: 'AI Engineering',       cls: s.fpY },
-  { label: 'LLM Architecture',     cls: s.fpC },
-  { label: 'Web Development',      cls: s.fpG },
+  { label: 'AI Engineering', cls: s.fpY },
+  { label: 'LLM Architecture', cls: s.fpC },
+  { label: 'Web Development', cls: s.fpG },
   { label: 'Content Strategy & CMS', cls: s.fpP },
-  { label: 'Accessibility',        cls: s.fpPk },
-  { label: 'Mentorship',           cls: s.fpO },
-  { label: 'Cyber Security',       cls: s.fpY },
-  { label: 'User Experience',      cls: s.fpC },
+  { label: 'Accessibility', cls: s.fpPk },
+  { label: 'Mentorship', cls: s.fpO },
+  { label: 'Cyber Security', cls: s.fpY },
+  { label: 'User Experience', cls: s.fpC },
 ];
 
 const TIMELINE = [
@@ -46,7 +46,7 @@ const TIMELINE = [
 ];
 
 export default function About() {
-  const stackRef    = useReveal();
+  const stackRef = useReveal();
   const timelineRef = useReveal(0.04);
 
   return (
@@ -93,15 +93,19 @@ export default function About() {
               <div className={s.stackCat}>AI &amp; Machine Learning</div>
               <div className={s.stackSub}>Frameworks &amp; Libraries</div>
               <div className={s.stackRow}>
-                {['LangChain','LlamaIndex','Hugging Face','OpenAI SDK'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['LangChain', 'LlamaIndex', 'Hugging Face', 'OpenAI SDK'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
-              <div className={s.stackSub}>Models &amp; APIs</div>
+              <div className={s.stackSub}>LLM Models</div>
               <div className={s.stackRow}>
-                {['Claude','GPT-4','Gemini','Llama'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['Claude', 'GPT', 'Gemini', 'Llama', 'Mistral', 'Nova Pro'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>Vector Databases</div>
               <div className={s.stackRow}>
-                {['Pinecone','Chroma','Weaviate','TensorFlow.js'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['Pinecone', 'Chroma', 'Weaviate', 'Faiss'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+              </div>
+              <div className={s.stackSub}>Diffusion Models</div>
+              <div className={s.stackRow}>
+                {['Stable Diffusion', 'DALL-E', 'Midjourney', 'Firefly'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
             </div>
 
@@ -110,19 +114,19 @@ export default function About() {
               <div className={s.stackCat}>Front End</div>
               <div className={s.stackSub}>Languages</div>
               <div className={s.stackRow}>
-                {['JavaScript','TypeScript','HTML','CSS'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['JavaScript', 'TypeScript', 'HTML', 'CSS'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>Frameworks</div>
               <div className={s.stackRow}>
-                {['Next.js','React','Angular','Vue','Svelte'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['Next.js', 'React', 'Angular', 'Vue', 'Svelte'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>Libraries &amp; Tooling</div>
               <div className={s.stackRow}>
-                {['Framer Motion','GSAP','HighCharts','Tailwind','Bootstrap'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['Framer Motion', 'GSAP', 'HighCharts', 'Tailwind', 'Bootstrap'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>Mobile</div>
               <div className={s.stackRow}>
-                {['React Native','PWA'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['React Native', 'PWA'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
             </div>
 
@@ -131,15 +135,15 @@ export default function About() {
               <div className={s.stackCat}>Back End</div>
               <div className={s.stackSub}>Languages</div>
               <div className={s.stackRow}>
-                {['Python','PHP','Lua','Solidity','C#'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['Python', 'PHP', 'Lua', 'Solidity', 'C#'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>Frameworks</div>
               <div className={s.stackRow}>
-                {['FastAPI','Django','Flask','Laravel','Express','.NET'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['FastAPI', 'Django', 'Flask', 'Laravel', 'Express', '.NET'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>APIs &amp; Runtime</div>
               <div className={s.stackRow}>
-                {['GraphQL','REST','Node','Deno'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['GraphQL', 'REST', 'Node', 'Deno'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
             </div>
 
@@ -148,11 +152,11 @@ export default function About() {
               <div className={s.stackCat}>Databases</div>
               <div className={s.stackSub}>Relational</div>
               <div className={s.stackRow}>
-                {['PostgreSQL','MySQL','MariaDB','AuroraDB'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['PostgreSQL', 'MySQL', 'MariaDB', 'AuroraDB'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>NoSQL &amp; Cache</div>
               <div className={s.stackRow}>
-                {['MongoDB','Firestore','Redis','Memcached'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['MongoDB', 'Firestore', 'Redis', 'Memcached'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
             </div>
 
@@ -161,15 +165,15 @@ export default function About() {
               <div className={s.stackCat}>Cloud &amp; DevOps</div>
               <div className={s.stackSub}>Platforms</div>
               <div className={s.stackRow}>
-                {['AWS','GCP','Azure','Vercel'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['AWS', 'GCP', 'Azure', 'Vercel'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>Tools</div>
               <div className={s.stackRow}>
-                {['Docker','Linux','RabbitMQ','OpenSSL','Keycloak'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['Docker', 'Linux', 'RabbitMQ', 'OpenSSL', 'Keycloak'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>Analytics</div>
               <div className={s.stackRow}>
-                {['Google Analytics','GTM','Jupyter'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['Google Analytics', 'GTM', 'Jupyter'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
             </div>
 
@@ -178,11 +182,11 @@ export default function About() {
               <div className={s.stackCat}>CMS &amp; E-Commerce</div>
               <div className={s.stackSub}>Platforms</div>
               <div className={s.stackRow}>
-                {['WordPress','Shopify','Drupal','AEM','Expression Engine'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['WordPress', 'Shopify', 'Drupal', 'AEM', 'Expression Engine'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>Templating</div>
               <div className={s.stackRow}>
-                {['Liquid','Twig','Handlebars'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['Liquid', 'Twig', 'Handlebars'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
             </div>
           </div>
