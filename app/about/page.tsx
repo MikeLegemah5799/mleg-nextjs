@@ -34,12 +34,12 @@ const TIMELINE = [
     body: `Insatiable curiosity led me to web development. Armed with programming books and a thirst for knowledge, I taught myself HTML, CSS, and JavaScript. From crafting my first basic web page to writing functions that responded to user interactions — the web felt like a canvas with no limits.`,
   },
   {
-    color: 'var(--purple)', date: '2010s — 2020s · The Professional Grind',
-    title: 'WordPress, PHP & the Enterprise',
-    body: `I mastered WordPress, PHP, and full-stack development through platforms like Treehouse and FreeCodeCamp. Secured my first tech industry role, then kept climbing — working with JP Morgan, Mayo Clinic, Northrop Grumman, Estée Lauder, and dozens more. Each project built confidence and proficiency that no textbook could replicate.`,
+    color: 'var(--purple)', date: '2010s — 2022 · The Professional Grind',
+    title: 'WordPress, TypeScript, React & the Enterprise',
+    body: `I mastered WordPress, PHP, and full-stack development through platforms like Treehouse and FreeCodeCamp. Secured my first tech industry role, then kept climbing — working with JP Morgan Chase, Mayo Clinic, Northrop Grumman, The US Space Force, and dozens more. Each project built confidence and proficiency that no textbook could replicate.`,
   },
   {
-    color: 'var(--pink)', date: '2020s — Now · The AI Era',
+    color: 'var(--pink)', date: '2022 — Now · The AI Era',
     title: 'Principal AI Engineer',
     body: `The emergence of large language models and the AI revolution drew me in completely. I've gone deep on LLM architecture, RAG systems, agentic workflows, and AI product engineering. Today I operate at the intersection of deep technical expertise and strategic leadership — building the intelligent systems that will define the next decade.`,
   },
@@ -66,7 +66,7 @@ export default function About() {
               <em className={s.heroTitleEm}>Michael Legemah?</em>
             </h1>
             <p className={s.heroDesc}>
-              I&apos;m a <strong>Principal AI Engineer</strong> with a front-end bias and over 10 years of
+              I&apos;m a <strong>Principal AI Engineer</strong> with full-stack engineering experience and over 10 years of
               professional experience — spanning financial services, healthcare, defense, and consumer brands.
               I&apos;ve evolved from building pixel-perfect interfaces to architecting production AI systems that
               actually ship and scale.
