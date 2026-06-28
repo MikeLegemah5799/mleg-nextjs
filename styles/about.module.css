@@ -20,8 +20,8 @@
 .orb2 { position: absolute; width: 280px; height: 280px; background: rgba(120,220,232,0.05); bottom: 0; left: 100px; border-radius: 50%; filter: blur(80px); pointer-events: none; }
 
 .heroInner { position: relative; z-index: 2; max-width: 800px; }
-.heroTitle { font-family: var(--font-serif); font-size: clamp(38px,5vw,70px); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 20px; }
-.heroTitleEm { font-style: italic; background: linear-gradient(120deg,var(--yellow),var(--orange)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.heroTitle { font-family: var(--font-serif); font-size: clamp(38px,5vw,70px); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
+.heroTitleEm { font-style: italic; background: linear-gradient(120deg,var(--yellow),var(--orange)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: block;}
 .heroDesc { font-size: 18px; line-height: 1.78; color: var(--soft); max-width: 640px; }
 .heroDesc strong { color: var(--text); font-weight: 500; }
 

@@ -177,8 +177,7 @@ export default function Projects() {
           <div className={s.orb1} />
           <div className={s.orb2} />
           <div className={s.phInner}>
-            <div className="section-label" style={{ color: 'var(--cyan)' }}>
-              <span style={{ display: 'inline-block', width: 24, height: 1, background: 'var(--cyan)', flexShrink: 0 }} />
+            <div className="section-label project-label" style={{ color: 'var(--cyan)' }}>
               Portfolio
             </div>
             <h1 className="section-title">
