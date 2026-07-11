@@ -101,7 +101,7 @@ export default function About() {
               </div>
               <div className={s.stackSub}>Vector Databases</div>
               <div className={s.stackRow}>
-                {['Pinecone', 'Chroma', 'Weaviate', 'Faiss'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['Pinecone', 'Chroma', 'Weaviate', 'Faiss', 'Neptune'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>Diffusion Models</div>
               <div className={s.stackRow}>
@@ -118,7 +118,7 @@ export default function About() {
               </div>
               <div className={s.stackSub}>Frameworks</div>
               <div className={s.stackRow}>
-                {['Next.js', 'React', 'Angular', 'Vue', 'Svelte'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['Next.js', 'React', 'Vue', 'Svelte'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>Libraries &amp; Tooling</div>
               <div className={s.stackRow}>
@@ -135,11 +135,11 @@ export default function About() {
               <div className={s.stackCat}>Back End</div>
               <div className={s.stackSub}>Languages</div>
               <div className={s.stackRow}>
-                {['Python', 'PHP', 'Lua', 'Solidity', 'C#'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['Python', 'PHP', 'Lua', 'Solidity', 'Node.js'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>Frameworks</div>
               <div className={s.stackRow}>
-                {['FastAPI', 'Django', 'Flask', 'Laravel', 'Express', '.NET'].map(t => <span key={t} className={s.stag}>{t}</span>)}
+                {['FastAPI', 'Django', 'Flask', 'Laravel', 'Express', 'Fastify'].map(t => <span key={t} className={s.stag}>{t}</span>)}
               </div>
               <div className={s.stackSub}>APIs &amp; Runtime</div>
               <div className={s.stackRow}>

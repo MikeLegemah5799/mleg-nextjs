@@ -28,7 +28,7 @@ const EXPERTISE = [
     icon: '🔬', num: '03', title: 'Fine-tuning & Evals',
     desc: 'Systematic prompt engineering, RLHF workflows, and evaluation frameworks ensuring AI outputs are reliable and business-aligned.',
     pills: [
-      { label: 'LoRA', c: 'green' }, { label: 'PEFT', c: 'orange' }, { label: 'W&B', c: 'purple' },
+      { label: 'LoRA', c: 'green' }, { label: 'PEFT', c: 'orange' }, { label: 'W&B', c: 'purple' }, { label: 'DeepEval', c: 'pink' },
     ],
   },
   {
@@ -95,17 +95,17 @@ export default function Home() {
           <div className={s.orbYellow} />
 
           <div className={s.heroLeft}>
-            <div className={s.heroBadge}>Principal AI Engineer</div>
+            <div className={s.heroBadge}>AI/Full-Stack Engineer</div>
             <h1 className={s.heroName}>
               Michael<br />
               <em className={s.heroNameEm}>Legemah</em>
             </h1>
             <p className={s.heroTitle}>
-              <span className={s.heroTitleSpan}>LLM Architecture</span> ·{' '}
+              <span className={s.heroTitleSpan}>SaaS</span> ·{' '}
               <span className={s.heroTitleSpan}>AI Systems</span> · Full-Stack
             </p>
             <p className={s.heroDesc}>
-              I build <strong>production-grade AI systems</strong> — from RAG pipelines and LLM
+              I build <strong> full-stack software solutions and production-grade AI systems</strong> — from RAG pipelines and LLM
               architecture to AI-native products that scale. Engineering intelligence into experiences
               that matter.
             </p>
