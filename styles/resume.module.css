@@ -1,0 +1,164 @@
+/* ── HERO ── */
+.hero {
+  position: relative;
+  padding: 72px 60px 48px;
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.orb1 { position: absolute; width: 420px; height: 420px; background: rgba(171,157,242,0.06); top: -140px; right: 60px; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+.orb2 { position: absolute; width: 300px; height: 300px; background: rgba(120,220,232,0.05); bottom: -100px; left: -60px; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+
+.heroTop {
+  position: relative; z-index: 2;
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 24px;
+  flex-wrap: wrap;
+}
+.heroName {
+  font-family: var(--font-serif);
+  font-size: clamp(38px, 4.5vw, 56px);
+  line-height: 1.05; letter-spacing: -0.02em;
+  margin: 10px 0 6px;
+}
+.heroRole {
+  font-family: var(--font-sans);
+  font-size: 19px; font-weight: 500;
+  color: var(--purple);
+  margin-bottom: 14px;
+}
+.heroMeta {
+  font-family: var(--font-mono);
+  font-size: 13px; color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.downloadBtn {
+  display: inline-flex; align-items: center; gap: 8px;
+  flex-shrink: 0;
+}
+
+.pills {
+  position: relative; z-index: 2;
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-top: 24px;
+}
+.pill {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em;
+  padding: 6px 14px; border-radius: 20px;
+}
+.pillY  { color: var(--yellow); background: rgba(255,216,102,0.1); border: 1px solid rgba(255,216,102,0.3); }
+.pillC  { color: var(--cyan);   background: rgba(120,220,232,0.1); border: 1px solid rgba(120,220,232,0.3); }
+.pillPk { color: var(--pink);   background: rgba(255,97,136,0.1);  border: 1px solid rgba(255,97,136,0.3); }
+.pillO  { color: var(--orange); background: rgba(252,152,103,0.1); border: 1px solid rgba(252,152,103,0.3); }
+.pillG  { color: var(--green);  background: rgba(169,220,118,0.1); border: 1px solid rgba(169,220,118,0.3); }
+
+/* ── LAYOUT ── */
+.body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 56px;
+  padding: 60px 60px 80px;
+  align-items: start;
+}
+
+/* ── EXPERIENCE ── */
+.timeline { position: relative; }
+.timeline::before {
+  content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px;
+  background: var(--border-md);
+}
+.tlItem { position: relative; padding-left: 34px; margin-bottom: 40px; }
+.tlItem:last-child { margin-bottom: 0; }
+.tlDot {
+  position: absolute; left: -5px; top: 6px; width: 11px; height: 11px; border-radius: 50%;
+  background: var(--bg-deep); border: 2px solid var(--muted);
+}
+.tlDotActive {
+  background: var(--yellow); border-color: var(--yellow);
+  box-shadow: 0 0 0 4px rgba(255,216,102,0.15);
+}
+.tlHead {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+.tlRole { font-family: var(--font-sans); font-size: 17px; font-weight: 500; color: var(--text); }
+.tlType { color: var(--muted); font-weight: 400; }
+.tlDate { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; white-space: nowrap; }
+.tlCompany { font-size: 13px; margin-bottom: 10px; }
+.tlBullets { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.tlBullets li {
+  position: relative; padding-left: 16px;
+  font-size: 14px; color: var(--soft); line-height: 1.7;
+}
+.tlBullets li::before {
+  content: '•'; position: absolute; left: 0; color: var(--muted);
+}
+
+/* ── SIDEBAR ── */
+.sidebar { display: flex; flex-direction: column; gap: 28px; }
+.sideLabel {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--yellow); margin-bottom: 16px;
+}
+
+.skillGroup {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 18px 20px;
+}
+.skillGroup + .skillGroup { margin-top: 14px; }
+.skillCat {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.skillRow { display: flex; flex-wrap: wrap; gap: 7px; }
+.stag {
+  font-family: var(--font-mono); font-size: 11px; color: var(--soft);
+  background: var(--bg-deep); border: 1px solid var(--border);
+  padding: 4px 10px; border-radius: 4px;
+}
+
+.clearance {
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(255,216,102,0.06); border: 1px solid rgba(255,216,102,0.25);
+  border-radius: 10px; padding: 16px 18px;
+}
+.clearanceIcon {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: 6px;
+  background: rgba(255,216,102,0.15); color: var(--yellow);
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.clearanceTitle { font-size: 14px; font-weight: 500; color: var(--text); }
+.clearanceSub { font-size: 12px; color: var(--muted); }
+
+.links { display: flex; flex-direction: column; gap: 4px; }
+.linkRow {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 13px; color: var(--soft);
+  padding: 8px 4px; transition: color 0.2s;
+}
+.linkRow:hover { color: var(--yellow); }
+.linkIcon { font-size: 15px; width: 20px; text-align: center; }
+
+/* ── FOOTER CTA ── */
+.footerCta {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  padding: 28px 60px; margin: 0 60px 60px;
+  border: 1px solid var(--border); border-radius: 12px;
+  background: var(--bg-surface);
+}
+.footerCtaText { font-size: 15px; color: var(--soft); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .body { grid-template-columns: 1fr; padding: 48px 40px 64px; }
+  .footerCta, .hero { padding-left: 40px; padding-right: 40px; }
+  .footerCta { margin-left: 40px; margin-right: 40px; }
+}
+
+@media (max-width: 640px) {
+  .hero { padding: 56px 20px 36px; }
+  .body { padding: 40px 20px 56px; gap: 40px; }
+  .footerCta { flex-direction: column; align-items: flex-start; margin: 0 20px 40px; padding: 24px 20px; }
+  .heroTop { flex-direction: column; }
+  .downloadBtn { width: 100%; justify-content: center; }
+}
