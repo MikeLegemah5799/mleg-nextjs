@@ -55,8 +55,7 @@ const EXPERTISE = [
 ];
 
 const CLIENTS = [
-  'JP Morgan Chase', 'Mayo Clinic', 'Northrop Grumman', 'OMNY',
-  'The Shadow League', 'Mini', 'US Space Force', 'American Kennel Club', 'AstraZeneca'
+  'AWS', 'AstraZeneca', 'JP Morgan Chase', 'US Army', 'Mayo Clinic', 'Northrop Grumman', 'OMNY', 'The Shadow League', 'Mini', 'US Space Force', 'American Kennel Club',
 ];
 
 const TESTIMONIALS = [
