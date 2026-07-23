@@ -219,20 +219,21 @@ export default function Home() {
             {/* Featured */}
             <div className={`${s.projCard} ${s.projCardFeatured}`}>
               <div className={`${s.projVis} ${s.projVisFeatured}`} style={{ background: 'linear-gradient(135deg,var(--bg-deep),#1c1830)' }}>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--cyan)', letterSpacing: '0.1em' }}>AI-AUGMENTED ANALYTICS</div>
-                <div style={{ fontFamily: 'var(--font-serif)', fontSize: 34, background: 'linear-gradient(120deg,var(--yellow),var(--orange))', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Crypto Intelligence</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--cyan)', letterSpacing: '0.1em' }}>DATA PIPELINE</div>
+                <div style={{ fontFamily: 'var(--font-serif)', fontSize: 34, background: 'linear-gradient(120deg,var(--yellow),var(--orange))', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>RAG/Document Ingestion Pipeline</div>
                 <div style={{ display: 'flex', gap: 16, fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--muted)' }}>
                   <span>▲ Real-time</span><span>◎ Inference</span><span>↗ NLQ</span>
                 </div>
               </div>
               <div className={s.projBody}>
-                <div className={s.projTag}>AI · Data Viz · Real-time</div>
-                <h3 className={s.projT}>Crypto Intelligence Dashboard</h3>
-                <p className={s.projD}>AI-augmented crypto analytics platform fusing real-time market data with LLM-powered insights. Natural language querying, anomaly detection, and fuzzy search across thousands of assets.</p>
+                <div className={s.projTag}>AI · RAG · Real-time</div>
+                <h3 className={s.projT}>RAG/Document Ingestion Pipeline</h3>
+                <p className={s.projD}>
+                  Built a real-time document ingestion and retrieval pipeline for AI applications. Implemented a system that ingests documents, processes them into embeddings, and enables efficient retrieval for RAG (Retrieval-Augmented Generation) tasks.</p>
                 <div className={s.projLinks}>
-                  <a href="https://github.com/MikeLegemah5799/cryptocurrency-dashboard" className={s.projLink} target="_blank" rel="noopener noreferrer">View Code →</a>
+                  <Link href="/projects/rag-pipeline" className={s.projLink}>View Case Study →</Link>
                 </div>
-                <div className={s.projStack}>React · HighCharts · CryptoCompare API · Fuzzy Search</div>
+                <div className={s.projStack}>AWS Textract · Bedrock Titan · OpenSearch · Step Functions · DynamoDB · S3 · Lambda</div>
               </div>
             </div>
 

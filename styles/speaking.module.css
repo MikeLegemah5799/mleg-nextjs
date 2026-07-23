@@ -1,0 +1,122 @@
+/* ── HERO ── */
+.hero {
+  position: relative;
+  padding: 88px 60px 64px;
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.orb1 { position: absolute; width: 420px; height: 420px; background: rgba(120,220,232,0.06); top: -140px; right: 40px; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+.orb2 { position: absolute; width: 280px; height: 280px; background: rgba(171,157,242,0.05); bottom: -100px; left: 200px; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+
+.heroGrid {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start;
+}
+.heroTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.12; letter-spacing: -0.01em;
+  margin-bottom: 20px;
+}
+.heroSub {
+  font-size: 16px; color: var(--soft); line-height: 1.75;
+  max-width: 540px; margin-bottom: 30px;
+}
+.heroCtas { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* PROFILE CARD */
+.profileCard { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
+.profileTop { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.avatar {
+  width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+}
+.profileName { font-size: 16px; font-weight: 500; color: var(--text); }
+.profileRole { font-size: 13px; color: var(--purple); }
+
+.statGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.statBox { background: var(--bg-deep); border: 1px solid var(--border); border-radius: 8px; padding: 14px 12px; text-align: center; }
+.statValue { font-family: var(--font-serif); font-size: 22px; margin-bottom: 4px; }
+.statLabel { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* ── TOPICS ── */
+.topicsSection { padding: 64px 60px; }
+.topicsGrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 40px; }
+.topicCard {
+  background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 24px; display: flex; flex-direction: column;
+}
+.topicCardGhost { border-style: dashed; justify-content: center; align-items: flex-start; background: transparent; }
+.topicIcon {
+  width: 40px; height: 40px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  margin-bottom: 16px;
+}
+.topicTitle { font-size: 17px; font-weight: 500; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+.topicDesc { font-size: 14px; color: var(--soft); line-height: 1.65; flex: 1; margin-bottom: 16px; }
+.topicMeta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.03em; }
+
+/* ── BOOK MICHAEL ── */
+.bookSection { padding: 0 60px 64px; }
+.bookGrid { display: grid; grid-template-columns: 1fr 340px; gap: 28px; margin-top: 40px; }
+
+.formCard { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px; }
+.formRow { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+.field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
+.formRow .field { margin-bottom: 0; }
+.fieldLabel { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.input, .select, .textarea {
+  background: var(--bg-deep); border: 1px solid var(--border-md); border-radius: 7px;
+  padding: 11px 14px; color: var(--text); font-family: var(--font-sans); font-size: 14px;
+  outline: none; transition: border-color 0.2s;
+  width: 100%;
+}
+.input::placeholder, .textarea::placeholder { color: var(--muted); }
+.input:focus, .select:focus, .textarea:focus { border-color: rgba(255,216,102,0.5); }
+.textarea { resize: vertical; min-height: 88px; font-family: var(--font-sans); }
+.select { appearance: none; color: var(--soft); cursor: pointer; }
+.submitBtn {
+  width: 100%; margin-top: 4px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: none; cursor: pointer;
+}
+
+/* SIDEBAR */
+.sideStack { display: flex; flex-direction: column; gap: 20px; }
+.sideCard { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+.sideLabel { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; }
+
+.expectList { display: flex; flex-direction: column; gap: 14px; }
+.expectRow { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--soft); line-height: 1.6; }
+.expectIcon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+
+.pastList { display: flex; flex-direction: column; }
+.pastItem { padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.pastItem:last-child { border-bottom: none; padding-bottom: 0; }
+.pastItem:first-child { padding-top: 0; }
+.pastTitle { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.pastQuote { font-size: 12px; color: var(--muted); font-style: italic; }
+.pastDate { font-family: var(--font-mono); font-size: 11px; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+
+/* FOOTER CTA */
+.footerCta {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  padding: 26px 60px 60px;
+}
+.footerCtaText { font-size: 14px; color: var(--soft); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .heroGrid { grid-template-columns: 1fr; }
+  .topicsGrid { grid-template-columns: 1fr 1fr; }
+  .bookGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .hero, .topicsSection, .bookSection, .footerCta { padding-left: 20px; padding-right: 20px; }
+  .topicsGrid { grid-template-columns: 1fr; }
+  .formRow { grid-template-columns: 1fr; gap: 18px; }
+  .statGrid { gap: 8px; }
+  .footerCta { flex-direction: column; align-items: flex-start; }
+}
