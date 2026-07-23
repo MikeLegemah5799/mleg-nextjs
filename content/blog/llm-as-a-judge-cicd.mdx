@@ -1,0 +1,27 @@
+---
+title: "LLM-as-a-Judge: Building Quality Gates Into CI/CD"
+slug: "llm-as-a-judge-cicd"
+category: "Eval & testing"
+date: "2026-05-21"
+readTime: "8 min"
+desc: "How an eval pipeline caught stale-context regressions before they reached production, and what it cost to build."
+tags: ["LLM-as-a-judge", "DeepEval", "CI/CD"]
+---
+
+The first time an eval pipeline earned its keep on my team, it wasn't catching a bug in the model — it was catching a bug in a prompt template that nobody had touched. A shared context block had quietly gone stale after an upstream schema change, and the judge model flagged a groundedness regression before a human ever noticed the outputs had drifted.
+
+## Why golden test cases aren't enough
+
+Hand-written golden cases are necessary but not sufficient. They catch regressions on the exact inputs someone thought to write down. They don't catch the slow drift that shows up on the long tail of real traffic — a prompt that degrades gracefully on your ten test cases but not on the input shape a customer actually sends.
+
+The fix was pairing golden cases with an LLM-as-a-judge pass over a rotating sample of real (anonymized) production interactions, scored against a rubric: groundedness, relevance, and whether the response actually answered what was asked. Anything below threshold got flagged for human review before it could inform the next golden-case update.
+
+## What the gate actually blocks
+
+- A prompt or model version change that drops the judge's pass rate below the baseline on the existing golden set.
+- A groundedness score regression on the sampled production traffic — the signal that caught the stale-context bug.
+- Latency regressions past an agreed budget, tracked alongside quality so a "better" prompt that's also twice as slow doesn't ship silently.
+
+## What it cost
+
+Judge calls aren't free, and running them synchronously on every PR adds real minutes to the merge queue. The trade-off that worked: block merges on the golden-case pass rate (fast, deterministic enough), and run the broader production-sample judge pass asynchronously, informational-first, escalating to a blocking gate only after enough runs to trust its signal. Fast iteration where it's safe, a harder gate where the cost of being wrong is high.

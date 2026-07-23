@@ -1,0 +1,25 @@
+---
+title: "Chunking Strategy Matters More Than Your Embedding Model"
+slug: "chunking-strategy-matters"
+category: "RAG"
+date: "2026-06-02"
+readTime: "6 min"
+desc: "Why fixed-size chunking quietly tanks retrieval quality, and what content-hash dedup buys you at scale."
+tags: ["RAG", "Chunking", "Retrieval quality"]
+---
+
+Teams debugging bad RAG retrieval almost always start by swapping embedding models. In my experience that's rarely where the problem is — it's in how the source documents got cut into chunks before they were ever embedded.
+
+## The failure mode
+
+Fixed-size chunking (say, 512 tokens with a fixed overlap) is simple and fast, and it's the default in most tutorials. The problem is it splits on token count, not on meaning. A policy clause that spans a paragraph boundary gets cut mid-thought; the first half retrieves without the qualifying sentence that changes its meaning entirely. The embedding model didn't fail — it faithfully embedded a chunk that was already missing context.
+
+You don't see this in a demo with a handful of clean documents. You see it three months in, when a support rep pulls a confidently-worded but incomplete answer out of the knowledge base.
+
+## What actually helped
+
+- **Sentence/semantic-boundary chunking** — splitting on natural breakpoints (headings, paragraph boundaries, sentence groups) instead of a raw token count. More expensive to compute, but the chunks stay coherent.
+- **Slightly larger overlap than felt necessary** — enough that a clause split across chunks still appears whole in at least one of them.
+- **Content-hash dedup at the chunk level** — hashing each chunk's text means re-ingesting a lightly-edited document only re-embeds the chunks that actually changed, instead of the whole doc. That's what makes it affordable to re-chunk with a better strategy without a full re-embedding bill.
+
+None of this is exotic. It's just easy to skip when the embedding model is the more interesting knob to turn — and it's usually not the one that's broken.

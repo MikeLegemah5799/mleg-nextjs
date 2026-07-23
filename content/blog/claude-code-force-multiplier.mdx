@@ -1,0 +1,25 @@
+---
+title: "Claude Code as a Force Multiplier, Not a Replacement"
+slug: "claude-code-force-multiplier"
+category: "Agentic AI"
+date: "2026-04-28"
+readTime: "5 min"
+desc: "What actually changes on a team's velocity and review process once AI-assisted engineering is the default, not the exception."
+tags: ["Claude Code", "AI-assisted engineering", "Code review"]
+---
+
+The honest version of this post isn't "AI writes the code now." It's narrower and more useful: the parts of engineering that were always mechanical got faster, and the parts that required judgment didn't move at all — they just got more of the team's attention, because there's less mechanical work competing for it.
+
+## What actually got faster
+
+Scaffolding a new endpoint, writing the boilerplate test cases around an existing pattern, migrating a component to match a new convention across a dozen call sites — the kind of work that was never intellectually hard, just tedious and error-prone from repetition. That's where Claude Code changed the day-to-day the most, and it's also where the velocity gains are real and easy to measure.
+
+## What didn't get faster, and shouldn't
+
+Deciding whether a feature needs a new service boundary or fits in an existing one. Reviewing whether a generated migration is actually safe under concurrent writes. Knowing which shortcut is fine for a prototype and which one becomes a production incident. None of that got faster, and treating it like it did is how teams end up shipping confident-looking code that's wrong in ways that don't show up until it's expensive.
+
+## What changed in code review
+
+The review bar didn't drop — it moved. Fewer comments about style and boilerplate correctness, because that's largely consistent now. More time actually spent on the questions that were always the point of review: does this change do the right thing, and does the person merging it understand why.
+
+The teams that get the most out of this treat it as leverage on the mechanical layer, not a substitute for the judgment layer. The ones that get burned are the ones that stop asking the second question because the first one got easier.

@@ -1,0 +1,27 @@
+---
+title: "Bedrock + AppSync: A GraphQL Front Door for Agentic Workflows"
+slug: "bedrock-appsync-graphql"
+category: "AWS"
+date: "2026-05-09"
+readTime: "7 min"
+desc: "Decoupling frontend from backend on multi-step AI processes without losing type safety or introducing polling."
+tags: ["AWS Bedrock", "AppSync", "GraphQL"]
+---
+
+Agentic workflows don't complete in one request/response cycle. A multi-step Bedrock agent call can take anywhere from a couple seconds to well over a minute depending on how many tools it invokes, and a frontend built around a synchronous REST call handles that badly — either a request that times out, or a client stuck polling an endpoint every few seconds hoping something changed.
+
+## Why AppSync fit
+
+AppSync's subscriptions gave us a way to treat a long-running agent invocation like an async job with a live status feed, without hand-rolling WebSocket infrastructure. The flow: a mutation kicks off the agent run and returns immediately with a run ID; the client subscribes to that run ID; and as the agent progresses through tool calls, each step publishes an update the subscription pushes straight to the UI.
+
+The type safety was the part I didn't expect to matter as much as it did. A GraphQL schema forces you to actually define the shape of an agent's intermediate state — what a "tool call in progress" event looks like versus a "final answer" event — instead of letting that shape drift implicitly across a REST API's ad hoc JSON payloads.
+
+## What this replaced
+
+- **Polling** — no more client-side interval hitting a status endpoint; the subscription pushes only on real state changes.
+- **Timeout-prone long-lived HTTP requests** — the mutation returns fast, the actual work happens async behind it.
+- **Untyped intermediate state** — every event on the subscription is a defined GraphQL type, not a loosely-shaped blob the frontend has to defensively parse.
+
+## The trade-off
+
+AppSync subscriptions add infrastructure surface — resolvers, a pub/sub layer, IAM scoping on who can subscribe to which run — that a simple REST endpoint doesn't need. For a single quick model call, that's overkill. For a multi-step agent workflow where the frontend genuinely needs to show live progress, it removed an entire category of "did the request actually finish" bugs.

@@ -1,0 +1,25 @@
+---
+title: "Multi-Tenant Vector Isolation: Namespaces Aren't Enough"
+slug: "multi-tenant-vector-isolation"
+category: "RAG"
+date: "2026-03-30"
+readTime: "6 min"
+desc: "Why structural IAM scoping matters more than an application-layer tenant filter when the stakes are a data leak."
+tags: ["RAG", "Multi-tenancy", "Security"]
+---
+
+An application-layer tenant filter on a vector query looks like isolation until the one code path that forgets to apply it ships. That's the uncomfortable truth about multi-tenant RAG: a `WHERE tenant_id = ?` clause, or its vector-search equivalent, is only as strong as every single query path that remembers to include it — forever, across every future engineer who touches that code.
+
+## The failure I'd rather not repeat
+
+A retrieval endpoint that filtered correctly. A debug/admin endpoint added later, in a hurry, for an internal support tool — that queried the same vector index directly and didn't. Nothing malicious, no one skipped a review; it just wasn't obvious that the debug tool needed the same tenant scoping discipline as the primary retrieval path, because it "was just for internal use." That's the shape most of these leaks take: not an attack, an oversight that had no structural reason not to happen.
+
+## What structural isolation actually means
+
+- **Separate vector namespaces per tenant**, not a shared index with a tenant column — so a query that omits the filter fails to find anything at all, rather than silently returning another tenant's data.
+- **IAM scoping at the storage layer**, so the credentials a service uses to query the vector store are themselves scoped to a tenant's namespace — the isolation doesn't depend on application code remembering to ask correctly.
+- **Treating every new code path that touches the vector store — including internal tools — as needing the same review bar as the primary retrieval path**, because "internal only" isn't a security boundary.
+
+## The trade-off
+
+Per-tenant namespaces cost more operationally than a shared index — more infrastructure to provision, more moving pieces to monitor. That cost is the point. It's cheaper than explaining a cross-tenant data leak to a customer, and it's the difference between isolation that holds because it's structurally impossible to bypass, and isolation that holds because everyone remembered to write the filter correctly, every time, forever.

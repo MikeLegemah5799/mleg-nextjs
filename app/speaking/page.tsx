@@ -105,7 +105,7 @@ export default function Speaking() {
           <div className={s.orb2} />
           <div className={s.heroGrid}>
             <div>
-              <div className="section-label" style={{ color: 'var(--cyan)' }}>Speaking &amp; Conferences</div>
+              <div className="section-label">Speaking &amp; Conferences</div>
               <h1 className={s.heroTitle}>Talks on shipping AI that actually works in production.</h1>
               <p className={s.heroSub}>
                 I speak to engineering teams and conferences about agentic systems, RAG architecture, and eval-driven

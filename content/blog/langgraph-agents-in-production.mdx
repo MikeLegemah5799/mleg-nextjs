@@ -1,0 +1,55 @@
+---
+title: "What Actually Breaks When You Put LangGraph Agents in Production"
+slug: "langgraph-agents-in-production"
+category: "Agentic AI"
+date: "2026-06-14"
+readTime: "9 min"
+desc: "Reducer bugs, state bloat, and the deep-merge fix that took a full day to trace — lessons from running multi-agent workflows on AWS Bedrock at scale."
+tags: ["LangGraph", "AWS Bedrock", "Multi-agent systems", "Debugging"]
+featured: true
+---
+
+Three weeks into running a multi-agent support workflow in production, one customer's ticket kept getting re-triaged in a loop. Not crashing — just quietly re-classifying the same ticket every few minutes, burning tokens and never converging. No errors in the logs. No failed health checks. Just a system that looked fine and wasn't.
+
+This is the post I wish I'd had before that week. Multi-agent systems don't fail the way normal services fail — they fail in the state, and the state is usually the last place anyone looks.
+
+## The setup
+
+The architecture was straightforward on paper: a LangGraph orchestrator coordinating three specialized agents — a triage agent, a retrieval agent pulling from a per-tenant knowledge base, and a resolution agent that drafted the response. Each agent read and wrote to a shared state object as it moved through the graph. Standard stuff, running on AWS Bedrock with a Claude model at each node.
+
+The bug turned out to live in how state updates were being merged between nodes.
+
+## The reducer problem
+
+LangGraph state updates go through a **reducer** — a function that decides how a node's output gets combined with the existing state. The default behavior is a shallow merge: new keys get added, existing keys get overwritten. That's fine until a node returns a nested object meant to _update_ a field rather than replace it.
+
+In our case, the triage agent returned a `classification` object with a few sub-fields — category, confidence, and a list of prior classifications for audit purposes. The resolution agent, further down the graph, would sometimes re-enter the triage step on a retry path. Each time it did, the shallow merge **replaced** the entire classification object instead of appending to the audit list — silently dropping the history the loop-detection logic depended on to know it had already seen this ticket.
+
+No exception. No malformed data. Just state that looked structurally identical to correct state, except for the one list that should have been growing and wasn't.
+
+<DiffBlock
+  before="# Before — shallow merge silently drops nested history\ndef triage_reducer(existing, update):\n    return {**existing, **update}  # overwrites classification wholesale"
+  after="# After — deep merge preserves nested audit trail\ndef triage_reducer(existing, update):\n    merged = {**existing, **update}\n    if 'classification' in existing and 'classification' in update:\n        merged['classification'] = {\n            **existing['classification'],\n            **update['classification'],\n            'prior': existing['classification'].get('prior', []) + [update['classification']]\n        }\n    return merged"
+/>
+
+The fix itself is a handful of lines. Finding it took most of a day, because the symptom — a ticket cycling through re-triage — pointed everywhere except the merge logic. I initially suspected the retrieval agent's cache, then the model's own inconsistency across retries, before finally instrumenting state snapshots at every node transition and watching the audit list actually shrink back to length one on the second pass through the graph.
+
+### What actually found it
+
+- **Snapshotting full state at every node**, not just the diffs — the bug was invisible in diffs because the replaced object looked valid on its own.
+- **Comparing state size across identical-looking loop iterations** — the audit list length was the one number that should have monotonically increased and didn't.
+- **Reproducing it outside the full pipeline** — isolating just the reducer against a scripted sequence of triage → resolution → retry made the bug obvious in under a minute, once I knew where to look.
+
+<Callout>
+  <strong>The pattern to watch for:</strong> if a shared-state graph framework's default reducer is a shallow merge, any node that returns a nested object meant to be updated incrementally is a latent bug. It won't show up in testing with simple state shapes — only once something in your state is meant to accumulate.
+</Callout>
+
+## What changed after
+
+Beyond the specific fix, three things changed on the team:
+
+- Every reducer touching a nested field now has an explicit unit test asserting accumulation across repeated calls — not just correctness on a single call.
+- State snapshots at each node transition became a standing debug tool, not something built ad hoc under pressure.
+- Code review for new graph nodes now asks explicitly: "does this field need to accumulate, and does the reducer know that?"
+
+None of this shows up in a demo. It only shows up in week three, under real traffic, in the one ticket that happens to retry. That's most of what production multi-agent work actually is — not the happy path, but the slow accumulation of edge cases the state graph didn't know it needed to handle.

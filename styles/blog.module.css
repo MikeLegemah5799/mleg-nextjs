@@ -87,6 +87,7 @@
 }
 .postGrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-bottom: 40px; }
 .postCard {
+  display: block;
   background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
   padding: 24px; transition: border-color 0.25s, transform 0.25s;
 }
