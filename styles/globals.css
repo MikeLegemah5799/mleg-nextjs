@@ -25,7 +25,8 @@
   /* Typography */
   --text:    #fcfcfa;
   --soft:    #c1b8c8;
-  --muted:   #7e6f8d;
+  /* --muted:   #7e6f8d; */
+  --muted:  #78dce8;
 
   /* Font families */
   --font-serif: 'Raleway', sans-serif;

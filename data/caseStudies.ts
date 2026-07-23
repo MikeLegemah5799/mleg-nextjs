@@ -1,3 +1,19 @@
+export type DiagramNode = { icon: string; label: string; sub: string; highlight?: boolean };
+
+export type DiagramRow =
+  | { type: 'chain'; nodes: DiagramNode[] }
+  | { type: 'grid'; nodes: DiagramNode[] }
+  | { type: 'groups'; groups: { label: string; nodes: DiagramNode[] }[] }
+  | { type: 'label'; text: string };
+
+export type Diagram = {
+  label?: string;
+  intro: string;
+  rows: DiagramRow[];
+  tags?: string[];
+  caption: string;
+};
+
 export type CaseStudy = {
   projectId: string;
   breadcrumbLabel: string;
@@ -24,24 +40,15 @@ export type CaseStudy = {
     note: { code: string; text: string };
   };
 
-  architecture: {
-    intro: string;
-    sources: { label: string; sub: string };
-    orchestrator: { label: string; sub: string };
-    stages: { label: string; sub: string }[];
-    storageLabel: string;
-    storage: { label: string; sub: string }[];
-    tags: string[];
-    caption: string;
-  };
+  architecture: Diagram[];
 
   decisions: { color: string; label: string; text: string }[];
 
   summary: { system: string; primaryServices: string; status: string; type: string };
 };
 
-export const CASE_STUDIES: Record<string, CaseStudy> = {
-  'rag-pipeline': {
+export const CASE_STUDIES: CaseStudy[] = [
+  {
     projectId: 'rag-pipeline',
     breadcrumbLabel: 'RAG Ingestion Pipeline',
     eyebrow: 'Case Study · Data / AI Infrastructure',
@@ -105,24 +112,39 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
       },
     },
 
-    architecture: {
-      intro: 'Sources trigger a Step Functions orchestrator running four stages — extract, chunk, embed, upsert — writing into a per-tenant isolated storage layer.',
-      sources: { label: 'Document sources', sub: 'S3 · crawl · CMS' },
-      orchestrator: { label: 'Orchestrator', sub: 'Step Functions' },
-      stages: [
-        { label: 'Extract', sub: 'OCR / Textract' },
-        { label: 'Chunk', sub: 'Semantic split' },
-        { label: 'Embed', sub: 'Bedrock Titan' },
-        { label: 'Upsert', sub: 'Write vectors' },
-      ],
-      storageLabel: 'Storage layer · Per-tenant isolated',
-      storage: [
-        { label: 'Vector store', sub: 'OpenSearch, per-tenant NS' },
-        { label: 'Metadata DB', sub: 'DynamoDB doc/chunk records' },
-      ],
-      tags: ['Content-hash dedup cache', 'DLQ + retries', 'CloudWatch / X-Ray', 'Tenant IAM scoping'],
-      caption: 'Fig. 3 — Four-stage pipeline writing into a per-tenant vector store and metadata database.',
-    },
+    architecture: [
+      {
+        intro: 'Sources trigger a Step Functions orchestrator running four stages — extract, chunk, embed, upsert — writing into a per-tenant isolated storage layer.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '⇧', label: 'Document sources', sub: 'S3 · crawl · CMS' },
+              { icon: '◈', label: 'Orchestrator', sub: 'Step Functions', highlight: true },
+            ],
+          },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '⇄', label: 'Extract', sub: 'OCR / Textract' },
+              { icon: '✂', label: 'Chunk', sub: 'Semantic split' },
+              { icon: '⬡', label: 'Embed', sub: 'Bedrock Titan' },
+              { icon: '⇩', label: 'Upsert', sub: 'Write vectors' },
+            ],
+          },
+          { type: 'label', text: 'Storage layer · Per-tenant isolated' },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '▲', label: 'Vector store', sub: 'OpenSearch, per-tenant NS' },
+              { icon: '▦', label: 'Metadata DB', sub: 'DynamoDB doc/chunk records' },
+            ],
+          },
+        ],
+        tags: ['Content-hash dedup cache', 'DLQ + retries', 'CloudWatch / X-Ray', 'Tenant IAM scoping'],
+        caption: 'Fig. 3 — Four-stage pipeline writing into a per-tenant vector store and metadata database.',
+      },
+    ],
 
     decisions: [
       {
@@ -159,4 +181,195 @@ export const CASE_STUDIES: Record<string, CaseStudy> = {
       type: 'Multi-tenant pipeline',
     },
   },
-};
+  {
+    projectId: 'contact-center-agent',
+    breadcrumbLabel: 'Contact Center Agent & Eval Pipeline',
+    eyebrow: 'Case Study · AI infrastructure at AWS',
+    title: 'Contact Center Agent & Test/Eval Pipeline',
+    subtitle: 'A production Connect + Lex + Bedrock contact center agent, backed by a git- and upload-driven eval pipeline that gates every prompt, knowledge base, or test-case change before it ships.',
+    techPills: [
+      { label: 'Amazon Connect', color: 'var(--soft)' },
+      { label: 'Lex', color: 'var(--yellow)' },
+      { label: 'Bedrock', color: 'var(--cyan)' },
+      { label: 'AppSync', color: 'var(--purple)' },
+      { label: 'DeepEval', color: 'var(--orange)' },
+    ],
+    meta: {
+      role: 'Systems architecture & implementation',
+      domain: 'Contact center + eval CI/CD',
+      primaryServices: 'Connect · Lex · Bedrock · AppSync',
+    },
+
+    problem: {
+      functional: [
+        'Handle voice/chat contacts via Amazon Connect, routed through Lex for intent, escalating to a Bedrock agent for complex or RAG-based answers',
+        'Engineers add or edit test cases two ways: upload a file (.xlsx/.json/.jsonl/.csv) through the React/AppSync frontend, or edit in the codebase via a git diff on test-case files',
+        'Either path triggers an automated eval run — DeepEval metrics, a RAG groundedness checker, and a KB retrieval check — per agent the test case is associated with',
+        'Results (scores, turns, ground truth, Bedrock Guardrails info) are queryable in CI logs, S3, DynamoDB, and the frontend dashboard',
+      ],
+      nonFunctional: [
+        {
+          label: 'Traceability', text: 'every test run ties to a specific git commit/diff or uploaded file version'
+        },
+        { label: 'CI/CD gate', text: 'pipeline flags or blocks deployment on score regression' },
+        { label: 'CI-vendor agnostic', text: 'works across GitLab-CI, GitHub Actions, and CodeBuild — not locked to one platform' },
+        { label: 'Isolation', text: 'CI eval traffic against Bedrock must not compete with production contact center traffic' },
+        { label: 'Auditability', text: 'CloudWatch logs and CloudFormation-provisioned infra, reproducible end to end' },
+      ],
+    },
+
+    scale: {
+      intro: 'A typical PR touches ~200 test cases, each running 3 checks against an average of 2 associated agents.',
+      stats: [
+        { value: '1200', label: 'evaluation calls per pipeline run (200 cases × 3 checks × 2 agents)' },
+        { value: '~4 min', label: 'CI gate time at 10 concurrent calls, ~2s avg latency — a reasonable merge-time cost' },
+        { value: '5,000', label: 'concurrent production Connect contacts at peak — the number that drives Bedrock traffic isolation' },
+      ],
+    },
+
+    api: [
+      { signature: 'uploadTestFile(file) → presigned S3 URL', desc: 'AppSync mutation; client PUTs the file directly to S3.' },
+      { signature: 'git diff → CI artifact → S3', desc: 'CI computes the diff on test-case files (GitHub, GitLab, or CodeCommit) and pushes it to the same S3 bucket.' },
+      {
+        signature: 'S3 event → Lambda → createTestRun(s3_key)', desc: 'Writes TestRun {test_run_id, status: PENDING} to DynamoDB, publishes to SQS.'
+      },
+      { signature: 'runTests(test_run_id)', desc: 'Per associated agent: DeepEval, RAG claims checker, KB retrieval check.' },
+      { signature: 'writeResults(test_run_id, results[]) → S3 + DynamoDB', desc: 'Flips TestRun.status to COMPLETED.' },
+      { signature: 'getTestRun(test_run_id)', desc: 'AppSync query/subscription powering the frontend\'s live status view.' },
+    ],
+
+    dataModel: {
+      rows: [
+        { entity: 'TestRun', fields: 'test_run_id, source (upload/git_diff), source_ref, status, created_at, triggered_by' },
+        { entity: 'TestCase', fields: 'test_case_id, test_run_id, agent_id, input, ground_truth, conversation_turns[]' },
+        { entity: 'TestResult', fields: 'test_case_id, test_run_id, agent_id, deepeval_scores{}, rag_claims_score, kb_retrieval_score, guardrails_info{}, latency_ms, pass_fail' },
+        { entity: 'Agent config', fields: 'agent_id, bedrock_model_id, kb_id, prompt_version, connect_flow_id' },
+      ],
+      note: {
+        code: 'source_ref',
+        text: 'on TestRun is what makes a score regression traceable back to the exact commit or upload that caused it — without it, "the eval score dropped" has no owner.',
+      },
+    },
+
+    architecture: [
+      {
+        label: 'Eval pipeline',
+        intro: 'A test case either gets uploaded through the React/AppSync frontend or added via a git commit; both paths land in S3, trigger a Lambda that creates the test run record, and hand off through SQS to a CI/CD test stage running three checks per associated agent.',
+        rows: [
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '⇪', label: 'React upload', sub: 'JSON / CSV / upload' },
+              { icon: '⎇', label: 'Git commit / diff', sub: 'GitLab · GitHub · CodeCommit' },
+            ],
+          },
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '▤', label: 'S3 — test inputs', sub: 'Raw uploaded/diffed files' },
+              { icon: 'ƒ', label: 'Lambda', sub: 'create test run', highlight: true },
+            ],
+          },
+          { type: 'grid', nodes: [{ icon: '☰', label: 'SQS', sub: 'decouples create from run' }] },
+          { type: 'label', text: 'CI/CD test stage · GitLab-CI · GitHub Actions · CodeBuild' },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '✓', label: 'DeepEval', sub: 'judge metrics' },
+              { icon: '◎', label: 'Claims checker', sub: 'groundedness' },
+              { icon: '🔎', label: 'KB retrieval', sub: 'recall / precision' },
+            ],
+          },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '▤', label: 'S3 — raw results', sub: 'full, pass/fail per case' },
+              { icon: '▦', label: 'DynamoDB — scores', sub: 'aggregated, queryable' },
+            ],
+          },
+          {
+            type: 'grid',
+            nodes: [{ icon: '⇄', label: 'AppSync API + React dashboard', sub: 'IAM + Cognito auth, CloudWatch + CloudFormation' }],
+          },
+        ],
+        caption: 'Fig. 3a — Test entry (upload or git diff) converges on S3, runs through a CI test stage, and surfaces back in the same frontend.',
+      },
+      {
+        label: 'Production runtime',
+        intro: 'Connect handles the channel and routing. Lex resolves simple intents directly, and complex or knowledge-dependent queries escalate to the Bedrock agent, which draws on both a knowledge base and Lambda-backed tools.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '👤', label: 'Customer', sub: 'voice / chat' },
+              { icon: '☎', label: 'Amazon Connect', sub: 'contact flow + routing', highlight: true },
+              { icon: '🔒', label: 'Cognito / IAM', sub: 'auth' },
+            ],
+          },
+          { type: 'label', text: 'Conversational AI core' },
+          {
+            type: 'groups',
+            groups: [
+              {
+                label: 'Intent & fulfillment',
+                nodes: [
+                  { icon: '🗣', label: 'Lex bot', sub: 'intent classification' },
+                  { icon: 'ƒ', label: 'Lambda tools', sub: 'business logic' },
+                ],
+              },
+              {
+                label: 'Reasoning & knowledge',
+                nodes: [
+                  { icon: '🧠', label: 'Bedrock agent', sub: 'LLM + guardrails' },
+                  { icon: '📚', label: 'Knowledge base', sub: 'RAG retrieval' },
+                ],
+              },
+            ],
+          },
+        ],
+        tags: ['Contact Lens transcripts', 'Glue ETL + Athena analytics', 'CloudWatch dashboards', 'CloudFormation IaC'],
+        caption: 'Fig. 3b — Lex resolves intent directly; complex queries escalate to the Bedrock agent for RAG-backed reasoning.',
+      },
+    ],
+
+    decisions: [
+      {
+        color: 'var(--yellow)',
+        label: 'Bottleneck — per-agent fan-out in the test stage.',
+        text: 'A test case associated with multiple agents multiplies the call count (200 cases × 2 agents × 3 checks = 1,200 calls). Agents run in parallel within the CI stage, with a per-PR cap on how many cases need the full 3-check suite vs. a lighter smoke subset.',
+      },
+      {
+        color: 'var(--pink)',
+        label: 'Decoupling via SQS.',
+        text: 'Lambda publishes a message rather than invoking the CI pipeline directly — a CI outage doesn\'t lose the test run request, and multiple CI backends (GitLab-CI, GitHub Actions, CodeBuild) can all consume from the same queue depending on which repo triggered it.',
+      },
+      {
+        color: 'var(--purple)',
+        label: 'Trade-off — blocking vs. non-blocking CI gate.',
+        text: 'Blocking the merge on eval regression is safer but costs iteration speed (~4 min); a non-blocking informational run with required manual sign-off is faster but relies on someone reading the report before it talks to real customers — blocking is the right default.',
+      },
+      {
+        color: 'var(--cyan)',
+        label: 'Reproducibility.',
+        text: '`source_ref` (commit SHA or upload version) plus a pinned `bedrock_model_id` and `prompt_version` on the agent config means a score regression is always attributable to a specific change, not a moving target.',
+      },
+      {
+        color: 'var(--green)',
+        label: 'Guardrails as data, not just a gate.',
+        text: 'Bedrock Guardrails info is stored per test result — not just pass/fail — so the claims checker can distinguish "failed because ungrounded" from "failed because guardrails blocked it." These need different fixes.',
+      },
+      {
+        color: 'var(--orange)',
+        label: 'Production isolation.',
+        text: 'CI eval calls against Bedrock hit a separate rate-limit bucket from live contact center traffic, so a large eval run never competes with a customer waiting on a live response.',
+      },
+    ],
+
+    summary: {
+      system: 'Contact Center Agent & Eval Pipeline',
+      primaryServices: 'Connect · Bedrock · AppSync',
+      status: 'Shipped — in production at AWS',
+      type: 'Contact center + eval CI/CD',
+    },
+  },
+];

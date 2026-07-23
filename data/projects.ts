@@ -25,6 +25,14 @@ export const ACCENTS = {
 
 export const PROJECTS: Project[] = [
   {
+    id: 'contact-center-agent', featured: true, accent: 'accP',
+    title: 'Contact Center Agent & Test/Eval Pipeline',
+    tag: 'AI · LLM · Real-time · RAG', tagColor: 'var(--purple)',
+    desc: 'Built a contact center agent leveraging LLMs and RAG for customer support. Implemented a test and evaluation pipeline to assess model performance and improve response accuracy.',
+    stack: 'Amazon Connect · Lex · React · Bedrock · DynamoDB · S3 · Lambda · AppSync · DeepEval',
+    category: ['AI / ML', 'RAG', 'Infrastructure', 'Cloud', 'CI/CD', 'Real-time'],
+  },
+  {
     id: 'rag-pipeline', featured: true, accent: 'accY',
     title: 'RAG/Document Ingestion Pipeline',
     tag: 'AI · RAG · Real-time', tagColor: 'var(--yellow)',

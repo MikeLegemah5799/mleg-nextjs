@@ -1,24 +1,68 @@
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CustomCursor from '@/components/CustomCursor';
 import { PROJECTS } from '@/data/projects';
-import { CASE_STUDIES } from '@/data/caseStudies';
+import { CASE_STUDIES, type DiagramNode, type DiagramRow } from '@/data/caseStudies';
 import s from '@/styles/case-study.module.css';
+
+function renderWithCode(text: string) {
+  return text.split('`').map((part, i) => (i % 2 === 1 ? <code key={i}>{part}</code> : part));
+}
+
+function DiagramBox({ node }: { node: DiagramNode }) {
+  return (
+    <div className={`${s.diagBox}${node.highlight ? ` ${s.diagBoxOrch}` : ''}`}>
+      <div className={s.diagIcon}>{node.icon}</div>
+      <div className={s.diagLabel}>{node.label}</div>
+      <div className={s.diagSub}>{node.sub}</div>
+    </div>
+  );
+}
+
+function DiagramRowView({ row }: { row: DiagramRow }) {
+  if (row.type === 'label') {
+    return <div className={s.diagStorageLabel}>{row.text}</div>;
+  }
+  if (row.type === 'groups') {
+    return (
+      <div className={s.diagGroupsRow}>
+        {row.groups.map((g) => (
+          <div key={g.label} className={s.diagGroupCol}>
+            <div className={s.diagGroupTitle}>{g.label}</div>
+            <div className={s.diagRow}>
+              {g.nodes.map((n) => <DiagramBox key={n.label} node={n} />)}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  const single = row.nodes.length === 1;
+  return (
+    <div className={`${s.diagRow}${single ? ` ${s.diagRowCenter}` : ''}`}>
+      {row.nodes.flatMap((n, i) => [
+        row.type === 'chain' && i > 0 ? <div key={`${n.label}-arrow`} className={s.diagArrow}>→</div> : null,
+        <DiagramBox key={n.label} node={n} />,
+      ])}
+    </div>
+  );
+}
 
 export function generateStaticParams() {
   return PROJECTS.filter((p) => p.featured).map((p) => ({ slug: p.id }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
-  const cs = CASE_STUDIES[params.slug];
+  const cs = CASE_STUDIES.find((c) => c.projectId === params.slug);
   return { title: cs ? `${cs.title} — Case Study` : 'Case Study' };
 }
 
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
   const project = PROJECTS.find((p) => p.id === params.slug);
-  const cs = CASE_STUDIES[params.slug];
+  const cs = CASE_STUDIES.find((c) => c.projectId === params.slug);
 
   if (!project || !project.featured || !cs) {
     notFound();
@@ -163,50 +207,28 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               <span className={s.sectionNum}>05</span>
               <h2 className={s.sectionTitle}>Architecture</h2>
             </div>
-            <p className={s.archIntro}>{cs.architecture.intro}</p>
-            <div className={s.diagram}>
-              <div className={s.diagRow}>
-                <div className={s.diagBox}>
-                  <div className={s.diagIcon}>⇧</div>
-                  <div className={s.diagLabel}>{cs.architecture.sources.label}</div>
-                  <div className={s.diagSub}>{cs.architecture.sources.sub}</div>
+            {cs.architecture.map((diagram, di) => (
+              <div key={diagram.label ?? di} className={s.diagramBlock}>
+                {diagram.label && <div className={s.diagLabelHeading}>{diagram.label}</div>}
+                <p className={s.archIntro}>{diagram.intro}</p>
+                <div className={s.diagram}>
+                  {diagram.rows.map((row, ri) => (
+                    <Fragment key={ri}>
+                      {ri > 0 && diagram.rows[ri - 1].type !== 'label' && (
+                        <div className={s.diagDownArrow}>↓</div>
+                      )}
+                      <DiagramRowView row={row} />
+                    </Fragment>
+                  ))}
+                  {diagram.tags && (
+                    <div className={s.diagTags}>
+                      {diagram.tags.map((t) => <span key={t} className={s.diagTag}>{t}</span>)}
+                    </div>
+                  )}
                 </div>
-                <div className={s.diagArrow}>→</div>
-                <div className={`${s.diagBox} ${s.diagBoxOrch}`}>
-                  <div className={s.diagIcon}>◈</div>
-                  <div className={s.diagLabel}>{cs.architecture.orchestrator.label}</div>
-                  <div className={s.diagSub}>{cs.architecture.orchestrator.sub}</div>
-                </div>
+                <p className={s.archCaption}>{diagram.caption}</p>
               </div>
-
-              <div className={s.diagRow}>
-                {cs.architecture.stages.map(({ label, sub }, i) => (
-                  <div key={label} className={s.diagBox}>
-                    <div className={s.diagIcon}>{['⇄', '✂', '⬡', '⇩'][i % 4]}</div>
-                    <div className={s.diagLabel}>{label}</div>
-                    <div className={s.diagSub}>{sub}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className={s.diagDownArrow}>↓</div>
-              <div className={s.diagStorageLabel}>{cs.architecture.storageLabel}</div>
-
-              <div className={s.diagRow} style={{ marginBottom: 0 }}>
-                {cs.architecture.storage.map(({ label, sub }, i) => (
-                  <div key={label} className={s.diagBox}>
-                    <div className={s.diagIcon}>{i === 0 ? '▲' : '▦'}</div>
-                    <div className={s.diagLabel}>{label}</div>
-                    <div className={s.diagSub}>{sub}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className={s.diagTags}>
-                {cs.architecture.tags.map((t) => <span key={t} className={s.diagTag}>{t}</span>)}
-              </div>
-            </div>
-            <p className={s.archCaption}>{cs.architecture.caption}</p>
+            ))}
           </section>
 
           {/* 06 DECISIONS */}
@@ -218,7 +240,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             <div className={s.decisionList}>
               {cs.decisions.map(({ color, label, text }) => (
                 <div key={label} className={s.decisionCard} style={{ borderLeftColor: color }}>
-                  <strong style={{ color }}>{label}</strong> {text}
+                  <strong style={{ color }}>{label}</strong> {renderWithCode(text)}
                 </div>
               ))}
             </div>

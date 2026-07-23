@@ -218,12 +218,26 @@ export default function Home() {
             {/* Featured */}
             <div className={`${s.projCard} ${s.projCardFeatured}`}>
               <div className={`${s.projVis} ${s.projVisFeatured}`} style={{ background: 'linear-gradient(135deg,var(--bg-deep),#1c1830)' }}>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--cyan)', letterSpacing: '0.1em' }}>DATA PIPELINE</div>
-                <div style={{ fontFamily: 'var(--font-serif)', fontSize: 34, background: 'linear-gradient(120deg,var(--yellow),var(--orange))', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>RAG/Document Ingestion Pipeline</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--cyan)', letterSpacing: '0.1em' }}>AI infrastructure at AWS</div>
+                <div style={{ fontFamily: 'var(--font-serif)', fontSize: 34, background: 'linear-gradient(120deg,var(--yellow),var(--orange))', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Contact Center Agent & Test/Eval Pipeline</div>
                 <div style={{ display: 'flex', gap: 16, fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--muted)' }}>
-                  <span>▲ Real-time</span><span>◎ Inference</span><span>↗ NLQ</span>
+                  <span>▲ Real-time</span><span>◎ Agentic AI</span><span>↗ RAG</span>
                 </div>
               </div>
+              <div className={s.projBody}>
+                <div className={s.projTag}>AI · RAG · Real-time</div>
+                <h3 className={s.projT}>RAG/Document Ingestion Pipeline</h3>
+                <p className={s.projD}>
+                  Built a contact center agent leveraging LLMs and RAG for customer support. Implemented a test and evaluation pipeline to assess model performance and improve response accuracy.</p>
+                <div className={s.projLinks}>
+                  <Link href="/projects/contact-center-agent" className={s.projLink}>View Case Study →</Link>
+                </div>
+                <div className={s.projStack}>Amazon Connect · Lex · React · Bedrock · DynamoDB · S3 · Lambda · AppSync · DeepEval</div>
+              </div>
+            </div>
+
+            <div className={s.projCard}>
+              <div className={s.projVis}>📑</div>
               <div className={s.projBody}>
                 <div className={s.projTag}>AI · RAG · Real-time</div>
                 <h3 className={s.projT}>RAG/Document Ingestion Pipeline</h3>
@@ -247,16 +261,6 @@ export default function Home() {
               </div>
             </div>
 
-            <div className={s.projCard}>
-              <div className={s.projVis}>🛡️</div>
-              <div className={s.projBody}>
-                <div className={s.projTag}>Enterprise · Defense · Components</div>
-                <h3 className={s.projT}>Northrop Grumman</h3>
-                <p className={s.projD}>Led a team building a customizable Gutenberg component library for a Fortune 500 defense contractor&apos;s global presence.</p>
-                <div className={s.projLinks}><a href="https://www.northropgrumman.com/" className={s.projLink} target="_blank" rel="noopener noreferrer">View Site →</a></div>
-                <div className={s.projStack}>WordPress · React · PHP · Bootstrap</div>
-              </div>
-            </div>
           </div>
 
           <div className={s.viewAllWrap}>
