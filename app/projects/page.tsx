@@ -73,7 +73,7 @@ export default function Projects() {
                       <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: p.tagColor, letterSpacing: '0.1em' }}>{p.tag.toUpperCase()}</div>
                       <div style={{ fontFamily: 'var(--font-serif)', fontSize: 30, background: 'linear-gradient(120deg,var(--yellow),var(--orange))', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{p.title}</div>
                       <div style={{ display: 'flex', gap: 16, fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--muted)' }}>
-                        <span>▲ Ingestion</span><span>◎ Retrieval</span><span>↗ Multi-tenant</span>
+                        {p.highlights?.map((h) => <span key={h}>{h}</span>)}
                       </div>
                     </div>
                   ) : (

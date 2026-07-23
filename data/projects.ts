@@ -12,6 +12,8 @@ export type Project = {
   wide?: boolean;
   accent: string;
   category: string[];
+  /** Icon + label pairs shown on the featured hero card, e.g. "▲ Real-time". */
+  highlights?: string[];
 };
 
 export const ACCENTS = {
@@ -31,6 +33,7 @@ export const PROJECTS: Project[] = [
     desc: 'Built a contact center agent leveraging LLMs and RAG for customer support. Implemented a test and evaluation pipeline to assess model performance and improve response accuracy.',
     stack: 'Amazon Connect · Lex · React · Bedrock · DynamoDB · S3 · Lambda · AppSync · DeepEval',
     category: ['AI / ML', 'RAG', 'Infrastructure', 'Cloud', 'CI/CD', 'Real-time'],
+    highlights: ['▲ Real-time', '◎ Eval-gated', '↗ RAG-grounded'],
   },
   {
     id: 'rag-pipeline', featured: true, accent: 'accY',
@@ -39,6 +42,7 @@ export const PROJECTS: Project[] = [
     desc: 'Built a real-time document ingestion and retrieval pipeline for AI applications. Implemented a system that ingests documents, processes them into embeddings, and enables efficient retrieval for RAG (Retrieval-Augmented Generation) tasks.',
     stack: 'AWS Textract · Bedrock Titan · OpenSearch · Step Functions · DynamoDB · S3 · Lambda',
     category: ['AI / ML', 'RAG', 'Infrastructure', 'Cloud'],
+    highlights: ['▲ Ingestion', '◎ Retrieval', '↗ Multi-tenant'],
   },
   {
     id: 'spacewatch', accent: 'accC',

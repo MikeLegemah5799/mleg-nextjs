@@ -1,0 +1,95 @@
+.body { max-width: 900px; margin: 0 auto; padding: 40px 60px 60px; }
+
+/* ── URL BAR ── */
+.urlBar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 20px; margin-bottom: 28px;
+}
+.urlLeft { display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 14px; color: var(--text); }
+.urlIcon { color: var(--orange); }
+.copyBtn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+  border: 1px solid var(--border-md); border-radius: 6px; padding: 7px 14px;
+  background: transparent; cursor: pointer; transition: color 0.2s, border-color 0.2s;
+}
+.copyBtn:hover { color: var(--yellow); border-color: rgba(255,216,102,0.35); }
+
+/* ── INFO CARD ── */
+.infoCard {
+  display: flex; gap: 20px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 28px; margin-bottom: 28px;
+}
+.infoIcon {
+  flex-shrink: 0; width: 56px; height: 56px; border-radius: 10px;
+  background: rgba(252,152,103,0.15); color: var(--orange);
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+}
+.infoTitle { font-family: var(--font-serif); font-size: 24px; margin-bottom: 6px; }
+.infoSub { font-size: 14px; color: var(--soft); margin-bottom: 20px; }
+.infoBtns { display: flex; flex-wrap: wrap; gap: 10px; }
+.readerBtn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 12px;
+  border: 1px solid var(--border-md); border-radius: 7px; padding: 10px 16px;
+  color: var(--soft); background: transparent; transition: color 0.2s, border-color 0.2s;
+}
+.readerBtn:hover { color: var(--yellow); border-color: rgba(255,216,102,0.35); }
+
+/* ── STATS BAR ── */
+.statsBar {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 24px;
+  background: var(--bg-deep); border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px 24px; margin-bottom: 36px;
+}
+.statLabel { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.statValue { font-size: 14px; color: var(--text); font-weight: 500; }
+
+/* ── FEED ENTRIES ── */
+.sectionLabel {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--yellow); margin-bottom: 18px;
+}
+.entryList { display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px; }
+.entryCard {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 18px 22px;
+}
+.entryTop { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.entryCat { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+.entryDate { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.entryTitle { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.entryDesc { font-size: 13px; color: var(--soft); line-height: 1.6; }
+
+/* ── RAW SOURCE ── */
+.sourceBlock {
+  margin: 0 0 40px; background: var(--bg-deep); border: 1px solid var(--border-md); border-radius: 10px;
+  padding: 20px 22px; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.75; color: var(--soft);
+  overflow-x: auto;
+}
+.sourceLine { white-space: pre; min-height: 1.75em; }
+.tokTag { color: var(--pink); }
+.tokAttr { color: var(--cyan); }
+.tokComment { color: var(--muted); font-style: italic; }
+
+/* ── FOOTER BAR ── */
+.footerBar {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  padding-top: 24px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--muted);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .statsBar { grid-template-columns: repeat(2,1fr); }
+}
+
+@media (max-width: 640px) {
+  .body { padding: 32px 20px 48px; }
+  .infoCard { flex-direction: column; }
+  .urlBar { flex-direction: column; align-items: flex-start; }
+  .statsBar { grid-template-columns: 1fr; }
+  .footerBar { flex-direction: column; align-items: flex-start; }
+}

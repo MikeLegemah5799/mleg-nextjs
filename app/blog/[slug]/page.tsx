@@ -124,7 +124,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
         <div className={b.footerBar} style={{ paddingLeft: 60, paddingRight: 60 }}>
           <span>mleg.tech — writing on AI systems, shipped and unglamorous.</span>
-          <a href="/rss.xml">📡 RSS feed</a>
+          <Link href="/rss">📡 RSS feed</Link>
         </div>
       </main>
 

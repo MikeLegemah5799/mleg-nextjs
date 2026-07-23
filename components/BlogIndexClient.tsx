@@ -71,7 +71,7 @@ export default function BlogIndexClient({ featured, posts }: { featured?: Post; 
                   aria-label="Search posts"
                 />
               </div>
-              <a href="/rss.xml" className={s.rssBtn}>📡 RSS</a>
+              <Link href="/rss" className={s.rssBtn}>📡 RSS</Link>
             </div>
           </div>
 
@@ -167,7 +167,7 @@ export default function BlogIndexClient({ featured, posts }: { featured?: Post; 
         {/* FOOTER BAR */}
         <div className={s.footerBar}>
           <span>mleg.tech — writing on AI systems, shipped and unglamorous.</span>
-          <a href="/rss.xml">📡 RSS feed</a>
+          <Link href="/rss">📡 RSS feed</Link>
         </div>
       </main>
 
