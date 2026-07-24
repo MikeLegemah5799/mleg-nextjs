@@ -66,7 +66,7 @@ export default function About() {
               <em className={s.heroTitleEm}>Michael Legemah?</em>
             </h1>
             <p className={s.heroDesc}>
-              I&apos;m a <strong>Principal AI Engineer</strong> with full-stack engineering experience and over 10 years of
+              I&apos;m a <strong>Principal Full-Stack & AI Engineer</strong> with full-stack engineering experience and over 10 years of
               professional experience — spanning financial services, healthcare, defense, and consumer brands.
               I&apos;ve evolved from building pixel-perfect interfaces to architecting production AI systems that
               actually ship and scale.

@@ -113,7 +113,7 @@ export default function Resume() {
               <p className={s.heroRole}>Principal AI Engineer</p>
               <p className={s.heroMeta}>New York, NY · michaellegemah@gmail.com · 516-273-1611</p>
             </div>
-            <a href="/resume.pdf" download className={`btn-primary ${s.downloadBtn}`}>
+            <a href="/Michael_Legemah_Resume_26.pdf" download="Michael_Legemah_Resume_26.pdf" className={`btn-primary ${s.downloadBtn}`}>
               ⬇ Download résumé (PDF)
             </a>
           </div>
@@ -189,7 +189,7 @@ export default function Resume() {
         {/* FOOTER CTA */}
         <div className={s.footerCta}>
           <p className={s.footerCtaText}>Prefer the one-pager? Grab the full résumé.</p>
-          <a href="/resume.pdf" download className="btn-outline">⬇ Download résumé</a>
+          <a href="/Michael_Legemah_Resume_26.pdf" download="Michael_Legemah_Resume_26.pdf" className="btn-outline">⬇ Download résumé</a>
         </div>
       </main>
 
