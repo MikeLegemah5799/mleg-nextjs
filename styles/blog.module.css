@@ -121,6 +121,7 @@
 }
 .newsletterTitle { font-size: 19px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
 .newsletterSub { font-size: 13px; color: var(--muted); }
+.newsletterMsg { font-family: var(--font-mono); font-size: 12px; margin-top: 10px; }
 .newsletterForm { display: flex; gap: 10px; flex-shrink: 0; }
 .newsletterInput {
   background: var(--bg-deep); border: 1px solid var(--border-md); border-radius: 7px;
