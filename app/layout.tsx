@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { LOGO_URL } from '@/lib/constants';
 import '../styles/globals.css';
 
 export const metadata: Metadata = {
@@ -14,13 +13,11 @@ export const metadata: Metadata = {
     description: 'LLM architecture, RAG systems, and AI product engineering.',
     url: 'https://mleg.tech',
     siteName: 'Michael Legemah Portfolio',
-    images: [{ url: LOGO_URL }],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Michael Legemah — Principal AI Engineer',
     description: 'LLM architecture, RAG systems, and AI product engineering.',
-    images: [LOGO_URL],
   },
 };
 
