@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CustomCursor from '@/components/CustomCursor';
+import { LOGO_URL } from '@/lib/constants';
 import s from '@/styles/speaking.module.css';
 
 const STATS = [
@@ -119,7 +121,7 @@ export default function Speaking() {
 
             <div className={s.profileCard}>
               <div className={s.profileTop}>
-                <div className={s.avatar} />
+                <Image src={LOGO_URL} alt="Michael Legemah" width={52} height={52} className={s.avatar} unoptimized />
                 <div>
                   <div className={s.profileName}>Michael Legemah</div>
                   <div className={s.profileRole}>Principal AI Engineer</div>

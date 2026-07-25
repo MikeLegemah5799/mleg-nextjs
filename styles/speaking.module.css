@@ -31,6 +31,7 @@
 .avatar {
   width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
   background: linear-gradient(135deg, var(--cyan), var(--purple));
+  object-fit: cover;
 }
 .profileName { font-size: 16px; font-weight: 500; color: var(--text); }
 .profileRole { font-size: 13px; color: var(--purple); }

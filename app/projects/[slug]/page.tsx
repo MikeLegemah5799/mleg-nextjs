@@ -55,14 +55,16 @@ export function generateStaticParams() {
   return PROJECTS.filter((p) => p.featured).map((p) => ({ slug: p.id }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const cs = CASE_STUDIES.find((c) => c.projectId === params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const cs = CASE_STUDIES.find((c) => c.projectId === slug);
   return { title: cs ? `${cs.title} — Case Study` : 'Case Study' };
 }
 
-export default function CaseStudyPage({ params }: { params: { slug: string } }) {
-  const project = PROJECTS.find((p) => p.id === params.slug);
-  const cs = CASE_STUDIES.find((c) => c.projectId === params.slug);
+export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const project = PROJECTS.find((p) => p.id === slug);
+  const cs = CASE_STUDIES.find((c) => c.projectId === slug);
 
   if (!project || !project.featured || !cs) {
     notFound();

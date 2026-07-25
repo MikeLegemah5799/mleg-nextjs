@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
@@ -10,6 +11,7 @@ import PostActions from '@/components/PostActions';
 import NewsletterForm from '@/components/NewsletterForm';
 import { mdxComponents } from '@/components/BlogMDXComponents';
 import { getAllPosts, getPostBySlug, getRelatedPosts, CATEGORY_COLORS } from '@/lib/blog';
+import { LOGO_URL } from '@/lib/constants';
 import s from '@/styles/blog-post.module.css';
 import b from '@/styles/blog.module.css';
 
@@ -21,9 +23,10 @@ function postExists(slug: string) {
   return fs.existsSync(path.join(process.cwd(), 'content/blog', `${slug}.mdx`));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  if (!postExists(params.slug)) return { title: 'Post not found' };
-  const post = getPostBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  if (!postExists(slug)) return { title: 'Post not found' };
+  const post = getPostBySlug(slug);
   return { title: post.title, description: post.desc };
 }
 
@@ -31,11 +34,12 @@ function formatDate(iso: string) {
   return new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  if (!postExists(params.slug)) notFound();
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  if (!postExists(slug)) notFound();
 
-  const post = getPostBySlug(params.slug);
-  const related = getRelatedPosts(params.slug);
+  const post = getPostBySlug(slug);
+  const related = getRelatedPosts(slug);
   const catColor = CATEGORY_COLORS[post.category] ?? 'var(--soft)';
 
   return (
@@ -59,7 +63,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
             <div className={s.authorRow}>
               <div className={s.authorLeft}>
-                <div className={s.avatar} />
+                <Image src={LOGO_URL} alt="Michael Legemah" width={38} height={38} className={s.avatar} unoptimized />
                 <div>
                   <div className={s.authorName}>Michael Legemah</div>
                   <div className={s.authorRole}>Principal AI Engineer</div>
@@ -92,12 +96,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
           <div className={s.authorBio}>
             <div className={s.authorBioInner}>
-              <div className={s.authorBioAvatar} />
+              <Image src={LOGO_URL} alt="Michael Legemah" width={44} height={44} className={s.authorBioAvatar} unoptimized />
               <div>
                 <div className={s.authorBioName}>Michael Legemah</div>
                 <p className={s.authorBioText}>
                   Principal AI Engineer building agentic systems, RAG pipelines, and eval infrastructure on AWS.
-                  Currently at AWS, previously shipping AI features into regulated clinical-trial and healthcare platforms.
                 </p>
               </div>
             </div>

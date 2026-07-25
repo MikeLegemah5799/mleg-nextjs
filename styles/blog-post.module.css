@@ -29,7 +29,7 @@
   margin-bottom: 32px;
 }
 .authorLeft { display: flex; align-items: center; gap: 12px; }
-.avatar { width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, var(--cyan), var(--purple)); }
+.avatar { width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, var(--cyan), var(--purple)); object-fit: cover; }
 .authorName { font-size: 14px; font-weight: 500; color: var(--text); }
 .authorRole { font-size: 12px; color: var(--muted); }
 .authorActions { display: flex; gap: 8px; }
@@ -129,7 +129,7 @@
   display: flex; gap: 16px; align-items: flex-start;
   background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px;
 }
-.authorBioAvatar { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, var(--cyan), var(--purple)); }
+.authorBioAvatar { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, var(--cyan), var(--purple)); object-fit: cover; }
 .authorBioName { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
 .authorBioText { font-size: 13px; color: var(--muted); line-height: 1.7; }
 

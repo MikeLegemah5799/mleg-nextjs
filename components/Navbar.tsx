@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { LOGO_URL } from '@/lib/constants';
 
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
@@ -34,7 +35,7 @@ export default function Navbar() {
       <nav className="navbar" style={{ boxShadow: scrolled ? '0 1px 32px rgba(0,0,0,0.3)' : 'none' }}>
         <Link href="/" className="navbar-logo">
           <Image
-            src="https://www.mleg.tech/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.fdf927a6.png&w=96&q=75"
+            src={LOGO_URL}
             alt="Mike Legemah Logo"
             width={38}
             height={38}

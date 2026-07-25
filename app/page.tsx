@@ -59,12 +59,12 @@ const CLIENTS = [
 ];
 
 const TESTIMONIALS = [
-  { initials: 'FD', color: 'var(--yellow)', name: 'Frank Durante', role: 'Internet App Specialist, Nikon', quote: 'One of the most kind, passionate and loyal individuals I have ever worked with. His constant appetite for knowledge keeps him up front in the pack of new technology.' },
-  { initials: 'SK', color: 'var(--cyan)', name: 'Scott Kogos', role: 'SVP Dir. PM Operations, Doner', quote: 'Joined our team during an incredibly hectic launch. He fit right in and proved to be a huge help — both for assigned work and helping other developers when called upon.' },
-  { initials: 'MA', color: 'var(--green)', name: 'Mo Akram', role: 'VP of Recruiting, Petfolk', quote: 'Always stayed one step ahead of tech trends. A motivated team player and leader with a keen eye for the bigger picture — a valuable asset to any organization.' },
-  { initials: 'TL', color: 'var(--orange)', name: 'Tony Landa', role: 'VP Dir. of Technology, FCB Health', quote: 'No-drama, smart, and a great problem-solver. Not only did he figure out the system quickly, but his skills proved of great service across multiple aspects of the project.' },
-  { initials: 'AG', color: 'var(--purple)', name: 'Alla Gringaus', role: 'Global Web Perf Lead, Estée Lauder', quote: 'Very solid experience with deep expertise in modern frameworks. Adept at creating customer-focused, mobile-responsive UI with UX in mind.' },
-  { initials: 'YK', color: 'var(--pink)', name: 'Yussuf Khan', role: 'Media Executive & Entrepreneur', quote: 'One of the most patient, knowledgeable, flexible and understanding people I have ever worked with. Because of his talents, I still work with him to this day.' },
+  { initials: 'FD', color: 'var(--yellow)', name: 'Frank Durante', role: 'Internet App Specialist, Nikon', quote: 'Michael is one of the most kind, passionate and loyal individuals I have ever worked with. His constant appetite for knowledge keeps him up front in the pack of new technology.' },
+  { initials: 'SK', color: 'var(--cyan)', name: 'Scott Kogos', role: 'SVP Dir. PM Operations, Doner', quote: 'Michael joined our team during an incredibly hectic launch. He fit right in and proved to be a huge help — both for assigned work and helping other developers when called upon.' },
+  { initials: 'MA', color: 'var(--green)', name: 'Mo Akram', role: 'VP of Recruiting, Petfolk', quote: 'Michael always stayed one step ahead of tech trends. A motivated team player and leader with a keen eye for the bigger picture — a valuable asset to any organization.' },
+  { initials: 'TL', color: 'var(--orange)', name: 'Tony Landa', role: 'VP Dir. of Technology, FCB Health', quote: 'Michael is a no-drama, smart, and a great problem-solver. Not only did he figure out the system quickly, but his skills proved of great service across multiple aspects of the project.' },
+  { initials: 'AG', color: 'var(--purple)', name: 'Alla Gringaus', role: 'Global Web Perf Lead, Estée Lauder', quote: 'Michael has very solid experience with deep expertise in modern frameworks. Adept at creating customer-focused, mobile-responsive UI with UX in mind.' },
+  { initials: 'YK', color: 'var(--pink)', name: 'Yussuf Khan', role: 'Media Executive & Entrepreneur', quote: 'Michael is one of the most patient, knowledgeable, flexible and understanding people I have ever worked with. Because of his talents, I still work with him to this day.' },
 ];
 
 const PILL_COLORS: Record<string, string> = {
