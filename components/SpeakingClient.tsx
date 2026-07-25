@@ -121,7 +121,7 @@ export default function SpeakingClient() {
 
             <div className={s.profileCard}>
               <div className={s.profileTop}>
-                <Image src={LOGO_URL} alt="Michael Legemah" width={52} height={52} className={s.avatar} unoptimized />
+                <Image src={LOGO_URL} alt="Michael Legemah" width={52} height={52} className={s.avatar} />
                 <div>
                   <div className={s.profileName}>Michael Legemah</div>
                   <div className={s.profileRole}>Principal AI Engineer</div>

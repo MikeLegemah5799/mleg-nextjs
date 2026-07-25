@@ -81,7 +81,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
             <div className={s.authorRow}>
               <div className={s.authorLeft}>
-                <Image src={LOGO_URL} alt="Michael Legemah" width={38} height={38} className={s.avatar} unoptimized />
+                <Image src={LOGO_URL} alt="Michael Legemah" width={38} height={38} className={s.avatar} />
                 <div>
                   <div className={s.authorName}>Michael Legemah</div>
                   <div className={s.authorRole}>Principal AI Engineer</div>
@@ -114,7 +114,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <div className={s.authorBio}>
             <div className={s.authorBioInner}>
-              <Image src={LOGO_URL} alt="Michael Legemah" width={44} height={44} className={s.authorBioAvatar} unoptimized />
+              <Image src={LOGO_URL} alt="Michael Legemah" width={44} height={44} className={s.authorBioAvatar} />
               <div>
                 <div className={s.authorBioName}>Michael Legemah</div>
                 <p className={s.authorBioText}>

@@ -41,7 +41,6 @@ export default function Navbar() {
             height={38}
             style={{ height: '38px', width: 'auto', objectFit: 'contain' }}
             priority
-            unoptimized
           />
           <span className="navbar-logo-text">Michael Legemah</span>
         </Link>

@@ -1,9 +1,15 @@
+import fs from 'fs';
+import path from 'path';
 import { ImageResponse } from 'next/og';
-import { LOGO_URL } from '@/lib/constants';
 
 export const ogImageSize = { width: 1200, height: 630 };
 export const ogImageContentType = 'image/png';
 export const ogImageAlt = 'Michael Legemah — Principal AI Engineer';
+
+function loadLogoDataUri() {
+  const bytes = fs.readFileSync(path.join(process.cwd(), 'public/logo.png'));
+  return `data:image/png;base64,${bytes.toString('base64')}`;
+}
 
 const NAV_LINKS = ['ABOUT', 'PROJECTS', 'BLOG', 'RESUME', 'CONTACT'];
 
@@ -26,6 +32,7 @@ async function loadFont(weight: 400 | 700) {
 
 export async function generateOgImage() {
   const [regular, bold] = await Promise.all([loadFont(400), loadFont(700)]);
+  const logo = loadLogoDataUri();
 
   return new ImageResponse(
     (
@@ -54,7 +61,7 @@ export async function generateOgImage() {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <img src={LOGO_URL} width={34} height={34} style={{ borderRadius: 8 }} />
+            <img src={logo} width={34} height={34} style={{ borderRadius: 8 }} />
             <span style={{ color: '#fcfcfa', fontSize: 17, fontWeight: 700 }}>Michael Legemah</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -83,7 +90,7 @@ export async function generateOgImage() {
               backgroundImage: 'linear-gradient(135deg,#78dce8,#a9dc76)',
             }}
           >
-            <img src={LOGO_URL} width={152} height={152} style={{ borderRadius: '50%' }} />
+            <img src={logo} width={152} height={152} style={{ borderRadius: '50%' }} />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 700 }}>
