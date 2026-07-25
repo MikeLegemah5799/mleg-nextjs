@@ -5,7 +5,7 @@ import CustomCursor from '@/components/CustomCursor';
 import { JobMatchAnalyzer } from '@/components/JobMatchAnalyzer';
 
 export const metadata: Metadata = {
-  title: 'Job Match — Michael Legemah',
+  title: 'Job Match',
   description:
     'Paste a job description and get an instant, evidence-backed breakdown of how it matches my experience.',
 };

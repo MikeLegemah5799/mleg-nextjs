@@ -27,7 +27,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   if (!postExists(slug)) return { title: 'Post not found' };
   const post = getPostBySlug(slug);
-  return { title: post.title, description: post.desc };
+  return {
+    title: post.title,
+    description: post.desc,
+    keywords: post.tags,
+    openGraph: {
+      title: post.title,
+      description: post.desc,
+      type: 'article',
+      publishedTime: post.date,
+      tags: post.tags,
+    },
+    twitter: {
+      card: 'summary',
+      title: post.title,
+      description: post.desc,
+    },
+  };
 }
 
 function formatDate(iso: string) {

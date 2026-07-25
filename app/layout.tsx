@@ -1,17 +1,26 @@
 import type { Metadata } from 'next';
+import { LOGO_URL } from '@/lib/constants';
 import '../styles/globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://mleg.tech'),
   title: {
     default: 'Michael Legemah — Principal AI Engineer',
     template: '%s — Michael Legemah',
   },
-  description: 'Principal AI Engineer specializing in LLM architecture, RAG systems, and AI product engineering. 10+ years building for JP Morgan, Mayo Clinic, Northrop Grumman, and more.',
+  description: 'Principal AI Engineer specializing in LLM architecture, RAG systems, and AI product engineering. 10+ years building for AWS, AstraZeneca, US Space Force, and more.',
   openGraph: {
     title: 'Michael Legemah — Principal AI Engineer',
     description: 'LLM architecture, RAG systems, and AI product engineering.',
     url: 'https://mleg.tech',
     siteName: 'Michael Legemah Portfolio',
+    images: [{ url: LOGO_URL }],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Michael Legemah — Principal AI Engineer',
+    description: 'LLM architecture, RAG systems, and AI product engineering.',
+    images: [LOGO_URL],
   },
 };
 

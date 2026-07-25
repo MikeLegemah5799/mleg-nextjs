@@ -58,7 +58,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const cs = CASE_STUDIES.find((c) => c.projectId === slug);
-  return { title: cs ? `${cs.title} — Case Study` : 'Case Study' };
+  if (!cs) return { title: 'Case Study' };
+
+  const title = `${cs.title} — Case Study`;
+  return {
+    title,
+    description: cs.subtitle,
+    openGraph: { title, description: cs.subtitle, type: 'article' },
+  };
 }
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {

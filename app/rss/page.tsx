@@ -10,6 +10,7 @@ import s from '@/styles/rss.module.css';
 
 export const metadata = {
   title: 'RSS Feed',
+  description: 'Subscribe to the mleg.tech RSS feed for new writing on agentic AI, RAG pipelines, and eval-driven development.',
 };
 
 function formatDate(iso: string) {

@@ -6,6 +6,7 @@ import s from '@/styles/resume.module.css';
 
 export const metadata = {
   title: 'Résumé',
+  description: "Michael Legemah's résumé — 12+ years shipping AI and full-stack systems for AWS, AstraZeneca, US Space Force, and more.",
 };
 
 const PILLS = [
