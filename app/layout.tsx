@@ -4,19 +4,19 @@ import '../styles/globals.css';
 export const metadata: Metadata = {
   metadataBase: new URL('https://mleg.tech'),
   title: {
-    default: 'Michael Legemah — Principal AI Engineer',
+    default: 'Michael Legemah — AI Engineer',
     template: '%s — Michael Legemah',
   },
-  description: 'Principal AI Engineer specializing in LLM architecture, RAG systems, and AI product engineering. 10+ years building for AWS, AstraZeneca, US Space Force, and more.',
+  description: 'AI Engineer specializing in LLM architecture, RAG systems, and AI product engineering. 10+ years building for AWS, AstraZeneca, US Space Force, and more.',
   openGraph: {
-    title: 'Michael Legemah — Principal AI Engineer',
+    title: 'Michael Legemah — AI Engineer',
     description: 'LLM architecture, RAG systems, and AI product engineering.',
     url: 'https://mleg.tech',
     siteName: 'Michael Legemah Portfolio',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Michael Legemah — Principal AI Engineer',
+    title: 'Michael Legemah — AI Engineer',
     description: 'LLM architecture, RAG systems, and AI product engineering.',
   },
 };
