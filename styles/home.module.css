@@ -221,6 +221,27 @@
 .testiName { font-size: 13px; font-weight: 500; color: var(--text); }
 .testiRole { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-top: 2px; }
 
+/* ── RECENT WRITING ── */
+.blogSection { padding: 100px 60px; background: var(--bg-deep); border-top: 1px solid var(--border); }
+.blogHead { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+.blogHeadLeft { max-width: 640px; }
+.blogViewAll { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; color: var(--yellow); white-space: nowrap; transition: color 0.2s; }
+.blogViewAll:hover { color: var(--orange); }
+.blogGrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 56px; }
+.blogCard { position: relative; display: block; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding-top: 3px; overflow: hidden; transition: border-color 0.25s, transform 0.25s; }
+.blogCard:hover { transform: translateY(-3px); border-color: rgba(255,216,102,0.25); }
+.blogAccent { position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.blogBody { padding: 26px 24px 24px; }
+.blogTop { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.blogCat { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; }
+.blogDate { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.blogTitle { font-family: var(--font-sans); font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.35; margin-bottom: 10px; }
+.blogDesc { font-size: 13.5px; color: var(--soft); line-height: 1.65; margin-bottom: 20px; }
+.blogFoot { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid var(--border); }
+.blogRead { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.blogMore { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; color: var(--yellow); transition: color 0.2s; }
+.blogCard:hover .blogMore { color: var(--orange); }
+
 /* ── CTA ── */
 .ctaSection { padding: 120px 60px; text-align: center; position: relative; overflow: hidden; }
 .ctaSection::before { content: ''; position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,216,102,0.05) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
@@ -235,6 +256,7 @@
 /* ─── RESPONSIVE ─── */
 @media (max-width: 1024px) {
   .expGrid { grid-template-columns: repeat(2,1fr); }
+  .blogGrid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 900px) {
@@ -255,6 +277,9 @@
   .projVisFeatured { height: 160px; border-right: none; border-bottom: 1px solid var(--border); flex-direction: column; gap: 10px; padding: 20px; }
   .testiSection { padding: 70px 24px; }
   .testiGrid { grid-template-columns: 1fr; }
+  .blogSection { padding: 70px 24px; }
+  .blogHead { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .blogGrid { grid-template-columns: 1fr; }
   .ctaSection { padding: 80px 24px; }
 }
 
