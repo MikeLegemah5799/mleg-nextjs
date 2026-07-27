@@ -54,6 +54,24 @@ const EXPERTISE = [
   },
 ];
 
+const SERVICES_TEASER = [
+  {
+    icon: '🧠', title: 'Agentic System Build',
+    desc: 'Production multi-agent workflows and RAG pipelines, designed and shipped end to end.',
+    pill: '4-8 WKS', pillCls: 'svcPillY',
+  },
+  {
+    icon: '🔬', title: 'Eval & Reliability Audit',
+    desc: "Find your AI feature's real failure modes, then build the pipeline that catches them.",
+    pill: '2-4 WKS', pillCls: 'svcPillC',
+  },
+  {
+    icon: '⚡', title: 'Fractional Engineering',
+    desc: 'Embedded senior AI capacity, 2-3 days/week — no six-month ramp-up required.',
+    pill: 'ONGOING', pillCls: 'svcPillG',
+  },
+];
+
 const CLIENTS = [
   'AWS', 'AstraZeneca', 'JP Morgan Chase', 'US Army', 'Mayo Clinic', 'Northrop Grumman', 'OMNY', 'The Shadow League', 'Mini', 'US Space Force', 'American Kennel Club',
 ];
@@ -153,7 +171,7 @@ export default function Home() {
                 <span className={s.tl}>&nbsp;&nbsp;<span className={s.tk}>def</span> <span className={s.tf}>build</span>(self, idea) -&gt; <span className={s.tto}>Product</span>:</span>
                 <span className={s.tl}>&nbsp;&nbsp;&nbsp;&nbsp;<span className={s.tk}>return</span> <span className={s.tf}>ship</span>(idea, quality=<span className={s.ts}>&quot;high&quot;</span>)</span>
                 <span className={s.tl}>&nbsp;</span>
-                <span className={s.tl}><span className={s.tcyn}>&gt;&gt;&gt; Available for new projects</span> <span className={s.tcursor} /></span>
+                <span className={s.tl}><span className={s.tcyn}>&gt;&gt;&gt; open to full-time roles & fractional engagements</span> <span className={s.tcursor} /></span>
               </div>
               <div className={s.aiTags}>
                 {[
@@ -165,6 +183,37 @@ export default function Home() {
                   <span key={label} className={`${s.atag} ${cls}`}>{label}</span>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── SERVICES TEASER ── */}
+        <section className={s.svcSection}>
+          <div className={s.svcHead}>
+            <div className={s.svcBadge}>Open to Fractional &amp; Contract Work</div>
+            <div className="section-label">Ways to Work Together</div>
+            <h2 className="section-title">Need this shipped,<br />not demoed?</h2>
+            <p className="section-sub">Fixed-scope builds, eval audits, or embedded capacity — for teams that need agentic AI running in production, not a slide deck. Active DoD Secret clearance for defense-adjacent work.</p>
+          </div>
+
+          <div className={s.svcGrid}>
+            {SERVICES_TEASER.map(({ icon, title, desc, pill, pillCls }) => (
+              <div key={title} className={s.svcCard}>
+                <div className={s.svcTop}>
+                  <span className={s.svcIcon}>{icon}</span>
+                  <span className={`${s.svcPill} ${s[pillCls]}`}>{pill}</span>
+                </div>
+                <div className={s.svcTitle}>{title}</div>
+                <p className={s.svcDesc}>{desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className={s.svcFooter}>
+            <p className={s.svcNote}>Active <strong>DoD Secret Clearance</strong> · Delivered inside AWS, US Army, US Space Force</p>
+            <div className={s.svcCtas}>
+              <Link href="/services" className="btn-primary">View Services</Link>
+              <Link href="/contact" className="btn-ghost">Get in Touch</Link>
             </div>
           </div>
         </section>
@@ -265,6 +314,18 @@ export default function Home() {
 
           <div className={s.viewAllWrap}>
             <Link href="/projects" className="btn-outline">View All Projects →</Link>
+          </div>
+
+          <div className={s.projCta}>
+            <div className={s.projCtaLeft}>
+              <div className={s.projCtaLabel}>Like What You See?</div>
+              <div className={s.projCtaTitle}>I take on fractional and contract engagements too.</div>
+              <p className={s.projCtaText}>Agentic system builds, eval audits, or embedded capacity — cleared for defense-adjacent work.</p>
+            </div>
+            <div className={s.projCtaActions}>
+              <Link href="/services" className="btn-primary">View Services</Link>
+              <Link href="/contact" className="btn-ghost">Get in Touch</Link>
+            </div>
           </div>
         </section>
 
