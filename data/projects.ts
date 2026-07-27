@@ -50,7 +50,7 @@ export const PROJECTS: Project[] = [
     tag: 'Full-Stack · Time Series · Data Visualization', tagColor: 'var(--cyan)',
     desc: 'Built Space Watch a rocket launch tracker: a live countdown to the next upcoming launch, a full schedule (list or calendar), a searchable archive of past missions, and per-agency pages — all aggregated from Launch Library 2 into one normalized dataset and served through a dark, neon-blue "mission control" UI.',
     stack: 'Next.js · React · TypeScript · Neon Postgres · Tailwind · Vercel Cron',
-    siteUrl: 'https://spacewatch-84e42r46f-mike-legemahs-projects.vercel.app/',
+    siteUrl: 'https://spacewatch-iota.vercel.app/dashboard',
     codeUrl: 'https://github.com/MikeLegemah5799/spacewatch',
     emoji: '👩🏿‍🚀',
     category: ['Full-Stack', 'Time Series', 'Data Visualization'],
