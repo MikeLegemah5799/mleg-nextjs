@@ -372,4 +372,136 @@ export const CASE_STUDIES: CaseStudy[] = [
       type: 'Contact center + eval CI/CD',
     },
   },
+  {
+    projectId: 'multi-agent-support',
+    breadcrumbLabel: 'Multi-Agent Customer Support Platform',
+    eyebrow: 'Case Study · Agentic AI',
+    title: 'Multi-Agent Customer Support Platform',
+    subtitle: 'A Bedrock supervisor agent routes to specialist agents, calls tools, and retrieves from a knowledge base — with guardrails and human escalation built in from the start.',
+    techPills: [
+      { label: 'Bedrock Agents', color: 'var(--soft)' },
+      { label: 'OpenSearch', color: 'var(--cyan)' },
+      { label: 'SQS', color: 'var(--purple)' },
+      { label: 'Lambda', color: 'var(--yellow)' },
+      { label: 'DynamoDB', color: 'var(--orange)' },
+    ],
+    meta: {
+      role: 'Systems architecture & design',
+      domain: 'Agentic AI / customer support',
+      primaryServices: 'Bedrock Agents · OpenSearch · SQS',
+    },
+
+    problem: {
+      functional: [
+        'User submits a query via chat → system routes to the right specialist agent (order status, refunds, FAQ) and returns a coherent answer',
+        'Agents call tools/APIs and retrieve from a knowledge base (RAG) for policy/FAQ questions',
+        'Low-confidence or sensitive requests escalate to a human agent',
+      ],
+      nonFunctional: [
+        { label: 'Latency', text: 'p95 under ~3s for a single-agent turn, up to ~8s for multi-hop tool use' },
+        { label: 'Reliability', text: "tool calls must be idempotent — a retried refund shouldn't double-refund" },
+        { label: 'Safety', text: 'guardrails against prompt injection, PII leakage, off-policy responses' },
+        { label: 'Observability', text: 'full trace of which agent handled a request and why' },
+        { label: 'Cost control', text: 'token spend needs a model-tiering strategy, not one large model for everything' },
+      ],
+    },
+
+    scale: {
+      intro: 'Assume 500 concurrent conversations, each turn averaging 1,500 input tokens and 300 output tokens.',
+      stats: [
+        { value: '~90,000/sec', label: 'sustained token throughput at peak — 1,800 tokens/turn × 500 sessions turning over every ~10s' },
+        { value: '2 calls', label: 'LLM invocations per turn — one small/fast routing call, one larger specialist call' },
+        { value: 'RAG on path', label: 'retrieval latency sits before the specialist model responds — often the bigger lever than model choice' },
+      ],
+    },
+
+    api: [
+      { signature: 'POST /chat {session_id, message}', desc: 'WebSocket for streaming responses.' },
+      { signature: 'Orchestrator → Bedrock Agent (routing)', desc: 'Returns {agent: order_status | refund | faq, confidence}.' },
+      { signature: 'Agent → Action Group (Lambda)', desc: 'Structured tool-call interface — Bedrock Agents define action groups via OpenAPI schema, e.g. `getOrderStatus(order_id)`' },
+      { signature: 'Agent → Knowledge Base . retrieve(query) → [{chunk, score, source}]', desc: 'Against a Bedrock Knowledge Base backed by OpenSearch Serverless.' },
+    ],
+
+    dataModel: {
+      rows: [
+        { entity: 'Session (DynamoDB)', fields: 'session_id, user_id, conversation_history, active_agent, last_updated' },
+        { entity: 'Agent trace', fields: 'trace_id, session_id, agent_invoked, tools_called[], latency_ms, confidence_score' },
+        { entity: 'Knowledge base doc', fields: 'doc_id, source_url, chunk_text, embedding_vector, last_indexed' },
+        { entity: 'Tool call log', fields: 'call_id, tool_name, params, idempotency_key, result, status' },
+      ],
+      note: {
+        code: 'idempotency_key',
+        text: 'on tool calls is what separates a working design from a naive one — without it, a retried Lambda invocation could double-process a refund.',
+      },
+    },
+
+    architecture: [
+      {
+        intro: 'Client hits API Gateway, which authenticates and routes to a Bedrock orchestrator agent. The orchestrator hands off to specialist agents — order status and knowledge/FAQ — which call action-group Lambdas and the knowledge base directly.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '👤', label: 'Client', sub: 'Chat / voice' },
+              { icon: '◈', label: 'API Gateway', sub: 'Auth + routing' },
+              { icon: '🧠', label: 'Orchestrator', sub: 'Bedrock supervisor agent', highlight: true },
+            ],
+          },
+          { type: 'label', text: 'Specialist agents · Bedrock Agents runtime' },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '📦', label: 'Order status agent', sub: 'Calls backend APIs' },
+              { icon: '📚', label: 'Knowledge / FAQ agent', sub: 'RAG retrieval' },
+            ],
+          },
+          { type: 'label', text: 'Tools & data' },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: 'ƒ', label: 'Action groups', sub: 'Lambda tool calls' },
+              { icon: '▲', label: 'Knowledge base', sub: 'OpenSearch vectors' },
+            ],
+          },
+        ],
+        tags: ['DynamoDB session state', 'CloudWatch / X-Ray tracing', 'Bedrock Guardrails', 'SQS escalation'],
+        caption: 'Fig. 2 — Orchestrator routes to specialist agents, which call tools and the knowledge base in parallel.',
+      },
+    ],
+
+    decisions: [
+      {
+        color: 'var(--yellow)',
+        label: 'Bottleneck — sequential agent hops.',
+        text: 'Orchestrator → specialist → tool call → synthesis can be 3–4 round trips. Use a fast/cheap routing model and let independent tool calls run in parallel, synthesizing once both return.',
+      },
+      {
+        color: 'var(--pink)',
+        label: 'Bottleneck — RAG retrieval on the critical path.',
+        text: 'Cache frequent queries, pre-fetch likely-relevant docs from the routing classification, keep chunk size small.',
+      },
+      {
+        color: 'var(--purple)',
+        label: 'Trade-off — single agent vs. multi-agent orchestration.',
+        text: 'Multi-agent buys modularity and per-task accuracy at the cost of coordination complexity and added latency per hop.',
+      },
+      {
+        color: 'var(--cyan)',
+        label: 'Reliability.',
+        text: 'A refund Lambda must dedupe on `idempotency_key` since agent retries could otherwise trigger the same side effect twice.',
+      },
+      {
+        color: 'var(--green)',
+        label: 'Safety.',
+        text: 'Bedrock Guardrails filter input and output; low-confidence routing or guardrail trips push the session to SQS for human pickup rather than letting the agent guess.',
+      },
+    ],
+
+    summary: {
+      system: 'Multi-Agent Customer Support Platform',
+      primaryServices: 'Bedrock Agents · OpenSearch · SQS',
+      status: 'Architecture complete',
+      type: 'Multi-agent orchestration',
+    },
+  },
 ];

@@ -45,6 +45,15 @@ export const PROJECTS: Project[] = [
     highlights: ['▲ Ingestion', '◎ Retrieval', '↗ Multi-tenant'],
   },
   {
+    id: 'multi-agent-support', featured: true, accent: 'accC',
+    title: 'Multi-Agent Customer Support Platform',
+    tag: 'Agentic AI · Multi-Agent · RAG', tagColor: 'var(--cyan)',
+    desc: 'Architected a Bedrock supervisor agent that routes customer queries to specialist agents, calls tools through Lambda action groups, and retrieves from a knowledge base — with guardrails and human escalation built in from the start.',
+    stack: 'Bedrock Agents · OpenSearch · SQS · Lambda · DynamoDB',
+    category: ['AI / ML', 'RAG', 'Infrastructure', 'Cloud'],
+    highlights: ['▲ Multi-agent', '◎ Guardrailed', '↗ RAG-grounded'],
+  },
+  {
     id: 'spacewatch', accent: 'accC',
     title: 'SpaceWatch',
     tag: 'Full-Stack · Time Series · Data Visualization', tagColor: 'var(--cyan)',
