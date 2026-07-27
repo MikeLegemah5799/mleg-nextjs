@@ -226,7 +226,7 @@ export default function Home() {
               </div>
               <div className={s.projBody}>
                 <div className={s.projTag}>AI · RAG · Real-time</div>
-                <h3 className={s.projT}>RAG/Document Ingestion Pipeline</h3>
+                <h3 className={s.projT}>Contact Center Agent & Test/Eval Pipeline</h3>
                 <p className={s.projD}>
                   Built a contact center agent leveraging LLMs and RAG for customer support. Implemented a test and evaluation pipeline to assess model performance and improve response accuracy.</p>
                 <div className={s.projLinks}>
