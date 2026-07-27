@@ -134,7 +134,7 @@ export default function Home() {
                 <div className={`${s.tdot} ${s.tdotR}`} />
                 <div className={`${s.tdot} ${s.tdotY}`} />
                 <div className={`${s.tdot} ${s.tdotG}`} />
-                <span className={s.terminalTitle}>ml_engineer.py</span>
+                <span className={s.terminalTitle}>ai_engineer.py</span>
               </div>
               <div className={s.terminalBody}>
                 <span className={s.tl}><span className={s.tc}># Principal AI Engineer</span></span>
