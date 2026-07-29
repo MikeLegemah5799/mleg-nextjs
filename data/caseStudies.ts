@@ -44,6 +44,12 @@ export type CaseStudy = {
 
   decisions: { color: string; label: string; text: string }[];
 
+  lessonsLearned?: {
+    heldUp: { label: string; text: string }[];
+    differently: { label: string; text: string }[];
+    ifStartedOver: string;
+  };
+
   summary: { system: string; primaryServices: string; status: string; type: string };
 };
 
@@ -202,6 +208,11 @@ export const CASE_STUDIES: CaseStudy[] = [
       { label: 'GitLab-CI / GitHub Actions / CodeBuild', color: 'var(--soft)' },
       { label: 'Bedrock Guardrails', color: 'var(--pink)' },
       { label: 'Lambda', color: 'var(--cyan)' },
+      { label: 'Cognito / IAM', color: 'var(--green)' },
+      { label: 'Glue ETL + Athena', color: 'var(--purple)' },
+      { label: 'Contact Lens transcripts', color: 'var(--yellow)' },
+      { label: 'Python', color: 'var(--orange)' },
+      { label: 'TypeScript', color: 'var(--pink)' },
 
     ],
     meta: {
@@ -374,6 +385,38 @@ export const CASE_STUDIES: CaseStudy[] = [
         text: 'CI eval calls against Bedrock hit a separate rate-limit bucket from live contact center traffic, so a large eval run never competes with a customer waiting on a live response.',
       },
     ],
+
+    lessonsLearned: {
+      heldUp: [
+        {
+          label: 'Making blocking the default CI gate, not an option,',
+          text: 'held up under real pressure to ship faster. Every time someone pushed for a non-blocking "just this once," the ~4 minute cost looked small next to what a bad prompt change could do to a live customer conversation.',
+        },
+        {
+          label: 'Storing Guardrails info as structured data, not just a pass/fail flag,',
+          text: 'turned out to be the single most useful debugging decision. Separating "failed because ungrounded" from "failed because guardrails blocked it" meant fixes went to the right place instead of a shared bucket of "eval failures."',
+        },
+        {
+          label: 'Decoupling test-run creation from execution via SQS',
+          text: 'paid off during a real CI outage — the queue just held the backlog instead of silently dropping requests, and everything caught up once the runners came back.',
+        },
+      ],
+      differently: [
+        {
+          label: "I didn't plan for per-agent fan-out until it was already a problem.",
+          text: 'As more agents got added to the platform, the 1,200-call PR cost crept up without anyone deciding it should. A smoke-subset vs. full-suite split should\'ve been part of the design from the first agent, not a cap added after CI got slow.',
+        },
+        {
+          label: 'Bedrock traffic isolation came after a scare, not before it.',
+          text: "A large eval run competing with live contact volume during a peak window was the thing that forced separate rate-limit buckets — I'd provision that isolation on day one for anything touching a model shared with production.",
+        },
+        {
+          label: 'Agent config (model ID, KB, prompt version) started as loose parameters,',
+          text: 'not a versioned entity. Retrofitting `prompt_version` onto existing test results after the fact was more painful than just treating agent config as a first-class, versioned object from the start.',
+        },
+      ],
+      ifStartedOver: 'provision Bedrock rate-limit isolation and a versioned agent-config entity before the first agent ships, and design the smoke-vs-full test split into the CI stage from day one rather than adding it once fan-out cost becomes visible.',
+    },
 
     summary: {
       system: 'Contact Center Agent & Eval Pipeline',

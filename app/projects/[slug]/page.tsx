@@ -256,6 +256,42 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             </div>
           </section>
 
+          {/* 07 LESSONS LEARNED */}
+          {cs.lessonsLearned && (
+            <section className={s.section}>
+              <div className={s.sectionHead}>
+                <span className={s.sectionNum}>07</span>
+                <h2 className={s.sectionTitle}>Lessons learned</h2>
+              </div>
+              <div className={s.lessonsGrid}>
+                <div className={s.lessonsCard}>
+                  <div className={`${s.lessonsCardHead} ${s.lessonsCardHeadUp}`}>
+                    <span className={s.lessonsCardIcon}>💡</span> What actually held up
+                  </div>
+                  <ul className={`${s.lessonsList} ${s.lessonsListUp}`}>
+                    {cs.lessonsLearned.heldUp.map(({ label, text }) => (
+                      <li key={label}><strong>{label}</strong> {renderWithCode(text)}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className={s.lessonsCard}>
+                  <div className={`${s.lessonsCardHead} ${s.lessonsCardHeadDiff}`}>
+                    <span className={s.lessonsCardIcon}>↺</span> What I&apos;d do differently
+                  </div>
+                  <ul className={`${s.lessonsList} ${s.lessonsListDiff}`}>
+                    {cs.lessonsLearned.differently.map(({ label, text }) => (
+                      <li key={label}><strong>{label}</strong> {renderWithCode(text)}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className={s.lessonsCallout}>
+                <span className={s.lessonsCalloutIcon}>🔁</span>
+                <span><strong>If I started this over:</strong> {renderWithCode(cs.lessonsLearned.ifStartedOver)}</span>
+              </div>
+            </section>
+          )}
+
           {/* SUMMARY */}
           <div className={s.summaryBar}>
             <div>
