@@ -193,6 +193,16 @@ export const CASE_STUDIES: CaseStudy[] = [
       { label: 'Bedrock', color: 'var(--cyan)' },
       { label: 'AppSync', color: 'var(--purple)' },
       { label: 'DeepEval', color: 'var(--orange)' },
+      { label: 'React', color: 'var(--pink)' },
+      { label: 'S3', color: 'var(--green)' },
+      { label: 'DynamoDB', color: 'var(--cyan)' },
+      { label: 'SQS', color: 'var(--purple)' },
+      { label: 'CloudWatch', color: 'var(--yellow)' },
+      { label: 'CloudFormation', color: 'var(--orange)' },
+      { label: 'GitLab-CI / GitHub Actions / CodeBuild', color: 'var(--soft)' },
+      { label: 'Bedrock Guardrails', color: 'var(--pink)' },
+      { label: 'Lambda', color: 'var(--cyan)' },
+
     ],
     meta: {
       role: 'Systems architecture & implementation',
