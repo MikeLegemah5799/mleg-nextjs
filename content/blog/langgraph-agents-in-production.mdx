@@ -3,10 +3,8 @@ title: "What Actually Breaks When You Put LangGraph Agents in Production"
 slug: "langgraph-agents-in-production"
 category: "Agentic AI"
 date: "2026-06-14"
-readTime: "9 min"
 desc: "Reducer bugs, state bloat, and the deep-merge fix that took a full day to trace — lessons from running multi-agent workflows on AWS Bedrock at scale."
 tags: ["LangGraph", "AWS Bedrock", "Multi-agent systems", "Debugging"]
-featured: true
 ---
 
 Three weeks into running a multi-agent support workflow in production, one customer's ticket kept getting re-triaged in a loop. Not crashing — just quietly re-classifying the same ticket every few minutes, burning tokens and never converging. No errors in the logs. No failed health checks. Just a system that looked fine and wasn't.
