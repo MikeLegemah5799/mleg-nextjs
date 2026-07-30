@@ -208,7 +208,7 @@ export function JobMatchAnalyzer() {
           <a className={styles.btnGhost} href="mailto:michaellegemah@gmail.com">
             <IconMail size={15} /> Contact Michael
           </a>
-          <a className={styles.btnPrimary} href="/resume.pdf" download>
+          <a className={styles.btnPrimary} href="/Michael_Legemah_Resume_26.pdf" download="Michael_Legemah_Resume_26.pdf">
             <IconDownload size={15} /> Download résumé
           </a>
         </div>
