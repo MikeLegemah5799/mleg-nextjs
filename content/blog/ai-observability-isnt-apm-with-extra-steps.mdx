@@ -1,0 +1,76 @@
+---
+title: "AI Observability Isn't APM With Extra Steps"
+slug: "ai-observability-isnt-apm-with-extra-steps"
+category: "Agentic AI"
+date: "2026-08-03"
+desc: "Uptime and latency can't tell you if an agent's output is correct. Why AI observability needs a different kind of tooling than the APM stack you already have."
+featured: true
+tags: ["AI Observability", "LLM Evaluation", "Agentic AI"]
+meta-keywords: AI Observability,LLM Evaluation,Agentic AI
+meta-og:description: Uptime and latency can't tell you if an agent's output is correct. Why AI observability needs a different kind of tooling than the APM stack you already have.
+meta-og:image: /blog/images/slide-1-cover.png
+meta-og:title: AI Observability Isn't APM With Extra Steps
+meta-og:type: article
+meta-twitter:card: summary_large_image
+meta-twitter:description: Uptime and latency can't tell you if an agent's output is correct. Why AI observability needs a different kind of tooling than the APM stack you already have.
+meta-twitter:image: /blog/images/slide-1-cover.png
+meta-twitter:title: AI Observability Isn't APM With Extra Steps
+meta-viewport: width=device-width, initial-scale=1
+---
+
+# AI Observability Isn't APM With Extra Steps
+ 
+Uptime and latency can't tell you if an agent's output is correct — and why that gap needs a different kind of tooling entirely.
+ 
+The honest version of this problem isn't "we need better monitoring." Most teams shipping agentic features already have good monitoring — Datadog or New Relic dashboards, sensible alerting, solid uptime numbers. The problem is narrower and easier to miss: none of that tooling was built to answer the question that actually matters for an LLM-based system, which is whether the output is *right*, not whether the service is *up*.
+ 
+![Your dashboard is green. Your AI is still lying to your customers.](/blog/images/slide-1-cover.png)
+ 
+## The question your metrics can't answer
+ 
+Traditional observability answers infrastructure questions well. Is the service responding? Is latency within budget? Did the request error out? Those are the right questions for a REST API, and the tooling built to answer them is mature and reliable.
+ 
+An agentic system can pass every one of those checks and still be wrong. It can return a 200, respond in 240ms, log no errors — and still hallucinate a citation, call the correct tool with malformed arguments, or quietly lose 8 points of accuracy after a routine prompt edit. None of that is an infrastructure failure. It's a semantic one, and infrastructure tooling has no concept of semantics.
+ 
+![Uptime is not the same question as trustworthy. Infra health asks "is the system up?" Output truth asks "is the system right?"](/blog/images/slide-2-gap.png)
+ 
+## What this looks like in practice
+ 
+A few failure modes I've seen show up repeatedly in agentic systems, none of which trip a conventional alert:
+ 
+- A hallucinated citation, returned with full confidence and no indication it's fabricated.
+- The right tool called with the wrong arguments, or the wrong tool called with syntactically valid arguments.
+- Output accuracy drifting after a prompt or retrieval change that looked harmless in review.
+- A multi-agent handoff that loops between two agents instead of terminating — and never throws.
+Every one of these produces a log line that looks completely normal. The system reports healthy. The customer sees the opposite.
+ 
+![None of this trips a single alert: hallucinated citations, right tool called wrong, accuracy drift, agent loops that never throw.](/blog/images/slide-3-failures.png)
+ 
+## Why this is a different engineering problem
+ 
+APM tools are deterministic by design — they check things that have a clear right answer (did the request succeed, is the response time under threshold). LLM output correctness doesn't have that property. "Is this answer accurate" is itself a judgment call, which means checking it requires a different kind of pipeline, not just a lower threshold on the pipeline you already have.
+ 
+That's the part that's easy to underestimate. It's tempting to bolt an accuracy check onto an existing dashboard. In practice it needs to be closer to a parallel system: one that traces reasoning steps, not just final output; scores results against defined failure modes on an ongoing basis, not just at launch; and treats a regression in output quality as seriously as a failing test — blocking a merge, not just logging a warning.
+ 
+## What actually closes the gap
+ 
+The teams I've seen do this well converge on a few practices:
+ 
+**Trace the reasoning, not just the request.** Every tool call and agent handoff gets logged and is inspectable on its own, not folded into a single opaque final output.
+ 
+**Run LLM-as-Judge continuously, not once.** A pre-launch eval tells you the system worked on the day you tested it. A continuous pipeline tells you whether it still works after the next prompt change, model swap, or retrieval update.
+ 
+**Gate on behavior in CI/CD, the same way you gate on tests.** If a change measurably drops accuracy, that should block a merge the same way a failing unit test does — not get caught after a customer notices.
+ 
+**Start from mapped failure modes, not intuition.** You can't build eval coverage for problems you haven't identified. The audit has to come before the automation, not the other way around.
+ 
+![What actually catches it: trace the reasoning, LLM-as-Judge running continuously, CI/CD regression gating, failure-mode driven eval coverage.](/blog/images/slide-4-solutions.png)
+ 
+## The part that's easy to miss
+ 
+![Most teams find out their AI has a trust problem when a customer does. The teams that don't are the ones who treated evaluation as infrastructure, not an afterthought.](/blog/images/slide-5-insight.png)
+ 
+Most teams find out their AI product has a trust problem when a customer does. The ones that don't are the ones that treated evaluation as infrastructure from the start, not something to retrofit after the first bad interaction goes viral internally.
+ 
+That's not a knock on the teams that haven't gotten there yet — eval tooling for agentic systems is genuinely new, and most of the mature tooling in this space is still infra-focused because that's what the last decade of software optimized for. But the gap between "the system is up" and "the system is right" is where the real risk lives right now, and it's worth treating as its own engineering problem rather than an extension of the one you've already solved.
+ 
