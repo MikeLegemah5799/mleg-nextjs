@@ -144,7 +144,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </article>
 
         <div className={b.footerBar} style={{ paddingLeft: 60, paddingRight: 60 }}>
-          <span>mleg.tech — writing on AI systems, shipped and unglamorous.</span>
+          <span>mleg.tech Writing on AI systems, shipped and unglamorous.</span>
           <Link href="/rss">📡 RSS feed</Link>
         </div>
       </main>

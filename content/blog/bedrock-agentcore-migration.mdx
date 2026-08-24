@@ -7,7 +7,7 @@ desc: "Bedrock Agents is now Classic, closed to new customers, and in maintenanc
 tags: ["AWS Bedrock", "AgentCore", "Agent migration"]
 ---
 
-If you tried to spin up a new Amazon Bedrock Agent today, you'd have run into a wall. As of July 30, 2026, Amazon Bedrock Agents — quietly renamed "Bedrock Agents Classic" about a month ago — is closed to new customers. Existing agents keep running. Nothing breaks. But the on-ramp is gone.
+If you tried to spin up a new Amazon Bedrock Agent today, you'd have run into a wall. As of July 30, 2026, Amazon Bedrock Agents quietly renamed "Bedrock Agents Classic" about a month ago, is closed to new customers. Existing agents keep running. Nothing breaks. But the on-ramp is gone.
 
 This isn't a minor product footnote. If you're an engineering leader or builder planning agentic AI work on AWS, it changes where you start. And if you're already running production agents on Classic, it raises a question you can no longer put off: what's the plan?
 
@@ -17,22 +17,22 @@ Bedrock Agents launched in late 2023 as AWS's first real answer to "how do I bui
 
 But "Classic" is a telling name. AWS moved the service into maintenance mode, which in practice means: existing customers are unaffected, bug fixes and security patches continue, but no new features are coming and no new customers are being onboarded. As of today, that closure is final for new sign-ups. The service isn't going away tomorrow, but it's also not where AWS is investing.
 
-The replacement — Amazon Bedrock AgentCore — isn't a rebrand of the same architecture. It's a genuinely different way of building agents, and understanding why matters more than just knowing the name change.
+The replacement, Amazon Bedrock AgentCore isn't a rebrand of the same architecture. It's a genuinely different way of building agents, and understanding why matters more than just knowing the name change.
 
 ## Why Bedrock Agents Classic was architecturally limited
 
-The core issue with Classic wasn't that it didn't work — it's that everything lived in one box. The foundation model, the orchestration logic, the action groups, and the knowledge base retrieval were all tightly coupled inside a single agent construct. Action groups were defined through OpenAPI schemas mapped to Lambda functions, which gave you a controlled, auditable surface for the agent to call real systems — that part was solid design. But there was no separable runtime you could swap out, no unified way to manage tool access across multiple agents, and only a shallow story around memory: mostly conversation history within a session, not something that persisted and let an agent get better across interactions.
+The core issue with Classic wasn't that it didn't work, it's that everything lived in one box. The foundation model, the orchestration logic, the action groups, and the knowledge base retrieval were all tightly coupled inside a single agent construct. Action groups were defined through OpenAPI schemas mapped to Lambda functions, which gave you a controlled, auditable surface for the agent to call real systems, that part was solid design. But there was no separable runtime you could swap out, no unified way to manage tool access across multiple agents, and only a shallow story around memory: mostly conversation history within a session, not something that persisted and let an agent get better across interactions.
 
-Observability was the biggest gap. You could see whether an agent invoked an action group and what it returned, but getting real visibility into failure modes — where reasoning went sideways, where retrieval pulled the wrong context, where an agent quietly drifted from its intended behavior — required bolting on your own logging and evaluation layer. Plenty of teams shipped agents that looked great in a demo and then degraded in production because nobody had eyes on that until a customer noticed first.
+Observability was the biggest gap. You could see whether an agent invoked an action group and what it returned, but getting real visibility into failure modes, where reasoning went sideways, where retrieval pulled the wrong context, where an agent quietly drifted from its intended behavior, required bolting on your own logging and evaluation layer. Plenty of teams shipped agents that looked great in a demo and then degraded in production because nobody had eyes on that until a customer noticed first.
 
 ## What Bedrock AgentCore changes
 
 AgentCore takes the pieces that used to be fused together in Classic and separates them into components you can reason about independently:
 
-- **Runtime** is a portable harness for the agent loop itself — the part that used to be baked into the Classic agent construct is now something you can configure, swap, or extend on its own terms.
+- **Runtime** is a portable harness for the agent loop itself, the part that used to be baked into the Classic agent construct is now something you can configure, swap, or extend on its own terms.
 - **Gateway** gives you one normalized layer for tool and API access, instead of the pattern of wiring up individual action groups per agent. If you're running multiple agents that need to talk to the same backend systems, you're not reimplementing that integration each time.
 - **Memory** goes beyond session-scoped conversation history. AgentCore supports episodic memory that persists across interactions, which matters if you want an agent that actually improves at a task over time rather than starting from zero every session.
-- **Observability and Evaluations** close the gap that hurt teams most on Classic. You get real tracing into what an agent did and why, plus a framework for running evaluations against that behavior — the difference between "the agent returned a response" and "the agent did the right thing."
+- **Observability and Evaluations** close the gap that hurt teams most on Classic. You get real tracing into what an agent did and why, plus a framework for running evaluations against that behavior. The difference between "the agent returned a response" and "the agent did the right thing."
 
 <Callout>
   The net effect is a platform built for teams running multiple agents, not just one, and for teams that need to prove an agent is reliable, not just that it's functional.
@@ -42,13 +42,13 @@ AgentCore takes the pieces that used to be fused together in Classic and separat
 
 If you have production workloads on Bedrock Agents Classic right now, nothing is on fire. Your agents keep running. But "no urgency" and "no plan" are different things, and maintenance mode is, by definition, where a product stops getting meaningfully better. Security patches aren't the same as new capability. Every quarter you stay on Classic is a quarter you're not benefiting from improvements in memory, observability, or tooling that your competitors building fresh on AgentCore will have by default.
 
-The migration itself isn't a lift-and-shift. Action groups don't map one-to-one onto Gateway tool configurations, and a Classic agent's implicit single-session memory model doesn't automatically become AgentCore's episodic memory just by moving infrastructure. It requires actually rethinking the agent's architecture — which components own which responsibilities, where evaluation checkpoints belong, how memory should be scoped. Done well, that's an opportunity to fix problems the old architecture was hiding, not just a compliance exercise.
+The migration itself isn't a lift-and-shift. Action groups don't map one-to-one onto Gateway tool configurations, and a Classic agent's implicit single-session memory model doesn't automatically become AgentCore's episodic memory just by moving infrastructure. It requires actually rethinking the agent's architecture, which components own which responsibilities, where evaluation checkpoints belong, how memory should be scoped. Done well, that's an opportunity to fix problems the old architecture was hiding, not just a compliance exercise.
 
 ## Where I can help
 
-I work specifically in this space — building multi-agent systems on AWS Bedrock and LangGraph, and helping teams get real reliability guarantees out of agentic AI rather than shipping something that works until it doesn't. Two ways I typically get pulled into a transition like this:
+I work specifically in this space, building multi-agent systems on AWS Bedrock and LangGraph, and helping teams get real reliability guarantees out of agentic AI rather than shipping something that works until it doesn't. Two ways I typically get pulled into a transition like this:
 
-- **Agentic system builds** (4–8 weeks, fixed scope) — designing and standing up a new agent architecture on AgentCore from the ground up, with Gateway, Memory, and Observability wired in from day one rather than retrofitted later.
-- **Eval and reliability audits** (2–4 weeks) — for teams that already have agents in production, on Classic or elsewhere, and need to know concretely where they're likely to fail before a customer finds out first.
+- **Agentic system builds** (4–8 weeks, fixed scope), designing and standing up a new agent architecture on AgentCore from the ground up, with Gateway, Memory, and Observability wired in from day one rather than retrofitted later.
+- **Eval and reliability audits** (2–4 weeks), for teams that already have agents in production, on Classic or elsewhere, and need to know concretely where they're likely to fail before a customer finds out first.
 
 If you're weighing a Classic-to-AgentCore migration, or scoping a new agent build and want to start on the right foundation instead of the deprecated one, I'm happy to talk through what that looks like for your stack.

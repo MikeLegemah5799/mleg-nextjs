@@ -21,27 +21,27 @@ const TIMELINE = [
   {
     color: 'var(--yellow)', date: 'Mid 1980s — Early 1990s · The Curiosity',
     title: 'Where It All Started',
-    body: `As a kid, I was always fascinated by tech and science — always wanting to know how video games worked. In 3rd grade, a computer class introduced me to the Logo programming language. Moving the Turtle cursor on screen sparked something that never switched off: a voracious appetite for understanding how software could bring imagination to life.`,
+    body: `As a kid, I was always fascinated by tech and science, always wanting to know how video games worked. In 3rd grade, a computer class introduced me to the Logo programming language. Moving the Turtle cursor on screen sparked something that never switched off: a voracious appetite for understanding how software could bring imagination to life.`,
   },
   {
     color: 'var(--cyan)', date: 'Early 1990s — Late 1990s · The Growth',
     title: 'BASIC, Pascal & Apple IIe',
-    body: `In junior high, my fascination with programming deepened on the Apple IIe and Apple IIgs. I transitioned from Logo to BASIC, PASCAL, and Fortran — each language expanding my toolkit. Creating loops that produced mesmerizing patterns taught me the power of iteration and logic — concepts that would prove invaluable for decades to come.`,
+    body: `In junior high, my fascination with programming deepened on the Apple IIe and Apple IIgs. I transitioned from Logo to BASIC, PASCAL, and Fortran, each language expanding my toolkit. Creating loops that produced mesmerizing patterns taught me the power of iteration and logic, concepts that would prove invaluable for decades to come.`,
   },
   {
     color: 'var(--green)', date: 'Early 2000s — 2010 · Programming on the Internet',
     title: 'HTML, CSS, JavaScript — The Web Era',
-    body: `Insatiable curiosity led me to web development. Armed with programming books and a thirst for knowledge, I taught myself HTML, CSS, and JavaScript. From crafting my first basic web page to writing functions that responded to user interactions — the web felt like a canvas with no limits.`,
+    body: `Insatiable curiosity led me to web development. Armed with programming books and a thirst for knowledge, I taught myself HTML, CSS, and JavaScript. From crafting my first basic web page to writing functions that responded to user interactions. The web felt like a canvas with no limits.`,
   },
   {
     color: 'var(--purple)', date: '2010s — 2022 · The Professional Grind',
     title: 'WordPress, TypeScript, React & the Enterprise',
-    body: `I mastered WordPress, PHP, and full-stack development through platforms like Treehouse and FreeCodeCamp. Secured my first tech industry role, then kept climbing — working with JP Morgan Chase, Mayo Clinic, Northrop Grumman, The US Space Force, and dozens more. Each project built confidence and proficiency that no textbook could replicate.`,
+    body: `I mastered WordPress, PHP, and full-stack development through platforms like Treehouse and FreeCodeCamp. Secured my first tech industry role, then kept climbing, working with JP Morgan Chase, Mayo Clinic, Northrop Grumman, The US Space Force, and dozens more. Each project built confidence and proficiency that no textbook could replicate.`,
   },
   {
     color: 'var(--pink)', date: '2022 — Now · The AI Era',
     title: 'Principal AI Engineer',
-    body: `The emergence of large language models and the AI revolution drew me in completely. I've gone deep on LLM architecture, RAG systems, agentic workflows, and AI product engineering. Today I operate at the intersection of deep technical expertise and strategic leadership — building the intelligent systems that will define the next decade.`,
+    body: `The emergence of large language models and the AI revolution drew me in completely. I've gone deep on LLM architecture, RAG systems, agentic workflows, and AI product engineering. Today I operate at the intersection of deep technical expertise and strategic leadership, building the intelligent systems that will define the next decade.`,
   },
 ];
 
@@ -66,8 +66,8 @@ export default function AboutClient() {
               <em className={s.heroTitleEm}>Michael Legemah?</em>
             </h1>
             <p className={s.heroDesc}>
-              I&apos;m a <strong>Principal Full-Stack & AI Engineer</strong> &nbsp;with full-stack engineering experience and over 10 years of
-              professional experience — spanning financial services, healthcare, defense, and consumer brands.
+              I&apos;m a <strong>Principal Full-Stack & AI Engineer</strong> &nbsp;with full-stack engineering experience and over 13 years of
+              professional experience, spanning financial services, healthcare, defense, and consumer brands.
               I&apos;ve evolved from building pixel-perfect interfaces to architecting production AI systems that
               actually ship and scale.
             </p>

@@ -68,7 +68,7 @@ const SERVICES_TEASER = [
   },
   {
     icon: '⚡', title: 'Fractional Engineering',
-    desc: 'Embedded senior AI capacity, 2-3 days/week — no six-month ramp-up required.',
+    desc: 'Embedded senior AI capacity, 2-3 days/week. No six-month ramp-up required.',
     pill: 'ONGOING', pillCls: 'svcPillG',
   },
 ];
@@ -79,8 +79,8 @@ const CLIENTS = [
 
 const TESTIMONIALS = [
   { initials: 'FD', color: 'var(--yellow)', name: 'Frank Durante', role: 'Internet App Specialist, Nikon', quote: 'Michael is one of the most kind, passionate and loyal individuals I have ever worked with. His constant appetite for knowledge keeps him up front in the pack of new technology.' },
-  { initials: 'SK', color: 'var(--cyan)', name: 'Scott Kogos', role: 'SVP Dir. PM Operations, Doner', quote: 'Michael joined our team during an incredibly hectic launch. He fit right in and proved to be a huge help — both for assigned work and helping other developers when called upon.' },
-  { initials: 'MA', color: 'var(--green)', name: 'Mo Akram', role: 'VP of Recruiting, Petfolk', quote: 'Michael always stayed one step ahead of tech trends. A motivated team player and leader with a keen eye for the bigger picture — a valuable asset to any organization.' },
+  { initials: 'SK', color: 'var(--cyan)', name: 'Scott Kogos', role: 'SVP Dir. PM Operations, Doner', quote: 'Michael joined our team during an incredibly hectic launch. He fit right in and proved to be a huge help, both for assigned work and helping other developers when called upon.' },
+  { initials: 'MA', color: 'var(--green)', name: 'Mo Akram', role: 'VP of Recruiting, Petfolk', quote: 'Michael always stayed one step ahead of tech trends. A motivated team player and leader with a keen eye for the bigger picture, a valuable asset to any organization.' },
   { initials: 'TL', color: 'var(--orange)', name: 'Tony Landa', role: 'VP Dir. of Technology, FCB Health', quote: 'Michael is a no-drama, smart, and a great problem-solver. Not only did he figure out the system quickly, but his skills proved of great service across multiple aspects of the project.' },
   { initials: 'AG', color: 'var(--purple)', name: 'Alla Gringaus', role: 'Global Web Perf Lead, Estée Lauder', quote: 'Michael has very solid experience with deep expertise in modern frameworks. Adept at creating customer-focused, mobile-responsive UI with UX in mind.' },
   { initials: 'YK', color: 'var(--pink)', name: 'Yussuf Khan', role: 'Media Executive & Entrepreneur', quote: 'Michael is one of the most patient, knowledgeable, flexible and understanding people I have ever worked with. Because of his talents, I still work with him to this day.' },
@@ -152,7 +152,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
               <span className={s.heroTitleSpan}>AI Systems</span> · Full-Stack
             </p>
             <p className={s.heroDesc}>
-              I build <strong> full-stack software solutions and production-grade AI systems</strong> — from RAG pipelines and LLM
+              I build <strong> full-stack software solutions and production-grade AI systems</strong>. From RAG pipelines and LLM
               architecture to AI-native products that scale. Engineering intelligence into experiences
               that matter.
             </p>
@@ -223,7 +223,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
             <div className={s.svcBadge}>Open to Fractional &amp; Contract Work</div>
             <div className="section-label">Ways to Work Together</div>
             <h2 className="section-title">Need this shipped,<br />not demoed?</h2>
-            <p className="section-sub">Fixed-scope builds, eval audits, or embedded capacity — for teams that need agentic AI running in production, not a slide deck. Active DoD Secret clearance for defense-adjacent work.</p>
+            <p className="section-sub">Fixed-scope builds, eval audits, or embedded capacity for teams that need agentic AI running in production, not a slide deck. Active DoD Secret clearance for defense-adjacent work.</p>
           </div>
 
           <div className={s.svcGrid}>
@@ -267,7 +267,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         <section className={s.expertiseSection}>
           <div className="section-label">What I Do</div>
           <h2 className="section-title">AI Engineering<br />at the Principal Level</h2>
-          <p className="section-sub">End-to-end ownership of AI systems — from model selection and architecture through deployment and iteration in production.</p>
+          <p className="section-sub">End-to-end ownership of AI systems. From model selection and architecture through deployment and iteration in production.</p>
           <div className={`${s.expGrid} reveal`} ref={expRef}>
             {EXPERTISE.map(({ icon, num, title, desc, pills }) => (
               <div key={num} className={s.expCard}>
@@ -291,7 +291,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         <section className={s.projectsSection}>
           <div className="section-label">Selected Work</div>
           <h2 className="section-title">Projects That<br />Ship Intelligence</h2>
-          <p className="section-sub">A mix of AI-native builds and enterprise engineering — each one solving a real problem with craft.</p>
+          <p className="section-sub">A mix of AI-native builds and enterprise engineering. Each one solving a real problem with craft.</p>
 
           <div className={`${s.projGrid} reveal`} ref={projRef}>
             {/* Featured */}
@@ -350,7 +350,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
             <div className={s.projCtaLeft}>
               <div className={s.projCtaLabel}>Like What You See?</div>
               <div className={s.projCtaTitle}>I take on fractional and contract engagements too.</div>
-              <p className={s.projCtaText}>Agentic system builds, eval audits, or embedded capacity — cleared for defense-adjacent work.</p>
+              <p className={s.projCtaText}>Agentic system builds, eval audits, or embedded capacity. Cleared for defense-adjacent work.</p>
             </div>
             <div className={s.projCtaActions}>
               <Link href="/services" className="btn-primary">View Services</Link>
@@ -363,7 +363,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
         <section className={s.testiSection}>
           <div className="section-label">Social Proof</div>
           <h2 className="section-title">What Leaders Say</h2>
-          <p className="section-sub">A track record built on trust, craft, and results — from Fortune 500 to startups.</p>
+          <p className="section-sub">A track record built on trust, craft, and results, from Fortune 500 to startups.</p>
           <div className={`${s.testiGrid} reveal`} ref={testiRef}>
             {TESTIMONIALS.map(({ initials, color, name, role, quote }) => (
               <div key={initials} className={s.testiCard}>
@@ -387,7 +387,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
               <div className={s.blogHeadLeft}>
                 <div className="section-label">From the Blog</div>
                 <h2 className="section-title">Recent Writing</h2>
-                <p className="section-sub">Notes from building agentic AI systems in production — what breaks, what works, and what I&apos;d do differently.</p>
+                <p className="section-sub">Notes from building agentic AI systems in production. What breaks, what works, and what I&apos;d do differently.</p>
               </div>
               <Link href="/blog" className={s.blogViewAll}>View All Posts →</Link>
             </div>
@@ -419,7 +419,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
           <div className={s.ctaInner}>
             <p className={s.ctaPre}>Open to New Engagements</p>
             <h2 className={s.ctaTitle}>Let&apos;s build<br />something <em className={s.ctaTitleEm}>intelligent</em></h2>
-            <p className={s.ctaSub}>Whether you&apos;re launching an AI product, scaling an existing system, or just exploring what&apos;s possible — let&apos;s talk.</p>
+            <p className={s.ctaSub}>Whether you&apos;re launching an AI product, scaling an existing system, or just exploring what&apos;s possible, let&apos;s talk.</p>
             <a href="mailto:michaellegemah@gmail.com" className={s.ctaEmail}>michaellegemah@gmail.com</a>
           </div>
         </section>

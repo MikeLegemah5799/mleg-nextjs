@@ -29,10 +29,10 @@ const METHOD_CARDS = [
 ];
 
 const CC_LIST = [
-  { cls: 'liY',  text: 'LLM Architecture & RAG System Design' },
-  { cls: 'liC',  text: 'AI Product Strategy & Engineering' },
-  { cls: 'liG',  text: 'Full-Stack Development' },
-  { cls: 'liP',  text: 'Technical Leadership & Mentorship' },
+  { cls: 'liY', text: 'LLM Architecture & RAG System Design' },
+  { cls: 'liC', text: 'AI Product Strategy & Engineering' },
+  { cls: 'liG', text: 'Full-Stack Development' },
+  { cls: 'liP', text: 'Technical Leadership & Mentorship' },
   { cls: 'liPk', text: 'AI Consulting & Proof of Concepts' },
 ];
 
@@ -57,7 +57,7 @@ export default function ContactClient() {
               </h1>
               <p className={s.clSub}>
                 Whether you&apos;re launching an AI product, scaling an existing system, exploring
-                what&apos;s possible, or just want to connect — I&apos;m all ears.
+                what&apos;s possible, or just want to connect, I&apos;m all ears.
               </p>
 
               <div className={s.contactMethods}>

@@ -11,17 +11,17 @@ const CLEARED_WITHIN = ['AWS ProServe', 'US Army', 'AI2C', 'US Space Force', 'Hy
 const ENGAGEMENTS = [
   {
     icon: '🧩', num: '01', title: 'Agentic System Build',
-    desc: 'Design and ship a production multi-agent workflow — LangGraph, Bedrock, or your existing stack — for a defined use case, start to finish.',
+    desc: 'Design and ship a production multi-agent workflow. LangGraph, Bedrock, or your existing stack, for a defined use case, start to finish.',
     scope: '4-8 WEEK FIXED SCOPE',
   },
   {
     icon: '🔎', num: '02', title: 'Eval & Reliability Audit',
-    desc: "Assess an existing AI feature's real failure modes, then build the automated eval pipeline — LLM-as-Judge, CI/CD regression gating — to catch them before your customers do.",
+    desc: "Assess an existing AI feature's real failure modes, then build the automated eval pipeline, LLM-as-Judge, CI/CD regression gating, to catch them before your customers do.",
     scope: '2-4 WEEK AUDIT + BUILD',
   },
   {
     icon: '⚡', num: '03', title: 'Fractional AI Engineering',
-    desc: 'Embedded senior capacity for teams that need this expertise regularly, without a full-time hire — or the six-month ramp-up.',
+    desc: 'Embedded senior capacity for teams that need this expertise regularly, without a full-time hire, or the six-month ramp-up.',
     scope: 'ONGOING, 2-3 DAYS/WEEK',
   },
 ];
@@ -29,11 +29,11 @@ const ENGAGEMENTS = [
 const STEPS = [
   {
     num: '01', title: 'A short scoping call',
-    desc: "30 minutes — what you're trying to ship, what's blocking it, and whether it's a fit.",
+    desc: "30 minutes, what you're trying to ship, what's blocking it, and whether it's a fit.",
   },
   {
     num: '02', title: 'A fixed-scope proposal',
-    desc: 'Clear deliverables and timeline — no open-ended hourly billing with no end in sight.',
+    desc: 'Clear deliverables and timeline, no open-ended hourly billing with no end in sight.',
   },
   {
     num: '03', title: 'Direct execution',
@@ -60,7 +60,7 @@ export default function ServicesClient() {
             </h1>
             <p className={s.heroDesc}>
               I design and ship production multi-agent systems, RAG pipelines, and the
-              evaluation frameworks that make AI behavior measurable —{' '}
+              evaluation frameworks that make AI behavior measurable {' '}
               <strong>for teams that need this working, not demoed</strong>. Active DoD
               Secret clearance, delivered inside AWS ProServe, US Army, and US Space Force
               programs.
@@ -127,7 +127,7 @@ export default function ServicesClient() {
         <section className={s.engSection} id="engagement-types">
           <div className="section-label">Engagement Types</div>
           <h2 className="section-title">Three ways to<br />work together</h2>
-          <p className="section-sub">Fixed-scope builds, a focused audit, or ongoing embedded capacity — depending on where you actually are.</p>
+          <p className="section-sub">Fixed-scope builds, a focused audit, or ongoing embedded capacity, depending on where you actually are.</p>
 
           <div className={`${s.engGrid} reveal`} ref={engRef}>
             {ENGAGEMENTS.map(({ icon, num, title, desc, scope }) => (
@@ -167,7 +167,7 @@ export default function ServicesClient() {
               <p className={s.calloutText}>
                 For engagements requiring <strong>active DoD Secret clearance</strong>,
                 I&apos;ve already cleared onboarding that typically takes new contractors
-                months — meaning I can start substantive work faster than an uncleared
+                months, meaning I can start substantive work faster than an uncleared
                 hire could even begin.
               </p>
             </div>
@@ -178,7 +178,7 @@ export default function ServicesClient() {
         <section className={s.ctaSection}>
           <div className={s.ctaInner}>
             <h2 className={s.ctaTitle}>Let&apos;s ship something <em className={s.ctaTitleEm}>mission-ready</em>.</h2>
-            <p className={s.ctaSub}>Whether it&apos;s a defined build, an eval audit, or ongoing embedded capacity — let&apos;s talk about what you&apos;re trying to ship.</p>
+            <p className={s.ctaSub}>Whether it&apos;s a defined build, an eval audit, or ongoing embedded capacity. Let&apos;s talk about what you&apos;re trying to ship.</p>
             <a href="mailto:michaellegemah@gmail.com" className={s.ctaEmail}>michaellegemah@gmail.com</a>
           </div>
         </section>

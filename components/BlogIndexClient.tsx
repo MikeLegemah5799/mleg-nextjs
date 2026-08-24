@@ -56,8 +56,7 @@ export default function BlogIndexClient({ featured, posts }: { featured?: Post; 
               <div className="section-label">Writing</div>
               <h1 className={s.heroTitle}>Notes on building AI systems that ship.</h1>
               <p className={s.heroSub}>
-                Agentic architecture, RAG, eval-driven development, and what actually breaks in production —
-                written from inside the build, not after a demo.
+                Agentic architecture, RAG, eval-driven development, and what actually breaks in production. Written from inside the build, not after a demo.
               </p>
             </div>
             <div className={s.heroTools}>

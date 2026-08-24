@@ -38,7 +38,7 @@ export default function ProjectsClient() {
               Projects I&apos;m <em className={s.phTitleEm}>Proud Of</em>
             </h1>
             <p className="section-sub">
-              From AI systems and enterprise platforms to civic tech and e-commerce — here&apos;s how I&apos;ve spent the last decade building.
+              From AI systems and enterprise platforms to civic tech and e-commerce, here&apos;s how I&apos;ve spent the last decade building.
             </p>
           </div>
         </div>

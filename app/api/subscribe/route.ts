@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       from: FROM_EMAIL,
       to: email,
       subject: "You're subscribed to mleg.tech",
-      text: 'Thanks for subscribing — you\'ll get an email when a new post goes up on mleg.tech. No drip campaign, no filler.',
+      text: 'Thanks for subscribing, you\'ll get an email when a new post goes up on mleg.tech. No drip campaign, no filler.',
     });
 
     const [notifyResult, confirmResult] = await Promise.all([notify, confirm]);

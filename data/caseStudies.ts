@@ -59,7 +59,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     breadcrumbLabel: 'RAG Ingestion Pipeline',
     eyebrow: 'Case Study · Data / AI Infrastructure',
     title: 'Document / RAG Ingestion Pipeline',
-    subtitle: 'Extract, chunk, embed, and index documents into a per-tenant vector store — cheap to re-run, safe under partial failure, isolated across tenants.',
+    subtitle: 'Extract, chunk, embed, and index documents into a per-tenant vector store. Cheap to re-run, safe under partial failure, isolated across tenants.',
     techPills: [
       { label: 'AWS Textract', color: 'var(--soft)' },
       { label: 'Bedrock Titan', color: 'var(--yellow)' },
@@ -77,8 +77,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       functional: [
         'Ingest documents from multiple sources: upload, S3 drop, web crawl, CMS webhook',
         'Extract text (OCR for scanned PDFs), chunk, embed, index for retrieval',
-        'Support incremental re-ingestion — an edited doc shouldn\'t require reprocessing the whole corpus',
-        'Multi-tenant isolation — no tenant\'s documents leak into another\'s retrieval results',
+        'Support incremental re-ingestion. An edited doc shouldn\'t require reprocessing the whole corpus',
+        'Multi-tenant isolation. No tenant\'s documents leak into another\'s retrieval results',
       ],
       nonFunctional: [
         { label: 'Freshness', text: 'newly ingested docs searchable within minutes' },
@@ -92,8 +92,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       intro: 'Assume 10,000 documents, ~10 pages each, ~2,000 tokens/page → ~20,000 tokens/doc.',
       stats: [
         { value: '400,000', label: 'chunks for the initial bulk load (512-token chunks with overlap, ~40 chunks/doc)' },
-        { value: '<15 min', label: 'pure embedding time at ~4,200 batched calls, 5 calls/sec — OCR is the real bottleneck' },
-        { value: '20,000/day', label: 'steady-state chunks (500 updates/day) — trivial, but needs a content-hash check first' },
+        { value: '<15 min', label: 'pure embedding time at ~4,200 batched calls, 5 calls/sec. OCR is the real bottleneck' },
+        { value: '20,000/day', label: 'steady-state chunks (500 updates/day). Trivial, but needs a content-hash check first' },
       ],
     },
 
@@ -114,13 +114,13 @@ export const CASE_STUDIES: CaseStudy[] = [
       ],
       note: {
         code: 'content_hash',
-        text: 'at both doc and chunk granularity is what makes re-ingestion cheap — skip unchanged docs entirely, or re-embed only the chunks that actually changed.',
+        text: 'at both doc and chunk granularity is what makes re-ingestion cheap, skip unchanged docs entirely, or re-embed only the chunks that actually changed.',
       },
     },
 
     architecture: [
       {
-        intro: 'Sources trigger a Step Functions orchestrator running four stages — extract, chunk, embed, upsert — writing into a per-tenant isolated storage layer.',
+        intro: 'Sources trigger a Step Functions orchestrator running four stages: extract, chunk, embed, upsert. Writing into a per-tenant isolated storage layer.',
         rows: [
           {
             type: 'chain',
@@ -148,35 +148,35 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         tags: ['Content-hash dedup cache', 'DLQ + retries', 'CloudWatch / X-Ray', 'Tenant IAM scoping'],
-        caption: 'Fig. 3 — Four-stage pipeline writing into a per-tenant vector store and metadata database.',
+        caption: 'Fig. 3: Four-stage pipeline writing into a per-tenant vector store and metadata database.',
       },
     ],
 
     decisions: [
       {
         color: 'var(--yellow)',
-        label: 'Bottleneck — OCR is the slow stage, not embedding.',
+        label: 'Bottleneck. OCR is the slow stage, not embedding.',
         text: 'Parallelize across documents with a Step Functions Map state; skip OCR entirely for text-native PDFs via a fast pre-check.',
       },
       {
         color: 'var(--pink)',
-        label: 'Cost — re-embedding unchanged content.',
+        label: 'Cost. Re-embedding unchanged content.',
         text: 'Hash at doc and chunk granularity; only re-embed chunks whose hash changed.',
       },
       {
         color: 'var(--purple)',
-        label: 'Trade-off — chunking strategy.',
+        label: 'Trade-off. Chunking strategy.',
         text: 'Fixed-size is simple and fast but can split mid-thought; semantic/sentence-boundary chunking retrieves better at more compute cost.',
       },
       {
         color: 'var(--cyan)',
-        label: 'Consistency — partial-failure visibility.',
+        label: 'Consistency. Partial-failure visibility.',
         text: 'A doc\'s status only flips to indexed after every chunk write succeeds; failures route to a DLQ and the doc stays invisible to retrieval until resolved.',
       },
       {
         color: 'var(--green)',
         label: 'Multi-tenant isolation',
-        text: 'should be structural — separate vector namespaces plus IAM scoping, not just an application-layer filter.',
+        text: 'should be structural, separate vector namespaces plus IAM scoping, not just an application-layer filter.',
       },
     ],
 
@@ -225,7 +225,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       functional: [
         'Handle voice/chat contacts via Amazon Connect, routed through Lex for intent, escalating to a Bedrock agent for complex or RAG-based answers',
         'Engineers add or edit test cases two ways: upload a file (.xlsx/.json/.jsonl/.csv) through the React/AppSync frontend, or edit in the codebase via a git diff on test-case files',
-        'Either path triggers an automated eval run — DeepEval metrics, a RAG groundedness checker, and a KB retrieval check — per agent the test case is associated with',
+        'Either path triggers an automated eval run. DeepEval metrics, a RAG groundedness checker, and a KB retrieval check, per agent the test case is associated with',
         'Results (scores, turns, ground truth, Bedrock Guardrails info) are queryable in CI logs, S3, DynamoDB, and the frontend dashboard',
       ],
       nonFunctional: [
@@ -233,7 +233,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           label: 'Traceability', text: 'every test run ties to a specific git commit/diff or uploaded file version'
         },
         { label: 'CI/CD gate', text: 'pipeline flags or blocks deployment on score regression' },
-        { label: 'CI-vendor agnostic', text: 'works across GitLab-CI, GitHub Actions, and CodeBuild — not locked to one platform' },
+        { label: 'CI-vendor agnostic', text: 'works across GitLab-CI, GitHub Actions, and CodeBuild, not locked to one platform' },
         { label: 'Isolation', text: 'CI eval traffic against Bedrock must not compete with production contact center traffic' },
         { label: 'Auditability', text: 'CloudWatch logs and CloudFormation-provisioned infra, reproducible end to end' },
       ],
@@ -243,8 +243,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       intro: 'A typical PR touches ~200 test cases, each running 3 checks against an average of 2 associated agents.',
       stats: [
         { value: '1200', label: 'evaluation calls per pipeline run (200 cases × 3 checks × 2 agents)' },
-        { value: '~4 min', label: 'CI gate time at 10 concurrent calls, ~2s avg latency — a reasonable merge-time cost' },
-        { value: '5,000', label: 'concurrent production Connect contacts at peak — the number that drives Bedrock traffic isolation' },
+        { value: '~4 min', label: 'CI gate time at 10 concurrent calls, ~2s avg latency, a reasonable merge-time cost' },
+        { value: '5,000', label: 'concurrent production Connect contacts at peak. The number that drives Bedrock traffic isolation' },
       ],
     },
 
@@ -268,7 +268,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       ],
       note: {
         code: 'source_ref',
-        text: 'on TestRun is what makes a score regression traceable back to the exact commit or upload that caused it — without it, "the eval score dropped" has no owner.',
+        text: 'on TestRun is what makes a score regression traceable back to the exact commit or upload that caused it. Without it, "the eval score dropped" has no owner.',
       },
     },
 
@@ -287,7 +287,7 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             type: 'chain',
             nodes: [
-              { icon: '▤', label: 'S3 — test inputs', sub: 'Raw uploaded/diffed files' },
+              { icon: '▤', label: 'S3 test inputs', sub: 'Raw uploaded/diffed files' },
               { icon: 'ƒ', label: 'Lambda', sub: 'create test run', highlight: true },
             ],
           },
@@ -304,8 +304,8 @@ export const CASE_STUDIES: CaseStudy[] = [
           {
             type: 'grid',
             nodes: [
-              { icon: '▤', label: 'S3 — raw results', sub: 'full, pass/fail per case' },
-              { icon: '▦', label: 'DynamoDB — scores', sub: 'aggregated, queryable' },
+              { icon: '▤', label: 'S3 raw results', sub: 'full, pass/fail per case' },
+              { icon: '▦', label: 'DynamoDB scores', sub: 'aggregated, queryable' },
             ],
           },
           {
@@ -313,7 +313,7 @@ export const CASE_STUDIES: CaseStudy[] = [
             nodes: [{ icon: '⇄', label: 'AppSync API + React dashboard', sub: 'IAM + Cognito auth, CloudWatch + CloudFormation' }],
           },
         ],
-        caption: 'Fig. 3a — Test entry (upload or git diff) converges on S3, runs through a CI test stage, and surfaces back in the same frontend.',
+        caption: 'Fig. 3a: Test entry (upload or git diff) converges on S3, runs through a CI test stage, and surfaces back in the same frontend.',
       },
       {
         label: 'Production runtime',
@@ -349,25 +349,25 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         tags: ['Contact Lens transcripts', 'Glue ETL + Athena analytics', 'CloudWatch dashboards', 'CloudFormation IaC'],
-        caption: 'Fig. 3b — Lex resolves intent directly; complex queries escalate to the Bedrock agent for RAG-backed reasoning.',
+        caption: 'Fig. 3b: Lex resolves intent directly; complex queries escalate to the Bedrock agent for RAG-backed reasoning.',
       },
     ],
 
     decisions: [
       {
         color: 'var(--yellow)',
-        label: 'Bottleneck — per-agent fan-out in the test stage.',
+        label: 'Bottleneck. Per-agent fan-out in the test stage.',
         text: 'A test case associated with multiple agents multiplies the call count (200 cases × 2 agents × 3 checks = 1,200 calls). Agents run in parallel within the CI stage, with a per-PR cap on how many cases need the full 3-check suite vs. a lighter smoke subset.',
       },
       {
         color: 'var(--pink)',
         label: 'Decoupling via SQS.',
-        text: 'Lambda publishes a message rather than invoking the CI pipeline directly — a CI outage doesn\'t lose the test run request, and multiple CI backends (GitLab-CI, GitHub Actions, CodeBuild) can all consume from the same queue depending on which repo triggered it.',
+        text: 'Lambda publishes a message rather than invoking the CI pipeline directly, a CI outage doesn\'t lose the test run request, and multiple CI backends (GitLab-CI, GitHub Actions, CodeBuild) can all consume from the same queue depending on which repo triggered it.',
       },
       {
         color: 'var(--purple)',
-        label: 'Trade-off — blocking vs. non-blocking CI gate.',
-        text: 'Blocking the merge on eval regression is safer but costs iteration speed (~4 min); a non-blocking informational run with required manual sign-off is faster but relies on someone reading the report before it talks to real customers — blocking is the right default.',
+        label: 'Trade-off. Blocking vs. non-blocking CI gate.',
+        text: 'Blocking the merge on eval regression is safer but costs iteration speed (~4 min); a non-blocking informational run with required manual sign-off is faster but relies on someone reading the report before it talks to real customers, blocking is the right default.',
       },
       {
         color: 'var(--cyan)',
@@ -377,7 +377,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       {
         color: 'var(--green)',
         label: 'Guardrails as data, not just a gate.',
-        text: 'Bedrock Guardrails info is stored per test result — not just pass/fail — so the claims checker can distinguish "failed because ungrounded" from "failed because guardrails blocked it." These need different fixes.',
+        text: 'Bedrock Guardrails info is stored per test result, not just pass/fail, so the claims checker can distinguish "failed because ungrounded" from "failed because guardrails blocked it." These need different fixes.',
       },
       {
         color: 'var(--orange)',
@@ -398,7 +398,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         },
         {
           label: 'Decoupling test-run creation from execution via SQS',
-          text: 'paid off during a real CI outage — the queue just held the backlog instead of silently dropping requests, and everything caught up once the runners came back.',
+          text: 'paid off during a real CI outage. The queue just held the backlog instead of silently dropping requests, and everything caught up once the runners came back.',
         },
       ],
       differently: [
@@ -408,7 +408,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         },
         {
           label: 'Bedrock traffic isolation came after a scare, not before it.',
-          text: "A large eval run competing with live contact volume during a peak window was the thing that forced separate rate-limit buckets — I'd provision that isolation on day one for anything touching a model shared with production.",
+          text: "A large eval run competing with live contact volume during a peak window was the thing that forced separate rate-limit buckets. I'd provision that isolation on day one for anything touching a model shared with production.",
         },
         {
           label: 'Agent config (model ID, KB, prompt version) started as loose parameters,',
@@ -421,7 +421,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     summary: {
       system: 'Contact Center Agent & Eval Pipeline',
       primaryServices: 'Connect · Bedrock · AppSync',
-      status: 'Shipped — in production at AWS',
+      status: 'Shipped in production at AWS',
       type: 'Contact center + eval CI/CD',
     },
   },
@@ -430,7 +430,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     breadcrumbLabel: 'Multi-Agent Customer Support Platform',
     eyebrow: 'Case Study · Agentic AI',
     title: 'Multi-Agent Customer Support Platform',
-    subtitle: 'A Bedrock supervisor agent routes to specialist agents, calls tools, and retrieves from a knowledge base — with guardrails and human escalation built in from the start.',
+    subtitle: 'A Bedrock supervisor agent routes to specialist agents, calls tools, and retrieves from a knowledge base, with guardrails and human escalation built in from the start.',
     techPills: [
       { label: 'Bedrock Agents', color: 'var(--soft)' },
       { label: 'OpenSearch', color: 'var(--cyan)' },
@@ -452,7 +452,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       ],
       nonFunctional: [
         { label: 'Latency', text: 'p95 under ~3s for a single-agent turn, up to ~8s for multi-hop tool use' },
-        { label: 'Reliability', text: "tool calls must be idempotent — a retried refund shouldn't double-refund" },
+        { label: 'Reliability', text: "tool calls must be idempotent, retried refund shouldn't double-refund" },
         { label: 'Safety', text: 'guardrails against prompt injection, PII leakage, off-policy responses' },
         { label: 'Observability', text: 'full trace of which agent handled a request and why' },
         { label: 'Cost control', text: 'token spend needs a model-tiering strategy, not one large model for everything' },
@@ -462,16 +462,16 @@ export const CASE_STUDIES: CaseStudy[] = [
     scale: {
       intro: 'Assume 500 concurrent conversations, each turn averaging 1,500 input tokens and 300 output tokens.',
       stats: [
-        { value: '~90,000/sec', label: 'sustained token throughput at peak — 1,800 tokens/turn × 500 sessions turning over every ~10s' },
-        { value: '2 calls', label: 'LLM invocations per turn — one small/fast routing call, one larger specialist call' },
-        { value: 'RAG on path', label: 'retrieval latency sits before the specialist model responds — often the bigger lever than model choice' },
+        { value: '~90,000/sec', label: 'sustained token throughput at peak. 1,800 tokens/turn × 500 sessions turning over every ~10s' },
+        { value: '2 calls', label: 'LLM invocations per turn. One small/fast routing call, one larger specialist call' },
+        { value: 'RAG on path', label: 'retrieval latency sits before the specialist model responds, often the bigger lever than model choice' },
       ],
     },
 
     api: [
       { signature: 'POST /chat {session_id, message}', desc: 'WebSocket for streaming responses.' },
       { signature: 'Orchestrator → Bedrock Agent (routing)', desc: 'Returns {agent: order_status | refund | faq, confidence}.' },
-      { signature: 'Agent → Action Group (Lambda)', desc: 'Structured tool-call interface — Bedrock Agents define action groups via OpenAPI schema, e.g. `getOrderStatus(order_id)`' },
+      { signature: 'Agent → Action Group (Lambda)', desc: 'Structured tool-call interface. Bedrock Agents define action groups via OpenAPI schema, e.g. `getOrderStatus(order_id)`' },
       { signature: 'Agent → Knowledge Base . retrieve(query) → [{chunk, score, source}]', desc: 'Against a Bedrock Knowledge Base backed by OpenSearch Serverless.' },
     ],
 
@@ -484,13 +484,13 @@ export const CASE_STUDIES: CaseStudy[] = [
       ],
       note: {
         code: 'idempotency_key',
-        text: 'on tool calls is what separates a working design from a naive one — without it, a retried Lambda invocation could double-process a refund.',
+        text: 'on tool calls is what separates a working design from a naive one, without it, a retried Lambda invocation could double-process a refund.',
       },
     },
 
     architecture: [
       {
-        intro: 'Client hits API Gateway, which authenticates and routes to a Bedrock orchestrator agent. The orchestrator hands off to specialist agents — order status and knowledge/FAQ — which call action-group Lambdas and the knowledge base directly.',
+        intro: 'Client hits API Gateway, which authenticates and routes to a Bedrock orchestrator agent. The orchestrator hands off to specialist agents, order status and knowledge/FAQ, which call action-group Lambdas and the knowledge base directly.',
         rows: [
           {
             type: 'chain',
@@ -518,24 +518,24 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
         ],
         tags: ['DynamoDB session state', 'CloudWatch / X-Ray tracing', 'Bedrock Guardrails', 'SQS escalation'],
-        caption: 'Fig. 2 — Orchestrator routes to specialist agents, which call tools and the knowledge base in parallel.',
+        caption: 'Fig. 2: Orchestrator routes to specialist agents, which call tools and the knowledge base in parallel.',
       },
     ],
 
     decisions: [
       {
         color: 'var(--yellow)',
-        label: 'Bottleneck — sequential agent hops.',
+        label: 'Bottleneck. Sequential agent hops.',
         text: 'Orchestrator → specialist → tool call → synthesis can be 3–4 round trips. Use a fast/cheap routing model and let independent tool calls run in parallel, synthesizing once both return.',
       },
       {
         color: 'var(--pink)',
-        label: 'Bottleneck — RAG retrieval on the critical path.',
+        label: 'Bottleneck. RAG retrieval on the critical path.',
         text: 'Cache frequent queries, pre-fetch likely-relevant docs from the routing classification, keep chunk size small.',
       },
       {
         color: 'var(--purple)',
-        label: 'Trade-off — single agent vs. multi-agent orchestration.',
+        label: 'Trade-off. Single agent vs. multi-agent orchestration.',
         text: 'Multi-agent buys modularity and per-task accuracy at the cost of coordination complexity and added latency per hop.',
       },
       {

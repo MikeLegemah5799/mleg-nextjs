@@ -97,7 +97,7 @@ export function JobMatchAnalyzer() {
           <textarea
             id="jd-input"
             className={styles.textarea}
-            placeholder="Paste the job description here — title, responsibilities, required skills, etc."
+            placeholder="Paste the job description here: title, responsibilities, required skills, etc."
             value={jd}
             onChange={(e) => setJd(e.target.value)}
           />
@@ -202,7 +202,7 @@ export function JobMatchAnalyzer() {
 
       <div className={styles.footer}>
         <span className={styles.footNote}>
-          Analysis generated from résumé content — verify specifics in conversation.
+          Analysis generated from résumé content, verify specifics in conversation.
         </span>
         <div className={styles.footActions}>
           <a className={styles.btnGhost} href="mailto:michaellegemah@gmail.com">

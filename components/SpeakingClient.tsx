@@ -19,7 +19,7 @@ const TOPICS = [
   {
     icon: '🔀', bg: 'rgba(252,152,103,0.15)', color: 'var(--orange)',
     title: 'Multi-Agent Systems in Production',
-    desc: 'Orchestrating LangGraph agents on AWS Bedrock — state, reducers, and the failure modes nobody warns you about.',
+    desc: 'Orchestrating LangGraph agents on AWS Bedrock, state, reducers, and the failure modes nobody warns you about.',
     meta: 'Intermediate–Advanced · 30–45 min',
   },
   {
@@ -31,26 +31,26 @@ const TOPICS = [
   {
     icon: '🔎', bg: 'rgba(169,220,118,0.15)', color: 'var(--green)',
     title: 'RAG That Survives Contact With Users',
-    desc: 'Lessons from regulated, high-traffic RAG pipelines — chunking, retrieval quality, and hallucination guardrails.',
+    desc: 'Lessons from regulated, high-traffic RAG pipelines: chunking, retrieval quality, and hallucination guardrails.',
     meta: 'Intermediate · 30–45 min',
   },
   {
     icon: '</>', bg: 'rgba(255,97,136,0.15)', color: 'var(--pink)',
     title: 'AI-Assisted Engineering at Scale',
-    desc: 'What changes on a team when Claude Code and Cursor become default tooling — velocity, review, and risk.',
+    desc: 'What changes on a team when Claude Code and Cursor become default tooling. Velocity, review, and risk.',
     meta: 'All levels · 20–40 min',
   },
   {
     icon: '🛡️', bg: 'rgba(171,157,242,0.15)', color: 'var(--purple)',
     title: 'Shipping AI in Regulated Industries',
-    desc: 'HIPAA-aware GenAI features and defense-grade platforms — what compliance actually constrains in practice.',
+    desc: 'HIPAA-aware GenAI features and defense-grade platforms. What compliance actually constrains in practice.',
     meta: 'Intermediate · 30–45 min',
   },
 ];
 
 const EXPECT = [
   { icon: '🕐', text: 'Reply within 2 business days, even if the date doesn\'t work.' },
-  { icon: '📍', text: 'Based in New York, NY — open to travel for in-person events.' },
+  { icon: '📍', text: 'Based in New York, NY. Open to travel for in-person events.' },
   { icon: '💲', text: 'Free for community meetups and internal eng talks; standard rate for conferences.' },
 ];
 
@@ -66,7 +66,7 @@ const TOPIC_OPTIONS = [
   'RAG That Survives Contact With Users',
   'AI-Assisted Engineering at Scale',
   'Shipping AI in Regulated Industries',
-  'Something else — describe below',
+  'Something else. Describe below',
 ];
 
 export default function SpeakingClient() {
@@ -111,7 +111,7 @@ export default function SpeakingClient() {
               <h1 className={s.heroTitle}>Talks on shipping AI that actually works in production.</h1>
               <p className={s.heroSub}>
                 I speak to engineering teams and conferences about agentic systems, RAG architecture, and eval-driven
-                development — grounded in what&apos;s actually shipped, not slideware.
+                development,grounded in what&apos;s actually shipped, not slideware.
               </p>
               <div className={s.heroCtas}>
                 <a href="#book" className="btn-primary">📅 Check availability</a>
@@ -154,7 +154,7 @@ export default function SpeakingClient() {
             <div className={`${s.topicCard} ${s.topicCardGhost}`}>
               <div className={s.topicIcon} style={{ background: 'var(--bg-deep)', color: 'var(--muted)' }}>💬</div>
               <h3 className={s.topicTitle}>Have something specific in mind?</h3>
-              <p className={s.topicDesc}>Happy to tailor a talk to your event&apos;s theme or audience level — just ask.</p>
+              <p className={s.topicDesc}>Happy to tailor a talk to your event&apos;s theme or audience level, just ask.</p>
             </div>
           </div>
         </section>
