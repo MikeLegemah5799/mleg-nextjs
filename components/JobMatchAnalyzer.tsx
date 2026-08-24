@@ -79,7 +79,7 @@ export function JobMatchAnalyzer() {
           See the match instantly.
         </h1>
         <p className={styles.sub}>
-          No forms, no back-and-forth — drop in the JD and get a skill-by-skill breakdown against my
+          No forms, no back-and-forth, drop in the JD and get a skill-by-skill breakdown against my
           actual experience, generated in seconds.
         </p>
       </div>
@@ -208,7 +208,7 @@ export function JobMatchAnalyzer() {
           <a className={styles.btnGhost} href="mailto:michaellegemah@gmail.com">
             <IconMail size={15} /> Contact Michael
           </a>
-          <a className={styles.btnPrimary} href="/Michael_Legemah_Resume_26.pdf" download="Michael_Legemah_Resume_26.pdf">
+          <a className={styles.btnPrimary} href="/Michael_Legemah_Master_Resume.pdf" download="Michael_Legemah_Master_Resume.pdf">
             <IconDownload size={15} /> Download résumé
           </a>
         </div>
