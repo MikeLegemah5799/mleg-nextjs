@@ -1,0 +1,137 @@
+---
+title: "Your eval dashboard is a crime scene photo"
+slug: "your-eval-dashboard-is-a-crime-scene-photo"
+category: "Agentic AI"
+date: "2026-08-25"
+desc: "Your agent hallucinates a contract clause. Sends it to a customer. Then, an hour later, a dashboard somewhere turns red."
+featured: true
+tags: ["AI Observability", "LLM Evaluation", "Agentic AI", "MCP"]
+meta-keywords: AI Observability,LLM Evaluation,Agentic AI,MCP
+meta-og:description: Your agent hallucinates a contract clause. Sends it to a customer. Then, an hour later, a dashboard somewhere turns red.
+meta-og:image: /blog/images/hero.png
+meta-og:title: Your eval dashboard is a crime scene photo
+meta-og:type: article
+meta-twitter:card: summary_large_image
+meta-twitter:description: Your agent hallucinates a contract clause. Sends it to a customer. Then, an hour later, a dashboard somewhere turns red.
+meta-twitter:image: /blog/images/hero.png
+meta-twitter:title: Your eval dashboard is a crime scene photo
+meta-viewport: width=device-width, initial-scale=1
+---
+
+ 
+# Your eval dashboard is a crime scene photo
+ 
+Here's an uncomfortable truth about most AI evals.
+ 
+They run after the damage is already done.
+ 
+Your agent hallucinates a contract clause. Sends it to a customer. Then, an hour later, a dashboard somewhere turns red.
+ 
+Congratulations. You now have a beautifully documented failure.
+ 
+That's not an eval system. That's a coroner's report.
+ 
+## The agony: your dashboard is lying to you about safety
+ 
+Most teams think they've solved AI reliability because they have observability.
+ 
+They don't.
+ 
+They have a very expensive way of finding out what already went wrong.
+ 
+Think about what a traditional eval pipeline actually does:
+ 
+Your agent responds. The response ships. A batch job runs eval metrics an hour later, or a day later, or after someone complains. You get a Slack alert. You go look at logs. You write a postmortem.
+ 
+The user already saw the wrong answer. The customer already got the wrong number. The lawyer already cited the fake clause.
+ 
+Here's the part nobody wants to say out loud.
+ 
+**Traditional APM tools can't even see the failure you're trying to catch.**
+ 
+Your uptime monitor checks if the server responded. It doesn't check if the server lied. A 200 status code and a fabricated invoice total look identical to your infrastructure. Semantic failure is invisible to systems built for syntactic failure.
+ 
+So teams bolt on eval dashboards. Read after the fact. Every time.
+ 
+And every time, it's too late.
+ 
+## The shift: move the eval into the request path, not after it
+ 
+Here's the reframe that changes everything.
+ 
+Stop treating eval like an audit. Start treating it like a firewall.
+ 
+A firewall doesn't tell you a packet was malicious after it already hit your server. It blocks it first.
+ 
+That's the whole idea behind Eval-as-MCP-Server. I called mine Sentinel.
+ 
+### 1. Score before you ship, not after
+ 
+The core move is simple to say and rare to actually build.
+ 
+Your agent calls an eval tool mid-run, the same way it calls any other tool. Before the response goes to the user. Not in a batch job three hours later.
+ 
+**The eval layer becomes a gate, not a graph.**
+ 
+If the response fails, it never reaches the customer. No postmortem needed, because there's no incident to write one about.
+ 
+### 2. Make the cheap checks run first
+ 
+Here's where most people get scared off. "Won't scoring every response with an LLM double my inference cost?"
+ 
+Only if you're doing it wrong.
+ 
+Most responses aren't ambiguous. A fabricated citation, a prompt injection attempt, a bulk data dump request. These have obvious fingerprints. Deterministic pattern matching catches them in single-digit milliseconds, for free.
+ 
+**Only escalate to a judge model when the case is genuinely unclear.**
+ 
+In practice, that's the minority of traffic. Most calls resolve on heuristics alone. The judge model is the expensive specialist you call in for the hard cases, not the receptionist who greets every visitor.
+ 
+### 3. Design for the negation trap, or you'll ship it anyway
+ 
+This is the part that separates a real eval layer from a toy one.
+ 
+The obvious heuristic for "is this citation real" is "does the string appear in the source." That sounds right. It's dangerously wrong.
+ 
+A source document that says "no section 9.2 exists" still contains the literal string "section 9.2." A naive check reads that as a match. It confidently clears the exact fabrication it was built to catch.
+ 
+**Building the eval layer means adversarially testing your own eval layer first.**
+ 
+If you don't, you ship a checker that rubber-stamps your worst-case example. I know, because I caught this exact bug while building mine, before it ever caught anything for real.
+ 
+## The proof: catching it live, not in a postmortem
+ 
+Here's what this actually looks like running.
+ 
+An agent gets asked about an SLA outage. It responds: "Per the MSA, section 9.2, this outage qualifies for a 15% service credit."
+ 
+There is no section 9.2.
+ 
+The old way: this ships. The client reads it. Someone eventually notices, weeks later, when the invoice math doesn't add up. Now it's a trust problem, not a bug.
+ 
+The new way: Sentinel scores the response before it leaves the building. Citation check runs. No judge model needed, because the pattern is unambiguous. The response never ships.
+ 
+![Sentinel catching a fabricated clause and a prompt injection attempt live, with trust score dropping in real time](/blog/images/catch-moment.png)
+ 
+Two catches. Live. Trust score visibly drops with each one. That's not a dashboard you check later. That's a wall you hit before the mistake becomes a message.
+ 
+Here's the full path a response takes through the system, start to finish.
+ 
+![How a response gets scored: the agent's response passes through Sentinel's heuristic checks, resolving on a fast deterministic tier or escalating to a judge model only for ambiguous cases, before a verdict is returned to the caller](/blog/images/flow-diagram.png)
+ 
+Notice what's missing from that diagram. There's no step where a human reads a dashboard three hours later. The check happens in the request path, or it doesn't happen in time to matter.
+ 
+## The close: stop grading the test after class is over
+ 
+Eval-after-the-fact isn't a lesser version of eval-in-the-loop.
+ 
+It's a different category of thing entirely. One is a smoke detector. The other is a photo of the fire.
+ 
+If your agents touch contracts, customer data, financial figures, or anything a person will act on without double-checking it, the question isn't whether you need this layer.
+ 
+It's whether you find out about the gap from your own testing, or from your customer's lawyer.
+ 
+I build these systems for teams who'd rather not find out the second way.
+ 
+**Want an Eval-as-MCP-Server layer built for your agents?** Reach out and I'll walk you through what it would take to put one in front of yours.
+ 

@@ -7,6 +7,7 @@ export type PostFrontmatter = {
   desc: string;
   tags: string[];
   featured?: boolean;
+  'meta-og:image'?: string;
 };
 
 export type Post = PostFrontmatter & { content: string };

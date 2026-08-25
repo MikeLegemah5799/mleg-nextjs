@@ -93,14 +93,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <div className={s.heroVis}>
             <div className={s.heroVisInner}>
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="6" cy="6" r="2.4" />
-                <circle cx="6" cy="18" r="2.4" />
-                <circle cx="18" cy="12" r="2.4" />
-                <path d="M6 8.4V15.6" />
-                <path d="M8.2 7.2 15.8 10.8" />
-                <path d="M8.2 16.8 15.8 13.2" />
-              </svg>
+              {post['meta-og:image'] ? (
+                <Image src={post['meta-og:image']} alt={post.title} fill sizes="760px" style={{ objectFit: 'cover' }} priority />
+              ) : (
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="6" cy="6" r="2.4" />
+                  <circle cx="6" cy="18" r="2.4" />
+                  <circle cx="18" cy="12" r="2.4" />
+                  <path d="M6 8.4V15.6" />
+                  <path d="M8.2 7.2 15.8 10.8" />
+                  <path d="M8.2 16.8 15.8 13.2" />
+                </svg>
+              )}
             </div>
           </div>
 

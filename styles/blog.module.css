@@ -72,6 +72,7 @@
 .featuredMeta { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
 
 .featuredVis {
+  position: relative;
   background: var(--bg-surface);
   background-image:
     linear-gradient(rgba(171,157,242,0.05) 1px, transparent 1px),
@@ -79,6 +80,7 @@
   background-size: 28px 28px;
   display: flex; align-items: center; justify-content: center;
   border-left: 1px solid var(--border);
+  overflow: hidden;
 }
 /* RECENT POSTS */
 .recentLabel {

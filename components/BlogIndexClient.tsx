@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -101,14 +102,18 @@ export default function BlogIndexClient({ featured, posts }: { featured?: Post; 
                 <div className={s.featuredMeta}>{formatDate(featured.date)} · {featured.readTime} read</div>
               </div>
               <div className={s.featuredVis}>
-                <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="6" cy="6" r="2.4" />
-                  <circle cx="6" cy="18" r="2.4" />
-                  <circle cx="18" cy="12" r="2.4" />
-                  <path d="M6 8.4V15.6" />
-                  <path d="M8.2 7.2 15.8 10.8" />
-                  <path d="M8.2 16.8 15.8 13.2" />
-                </svg>
+                {featured['meta-og:image'] ? (
+                  <Image src={featured['meta-og:image']} alt={featured.title} fill sizes="(max-width: 900px) 100vw, 40vw" style={{ objectFit: 'cover' }} />
+                ) : (
+                  <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="6" cy="6" r="2.4" />
+                    <circle cx="6" cy="18" r="2.4" />
+                    <circle cx="18" cy="12" r="2.4" />
+                    <path d="M6 8.4V15.6" />
+                    <path d="M8.2 7.2 15.8 10.8" />
+                    <path d="M8.2 16.8 15.8 13.2" />
+                  </svg>
+                )}
               </div>
             </Link>
           )}
