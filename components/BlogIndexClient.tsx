@@ -10,7 +10,7 @@ import NewsletterForm from '@/components/NewsletterForm';
 import { CATEGORY_COLORS, type Post } from '@/lib/blog-shared';
 import s from '@/styles/blog.module.css';
 
-const CATEGORIES = ['All posts', 'Agentic AI', 'RAG', 'Eval & testing', 'AWS', 'Career'];
+const CATEGORIES = ['All posts', 'Agentic AI', 'RAG', 'Eval & testing', 'AWS', 'Career', 'MCP'];
 const PAGE_SIZE = 6;
 
 export default function BlogIndexClient({ featured, posts }: { featured?: Post; posts: Post[] }) {
