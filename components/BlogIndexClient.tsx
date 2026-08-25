@@ -11,7 +11,7 @@ import { CATEGORY_COLORS, type Post } from '@/lib/blog-shared';
 import s from '@/styles/blog.module.css';
 
 const CATEGORIES = ['All posts', 'Agentic AI', 'RAG', 'Eval & testing', 'AWS', 'Career', 'MCP'];
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 7;
 
 export default function BlogIndexClient({ featured, posts }: { featured?: Post; posts: Post[] }) {
   const [activeFilter, setActiveFilter] = useState('All posts');
@@ -30,7 +30,9 @@ export default function BlogIndexClient({ featured, posts }: { featured?: Post; 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const pagePosts = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-  const showFeatured = !!featured && activeFilter === 'All posts' && !query.trim();
+  const showFeatured = !!featured
+    && (activeFilter === 'All posts' || activeFilter === featured.category)
+    && !query.trim();
 
   const handleFilter = (cat: string) => {
     setActiveFilter(cat);
@@ -118,23 +120,27 @@ export default function BlogIndexClient({ featured, posts }: { featured?: Post; 
             </Link>
           )}
 
-          <div className={s.recentLabel}>Recent Posts</div>
+          {(pagePosts.length > 0 || !showFeatured) && (
+            <>
+              <div className={s.recentLabel}>Recent Posts</div>
 
-          {pagePosts.length > 0 ? (
-            <div className={s.postGrid}>
-              {pagePosts.map((p) => (
-                <Link key={p.slug} href={`/blog/${p.slug}`} className={s.postCard}>
-                  <div className={s.postCat} style={{ color: CATEGORY_COLORS[p.category] }}>{p.category}</div>
-                  <h3 className={s.postTitle}>{p.title}</h3>
-                  <p className={s.postDesc}>{p.desc}</p>
-                  <div className={s.postMeta}>{formatDate(p.date)} · {p.readTime}</div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className={s.emptyState}>
-              {filtered.length === 0 ? 'No posts match that search or filter.' : 'More posts coming soon.'}
-            </div>
+              {pagePosts.length > 0 ? (
+                <div className={s.postGrid}>
+                  {pagePosts.map((p) => (
+                    <Link key={p.slug} href={`/blog/${p.slug}`} className={s.postCard}>
+                      <div className={s.postCat} style={{ color: CATEGORY_COLORS[p.category] }}>{p.category}</div>
+                      <h3 className={s.postTitle}>{p.title}</h3>
+                      <p className={s.postDesc}>{p.desc}</p>
+                      <div className={s.postMeta}>{formatDate(p.date)} · {p.readTime}</div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className={s.emptyState}>
+                  {filtered.length === 0 ? 'No posts match that search or filter.' : 'More posts coming soon.'}
+                </div>
+              )}
+            </>
           )}
 
           <div className={s.pagination}>

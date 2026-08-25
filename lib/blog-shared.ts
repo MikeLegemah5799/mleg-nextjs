@@ -18,4 +18,5 @@ export const CATEGORY_COLORS: Record<string, string> = {
   'Eval & testing': 'var(--green)',
   'AWS': 'var(--orange)',
   'Career': 'var(--purple)',
+  'MCP': 'var(--yellow)',
 };
