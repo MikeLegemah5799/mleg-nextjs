@@ -1,10 +1,11 @@
-export type DiagramNode = { icon: string; label: string; sub: string; highlight?: boolean | 'purple' | 'green' | 'cyan' };
+export type DiagramNode = { icon: string; label: string; sub?: string; highlight?: boolean | 'purple' | 'green' | 'cyan' | 'yellow' | 'pink' };
 
 export type DiagramRow =
-  | { type: 'chain'; nodes: DiagramNode[] }
-  | { type: 'grid'; nodes: DiagramNode[] }
-  | { type: 'groups'; groups: { label: string; nodes: DiagramNode[] }[] }
-  | { type: 'label'; text: string };
+  | { type: 'chain'; nodes: DiagramNode[]; arrowBefore?: boolean }
+  | { type: 'grid'; nodes: DiagramNode[]; arrowBefore?: boolean }
+  | { type: 'alt'; nodes: DiagramNode[]; arrowBefore?: boolean }
+  | { type: 'groups'; groups: { label: string; nodes: DiagramNode[] }[]; arrowBefore?: boolean }
+  | { type: 'label'; text: string; arrowBefore?: boolean };
 
 export type Diagram = {
   label?: string;
@@ -31,7 +32,7 @@ export type CaseStudy = {
 
   scale: {
     intro: string;
-    stats: { value: string; label: string; color?: string }[];
+    stats: { value: string; label: string; color?: string; accentBorder?: boolean }[];
   };
 
   apiSectionTitle?: string;
@@ -710,6 +711,216 @@ export const CASE_STUDIES: CaseStudy[] = [
       primaryServices: 'Claude · pdf.js · Drizzle',
       status: 'Built — portfolio demo',
       type: 'Document intelligence pipeline',
+    },
+  },
+  {
+    projectId: 'sentinel',
+    breadcrumbLabel: 'Sentinel — Eval-as-MCP-Server',
+    eyebrow: 'Case Study · AI Eval Infrastructure · Portfolio Project',
+    title: 'Sentinel — Eval-as-MCP-Server',
+    subtitle: "An MCP server that scores AI agent responses before they reach a user, not after. Deterministic checks resolve the obvious cases for free; only genuinely ambiguous responses escalate to a judge model.",
+    techPills: [
+      { label: 'Model Context Protocol', color: 'var(--orange)' },
+      { label: 'TypeScript', color: 'var(--cyan)' },
+      { label: 'Next.js', color: 'var(--green)' },
+      { label: 'Vercel', color: 'var(--purple)' },
+      { label: 'mcp-handler', color: 'var(--pink)' },
+      { label: 'Zod v4', color: 'var(--orange)' },
+      { label: 'Anthropic API', color: 'var(--yellow)' },
+      { label: 'node:test', color: 'var(--cyan)' },
+    ],
+    meta: {
+      role: 'Solo design & implementation',
+      domain: 'AI eval & agent reliability',
+      primaryServices: 'MCP · Next.js · Vercel · Zod',
+    },
+
+    problem: {
+      functional: [
+        "Score an agent's response against configurable checks — groundedness, prompt injection — callable as an MCP tool from any agent runtime",
+        'Deterministic pattern matching resolves clear-cut cases with no model call; ambiguous cases escalate to a judge, bounded by a per-metric latency budget',
+        "Every tenant explicitly configures fail-open vs. fail-closed behavior on judge timeout — no system-wide default",
+        'The same business logic runs behind two transports: stdio for local agents, stateless HTTP for remote deploy',
+      ],
+      nonFunctional: [
+        { label: 'Zero-config local dev', text: 'full test suite and both tools run offline against stub judges, no API key required' },
+        { label: 'Fixed cost at idle', text: 'every layer of the stack scales to zero — Vercel functions, planned Neon/R2 persistence' },
+        { label: 'Reproducibility', text: 'every verdict pins its metric version and judge model, re-derivable later' },
+        { label: 'No unauthenticated tool calls', text: 'tenant ID comes only from a validated bearer token, never a request argument' },
+      ],
+    },
+
+    scale: {
+      intro: 'A bootstrap build: single developer, low fixed cost, nothing requiring a company cloud account. The numbers below are the budget the architecture had to hold under from day one, not traffic figures yet.',
+      stats: [
+        { value: '250ms', label: 'Per-metric judge timeout, enforced server-side — a slow eval is a broken eval in the hot path', color: 'var(--yellow)', accentBorder: true },
+        { value: '22', label: 'Automated tests across both metrics and both tool handlers, all passing with zero network calls', color: 'var(--green)', accentBorder: true },
+        { value: '$0', label: 'Fixed infra cost at idle — every layer of the stack scales to zero, no standing bill', color: 'var(--cyan)', accentBorder: true },
+      ],
+    },
+
+    api: [
+      { signature: 'flag_injection(response, context?) → EvaluationResult', desc: 'MCP tool call. Validated by the same zod schema on both the stdio and HTTP transports.' },
+      { signature: 'evaluateInjection(request, {judge, policy}) → Verdict', desc: 'Deterministic tier resolves override + compliance pattern matches directly; only the ambiguous middle escalates.' },
+      { signature: 'check_groundedness(response, context) → EvaluationResult', desc: 'Requires at least one context item. Nothing to ground against is a caller error, rejected before the metric runs.' },
+      { signature: 'resolveCitations(citations, context) → per-citation status', desc: 'Negation-window check: a citation only appearing inside a denial ("no section 9.2 exists") counts as unresolved.' },
+      { signature: 'buildEvaluationResult(verdicts, policy) → EvaluationResult', desc: 'Rolls up N verdicts into one action (strictest wins) and a 0–100 trust score.' },
+      { signature: 'withMcpAuth(handler, verifyToken) → authed HTTP route', desc: 'Bearer-token verification on the Vercel deploy target. Tenant ID comes only from the validated token.' },
+    ],
+
+    dataModel: {
+      rows: [
+        { entity: 'ScoringRequest', fields: 'response, context[] (source, content, id), taskDescription?, correlationId?, policyOverride?' },
+        { entity: 'Verdict', fields: 'metric, outcome (pass/warn/block/timeout), score, threshold, reason, citedContextIds[], decidedBy (heuristic/judge/cache), judge?, metricVersion, latencyMs' },
+        { entity: 'EvaluationResult', fields: 'requestId, verdicts[], action, trustScore, totalLatencyMs' },
+        { entity: 'MetricPolicy', fields: 'metric, enabled, threshold, onTimeout (fail_open/fail_closed), maxJudgeLatencyMs' },
+        { entity: 'TenantPolicy', fields: 'tenantId, metrics[], aggregation (strictest/weighted), archivePayloads (opt-in, default false)' },
+      ],
+      note: '`decidedBy` on every Verdict is what makes the cost story auditable — it\'s the field that proves a judge model wasn\'t called when it didn\'t need to be, not just a claim in a case study.',
+    },
+
+    architecture: [
+      {
+        label: 'Scoring flow',
+        intro: "Both tools converge on the same escalation ladder: deterministic checks first, a judge model only for what they can't resolve.",
+        rows: [
+          {
+            type: 'alt',
+            nodes: [
+              { icon: '📤', label: 'flag_injection', sub: 'tool call' },
+              { icon: '📤', label: 'check_groundedness', sub: 'tool call' },
+            ],
+          },
+          { type: 'chain', nodes: [{ icon: '⊘', label: 'Handler layer', sub: 'validate · resolve tenant policy', highlight: 'yellow' }] },
+          { type: 'chain', nodes: [{ icon: '📐', label: 'Policy resolution', sub: 'threshold · fail-open/closed', highlight: 'purple' }] },
+          { type: 'label', text: 'Deterministic tier · regex / citation matching' },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: 'abc', label: 'Pattern matcher', sub: 'injection metric' },
+              { icon: '🔍', label: 'Citation resolver', sub: 'groundedness metric' },
+            ],
+          },
+          { type: 'label', text: 'Escalates only if ambiguous', arrowBefore: false },
+          {
+            type: 'alt',
+            arrowBefore: true,
+            nodes: [
+              { icon: '✓', label: 'Confident verdict', sub: 'no judge call', highlight: 'green' },
+              { icon: '⚖', label: 'Judge model call', sub: 'Anthropic API', highlight: 'pink' },
+            ],
+          },
+          { type: 'chain', nodes: [{ icon: '📤', label: 'EvaluationResult returned', highlight: 'cyan' }] },
+        ],
+        caption: 'Fig. 2a — Most calls resolve at the deterministic tier. The judge is an escalation path, not the default route.',
+      },
+      {
+        label: 'Deploy topology',
+        intro: 'Two transports, one shared handler core. Neither entrypoint imports anything the other depends on.',
+        rows: [
+          {
+            type: 'alt',
+            nodes: [
+              { icon: '💻', label: 'Claude Desktop / Cursor', sub: 'stdio transport', highlight: 'yellow' },
+              { icon: '🌐', label: 'Vercel HTTP route', sub: 'mcp-handler, bearer token', highlight: 'yellow' },
+            ],
+          },
+          { type: 'label', text: 'Shared handler core' },
+          {
+            type: 'groups',
+            groups: [
+              {
+                label: 'Tool handlers',
+                nodes: [
+                  { icon: '🛡', label: 'flagInjection' },
+                  { icon: '📎', label: 'checkGroundedness' },
+                ],
+              },
+              {
+                label: 'Supporting layers',
+                nodes: [
+                  { icon: '📋', label: 'Policy registry' },
+                  { icon: '🧪', label: 'Judge stubs' },
+                ],
+              },
+            ],
+          },
+        ],
+        tags: ['node:test suite', 'tsx runtime', 'Vercel Functions', 'Claude Desktop config'],
+        caption: 'Fig. 2b — Adding the HTTP deploy target was one new route file plus a thin auth module, not a parallel implementation.',
+      },
+    ],
+
+    decisions: [
+      {
+        color: 'var(--yellow)',
+        label: 'Trap. The obvious groundedness heuristic is dangerous.',
+        text: 'Checking whether a cited string merely appears in the source context looks right and is wrong — a document denying a claim ("no section 9.2 exists") contains the fabricated citation as a literal substring. A negation-window check around every match closes the gap a naive presence check would rubber-stamp.',
+      },
+      {
+        color: 'var(--pink)',
+        label: 'Trade-off. Heuristic-first, judge as escalation, not default.',
+        text: "Every metric runs deterministic pattern or citation matching first and only calls a judge model for the genuinely ambiguous middle, bounded by a per-metric timeout independent of the whole request's budget. Most traffic never reaches the judge.",
+      },
+      {
+        color: 'var(--cyan)',
+        label: 'Invariant. No default for fail-open vs. fail-closed.',
+        text: 'A tenant sets this explicitly per metric; there\'s no system-wide fallback. A finance tenant and a marketing tenant disagree about what "the judge timed out" should mean, and guessing wrong for either is worse than forcing the choice.',
+      },
+      {
+        color: 'var(--green)',
+        label: 'Constraint. Two MCP server packages, one shared handler layer.',
+        text: 'The stdio transport and the HTTP transport have different `registerTool` signatures and different zod version requirements. Keeping handlers as plain functions with zero transport imports meant the HTTP deploy target was additive, not a rewrite.',
+      },
+      {
+        color: 'var(--purple)',
+        label: 'Bootstrap-first. Vendor names quarantined to two folders.',
+        text: 'Cloudflare Workers, Neon, R2, and Anthropic-direct over Bedrock/AgentCore, chosen because every piece scales to zero at idle. No vendor name appears outside `judges/` and `persistence/`.',
+      },
+      {
+        color: 'var(--orange)',
+        label: 'Verification. Proved the HTTP route in-process, not just by type-check.',
+        text: "A background dev server can't survive between tool calls in every environment. Pointing a real MCP client's `fetch` option directly at the exported route handler proved the auth and scoring path end to end without depending on a live socket.",
+      },
+    ],
+
+    lessonsLearned: {
+      heldUp: [
+        {
+          label: "Writing the demo's exact fabricated-clause scenario as a named regression test,",
+          text: 'before it ever caught anything for real, is what proved the negation-window fix worked — not the fact that it compiled.',
+        },
+        {
+          label: 'Re-validating input independently in the handler layer',
+          text: "caught nothing in testing, but it's the reason a second transport couldn't silently skip a check the first one enforced.",
+        },
+        {
+          label: 'Keeping handlers completely transport-agnostic',
+          text: 'meant the Vercel deploy target was one new file plus a thin auth module, not a parallel implementation.',
+        },
+      ],
+      differently: [
+        {
+          label: 'I upgraded zod from v3 to v4 reactively,',
+          text: "once the HTTP package's type requirements forced it, rather than checking both packages' peer dependencies before writing schema code.",
+        },
+        {
+          label: "A background dev server can't survive between tool calls in every environment.",
+          text: "I'd default to testing route handlers as plain functions in-process from the start, not assume a live server would be easy to stand up.",
+        },
+        {
+          label: 'The trust-score rollup shipped as an honest placeholder,',
+          text: "but I didn't flag it as loudly in the code as the fail-open/fail-closed choice — a formula that looks precise gets trusted more than it should.",
+        },
+      ],
+      ifStartedOver: 'write the negation-trap test before the heuristic that needs it to pass, not after — and settle the zod version across both MCP packages on day one instead of discovering the conflict at build time.',
+    },
+
+    summary: {
+      system: 'Sentinel — Eval-as-MCP-Server',
+      primaryServices: 'MCP · Vercel · Anthropic API',
+      status: 'Live demo, deployed on Vercel',
+      type: 'AI eval infrastructure',
     },
   },
 ];

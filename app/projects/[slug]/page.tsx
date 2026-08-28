@@ -16,6 +16,8 @@ const HIGHLIGHT_CLASSES: Record<string, string> = {
   green: s.diagBoxGreen,
   cyan: s.diagBoxCyan,
   purple: s.diagBoxOrch,
+  yellow: s.diagBoxYellow,
+  pink: s.diagBoxPink,
 };
 
 function DiagramBox({ node }: { node: DiagramNode }) {
@@ -26,7 +28,7 @@ function DiagramBox({ node }: { node: DiagramNode }) {
     <div className={`${s.diagBox}${highlightClass ? ` ${highlightClass}` : ''}`}>
       <div className={s.diagIcon}>{node.icon}</div>
       <div className={s.diagLabel}>{node.label}</div>
-      <div className={s.diagSub}>{node.sub}</div>
+      {node.sub && <div className={s.diagSub}>{node.sub}</div>}
     </div>
   );
 }
@@ -46,6 +48,16 @@ function DiagramRowView({ row }: { row: DiagramRow }) {
             </div>
           </div>
         ))}
+      </div>
+    );
+  }
+  if (row.type === 'alt') {
+    return (
+      <div className={s.diagRow}>
+        {row.nodes.flatMap((n, i) => [
+          i > 0 ? <div key={`${n.label}-or`} className={s.diagOr}>or</div> : null,
+          <DiagramBox key={n.label} node={n} />,
+        ])}
       </div>
     );
   }
@@ -169,12 +181,19 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             </div>
             <p className={s.scaleIntro}>{cs.scale.intro}</p>
             <div className={s.statGrid}>
-              {cs.scale.stats.map(({ value, label, color }, i) => (
-                <div key={value} className={s.statCard}>
-                  <div className={s.statValue} style={{ color: color ?? statColors[i % statColors.length] }}>{value}</div>
-                  <div className={s.statLabel}>{label}</div>
-                </div>
-              ))}
+              {cs.scale.stats.map(({ value, label, color, accentBorder }, i) => {
+                const resolvedColor = color ?? statColors[i % statColors.length];
+                return (
+                  <div
+                    key={value}
+                    className={`${s.statCard}${accentBorder ? ` ${s.statCardAccent}` : ''}`}
+                    style={accentBorder ? { borderTopColor: resolvedColor } : undefined}
+                  >
+                    <div className={s.statValue} style={{ color: resolvedColor }}>{value}</div>
+                    <div className={s.statLabel}>{label}</div>
+                  </div>
+                );
+              })}
             </div>
           </section>
 
@@ -231,7 +250,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                 <div className={s.diagram}>
                   {diagram.rows.map((row, ri) => (
                     <Fragment key={ri}>
-                      {ri > 0 && diagram.rows[ri - 1].type !== 'label' && (
+                      {(row.arrowBefore ?? (ri > 0 && diagram.rows[ri - 1].type !== 'label')) && (
                         <div className={s.diagDownArrow}>↓</div>
                       )}
                       <DiagramRowView row={row} />

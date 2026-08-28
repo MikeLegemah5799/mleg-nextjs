@@ -27,6 +27,15 @@ export const ACCENTS = {
 
 export const PROJECTS: Project[] = [
   {
+    id: 'sentinel', featured: true, accent: 'accPk',
+    title: 'Sentinel — Eval-as-MCP-Server',
+    tag: 'AI Eval Infrastructure · MCP', tagColor: 'var(--pink)',
+    desc: 'An MCP server that scores AI agent responses before they reach a user, not after. Deterministic checks resolve the obvious cases for free; only genuinely ambiguous responses escalate to a judge model.',
+    stack: 'Model Context Protocol · TypeScript · Next.js · Vercel · mcp-handler · Zod v4 · Anthropic API',
+    category: ['AI / ML', 'Infrastructure', 'Full-Stack'],
+    highlights: ['▲ Deterministic-first', '◎ Judge-escalated', '↗ Live demo'],
+  },
+  {
     id: 'attest', featured: true, accent: 'accG',
     title: 'Attest — Lease Intelligence',
     tag: 'Document AI · Trust Infrastructure', tagColor: 'var(--green)',

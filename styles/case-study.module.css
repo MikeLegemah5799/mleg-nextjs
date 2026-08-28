@@ -84,6 +84,7 @@
 .scaleIntro strong { color: var(--text); }
 .statGrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
 .statCard { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 22px 22px 20px; }
+.statCardAccent { border-top-width: 3px; }
 .statValue { font-family: var(--font-serif); font-size: 30px; margin-bottom: 8px; }
 .statLabel { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
@@ -111,6 +112,8 @@
 
 .modelNote {
   margin-top: 16px; font-size: 13px; color: var(--muted); line-height: 1.7;
+  background: var(--bg-surface); border: 1px solid var(--border); border-left-width: 3px; border-left-style: solid;
+  border-left-color: var(--yellow); border-radius: 8px; padding: 14px 18px;
 }
 .modelNote code {
   font-family: var(--font-mono); font-size: 12px; color: var(--pink);
@@ -137,10 +140,15 @@
 .diagBoxOrch { border-color: rgba(171,157,242,0.5); background: rgba(171,157,242,0.06); }
 .diagBoxGreen { border-color: rgba(169,220,118,0.5); background: rgba(169,220,118,0.06); }
 .diagBoxCyan { border-color: rgba(120,220,232,0.5); background: rgba(120,220,232,0.06); }
+.diagBoxYellow { border-color: rgba(255,216,102,0.5); background: rgba(255,216,102,0.06); }
+.diagBoxPink { border-color: rgba(255,97,136,0.5); background: rgba(255,97,136,0.06); }
 .diagIcon { font-size: 18px; color: var(--soft); margin-bottom: 8px; }
-.diagBoxOrch .diagIcon { color: var(--purple); }
-.diagBoxGreen .diagIcon { color: var(--green); }
-.diagBoxCyan .diagIcon { color: var(--cyan); }
+.diagBoxOrch .diagIcon, .diagBoxOrch .diagLabel { color: var(--purple); }
+.diagBoxGreen .diagIcon, .diagBoxGreen .diagLabel { color: var(--green); }
+.diagBoxCyan .diagIcon, .diagBoxCyan .diagLabel { color: var(--cyan); }
+.diagBoxYellow .diagIcon, .diagBoxYellow .diagLabel { color: var(--yellow); }
+.diagBoxPink .diagIcon, .diagBoxPink .diagLabel { color: var(--pink); }
+.diagOr { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 13px; font-style: italic; flex: 0 0 32px; }
 .diagLabel { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
 .diagSub { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
 .diagArrow { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 16px; flex: 0 0 24px; }
