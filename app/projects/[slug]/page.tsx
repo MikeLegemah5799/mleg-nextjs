@@ -12,9 +12,18 @@ function renderWithCode(text: string) {
   return text.split('`').map((part, i) => (i % 2 === 1 ? <code key={i}>{part}</code> : part));
 }
 
+const HIGHLIGHT_CLASSES: Record<string, string> = {
+  green: s.diagBoxGreen,
+  cyan: s.diagBoxCyan,
+  purple: s.diagBoxOrch,
+};
+
 function DiagramBox({ node }: { node: DiagramNode }) {
+  const highlightClass = node.highlight
+    ? HIGHLIGHT_CLASSES[node.highlight === true ? 'purple' : node.highlight]
+    : '';
   return (
-    <div className={`${s.diagBox}${node.highlight ? ` ${s.diagBoxOrch}` : ''}`}>
+    <div className={`${s.diagBox}${highlightClass ? ` ${highlightClass}` : ''}`}>
       <div className={s.diagIcon}>{node.icon}</div>
       <div className={s.diagLabel}>{node.label}</div>
       <div className={s.diagSub}>{node.sub}</div>
@@ -145,7 +154,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                 <div className={`${s.reqLabel} ${s.reqLabelNf}`}>Non-functional</div>
                 <ul className={s.reqList}>
                   {cs.problem.nonFunctional.map(({ label, text }) => (
-                    <li key={label}><strong>{label}:</strong> {text}</li>
+                    <li key={label}><strong>{label}:</strong> {renderWithCode(text)}</li>
                   ))}
                 </ul>
               </div>
@@ -160,9 +169,9 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             </div>
             <p className={s.scaleIntro}>{cs.scale.intro}</p>
             <div className={s.statGrid}>
-              {cs.scale.stats.map(({ value, label }, i) => (
+              {cs.scale.stats.map(({ value, label, color }, i) => (
                 <div key={value} className={s.statCard}>
-                  <div className={s.statValue} style={{ color: statColors[i % statColors.length] }}>{value}</div>
+                  <div className={s.statValue} style={{ color: color ?? statColors[i % statColors.length] }}>{value}</div>
                   <div className={s.statLabel}>{label}</div>
                 </div>
               ))}
@@ -173,7 +182,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           <section className={s.section}>
             <div className={s.sectionHead}>
               <span className={s.sectionNum}>03</span>
-              <h2 className={s.sectionTitle}>API design</h2>
+              <h2 className={s.sectionTitle}>{cs.apiSectionTitle ?? 'API design'}</h2>
             </div>
             <div className={s.apiBlock}>
               {cs.api.map(({ signature, desc }) => (
@@ -206,9 +215,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                 </tbody>
               </table>
             </div>
-            <p className={s.modelNote}>
-              <code>{cs.dataModel.note.code}</code> {cs.dataModel.note.text}
-            </p>
+            <p className={s.modelNote}>{renderWithCode(cs.dataModel.note)}</p>
           </section>
 
           {/* 05 ARCHITECTURE */}
@@ -235,6 +242,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                       {diagram.tags.map((t) => <span key={t} className={s.diagTag}>{t}</span>)}
                     </div>
                   )}
+                  {diagram.note && <div className={s.diagNote}>{diagram.note}</div>}
                 </div>
                 <p className={s.archCaption}>{diagram.caption}</p>
               </div>

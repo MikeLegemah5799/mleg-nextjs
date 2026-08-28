@@ -1,4 +1,4 @@
-export type DiagramNode = { icon: string; label: string; sub: string; highlight?: boolean };
+export type DiagramNode = { icon: string; label: string; sub: string; highlight?: boolean | 'purple' | 'green' | 'cyan' };
 
 export type DiagramRow =
   | { type: 'chain'; nodes: DiagramNode[] }
@@ -11,6 +11,7 @@ export type Diagram = {
   intro: string;
   rows: DiagramRow[];
   tags?: string[];
+  note?: string;
   caption: string;
 };
 
@@ -30,14 +31,15 @@ export type CaseStudy = {
 
   scale: {
     intro: string;
-    stats: { value: string; label: string }[];
+    stats: { value: string; label: string; color?: string }[];
   };
 
+  apiSectionTitle?: string;
   api: { signature: string; desc?: string }[];
 
   dataModel: {
     rows: { entity: string; fields: string }[];
-    note: { code: string; text: string };
+    note: string;
   };
 
   architecture: Diagram[];
@@ -112,10 +114,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         { entity: 'Vector index entry', fields: 'chunk_id, embedding_vector, embedding_model_version' },
         { entity: 'Ingestion job', fields: 'job_id, doc_id, stage, retries, error, started_at' },
       ],
-      note: {
-        code: 'content_hash',
-        text: 'at both doc and chunk granularity is what makes re-ingestion cheap, skip unchanged docs entirely, or re-embed only the chunks that actually changed.',
-      },
+      note: '`content_hash` at both doc and chunk granularity is what makes re-ingestion cheap, skip unchanged docs entirely, or re-embed only the chunks that actually changed.',
     },
 
     architecture: [
@@ -266,10 +265,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         { entity: 'TestResult', fields: 'test_case_id, test_run_id, agent_id, deepeval_scores{}, rag_claims_score, kb_retrieval_score, guardrails_info{}, latency_ms, pass_fail' },
         { entity: 'Agent config', fields: 'agent_id, bedrock_model_id, kb_id, prompt_version, connect_flow_id' },
       ],
-      note: {
-        code: 'source_ref',
-        text: 'on TestRun is what makes a score regression traceable back to the exact commit or upload that caused it. Without it, "the eval score dropped" has no owner.',
-      },
+      note: '`source_ref` on TestRun is what makes a score regression traceable back to the exact commit or upload that caused it. Without it, "the eval score dropped" has no owner.',
     },
 
     architecture: [
@@ -482,10 +478,7 @@ export const CASE_STUDIES: CaseStudy[] = [
         { entity: 'Knowledge base doc', fields: 'doc_id, source_url, chunk_text, embedding_vector, last_indexed' },
         { entity: 'Tool call log', fields: 'call_id, tool_name, params, idempotency_key, result, status' },
       ],
-      note: {
-        code: 'idempotency_key',
-        text: 'on tool calls is what separates a working design from a naive one, without it, a retried Lambda invocation could double-process a refund.',
-      },
+      note: '`idempotency_key` on tool calls is what separates a working design from a naive one, without it, a retried Lambda invocation could double-process a refund.',
     },
 
     architecture: [
@@ -555,6 +548,168 @@ export const CASE_STUDIES: CaseStudy[] = [
       primaryServices: 'Bedrock Agents · OpenSearch · SQS',
       status: 'Architecture complete',
       type: 'Multi-agent orchestration',
+    },
+  },
+  {
+    projectId: 'attest',
+    breadcrumbLabel: 'Attest — Lease Intelligence',
+    eyebrow: 'Case Study · Document AI & Trust Infrastructure',
+    title: 'Attest — Lease Intelligence with a Verifiable Trust Layer',
+    subtitle: 'A commercial lease abstraction tool where every extracted field is grounded, verified, and cited back to its source page before it\'s shown as fact — built to close the gap between AI adoption and AI trust in commercial real estate.',
+    techPills: [
+      { label: 'Next.js 16', color: 'var(--cyan)' },
+      { label: 'TypeScript', color: 'var(--green)' },
+      { label: 'Claude', color: 'var(--purple)' },
+      { label: 'SQLite · Drizzle', color: 'var(--orange)' },
+      { label: 'pdf.js', color: 'var(--pink)' },
+    ],
+    meta: {
+      role: 'Full-stack build, pipeline & eval design',
+      domain: 'Commercial real estate · document intelligence',
+      primaryServices: 'Claude API · pdf.js · Drizzle · SQLite',
+    },
+
+    problem: {
+      functional: [
+        'Extract ~18 lease-economics fields across six groups: parties & premises, term, rent & escalation, options & notice, expenses, risk clauses',
+        'Derive critical dates (notice windows, expiration) and risk flags from verified extraction data — never from a raw model guess',
+        'Every field click-to-source: one click from any value to its exact page and cited passage in the source PDF',
+      ],
+      nonFunctional: [
+        { label: 'Groundedness', text: 'no extracted value shown as fact without a citation verified against the source page' },
+        { label: "Refuse, don't guess", text: 'a derived date on an unverified input field blocks with a stated reason rather than computing anyway' },
+        { label: 'Reproducibility', text: 'every extraction versioned by `run_id` and `prompt_version`, so any two eval runs are diffable field by field' },
+      ],
+    },
+
+    scale: {
+      intro: 'Built and scored against real, publicly filed commercial leases — not synthetic data.',
+      stats: [
+        { value: '10', label: 'real commercial office leases seeded from SEC EDGAR EX-10 exhibits, processed end to end', color: 'var(--cyan)' },
+        { value: '126', label: 'hand-labeled gold fields across 7 documents — the ground truth the eval harness scores against', color: 'var(--green)' },
+        { value: '57', label: 'passing tests, including pure-function unit coverage on the date-derivation engine', color: 'var(--purple)' },
+      ],
+    },
+
+    apiSectionTitle: 'Pipeline design',
+    api: [
+      { signature: '// six stages, each independently callable and testable' },
+      { signature: 'ingest(pdf) → pages[]  // pdf.js text + coordinates, no OCR needed' },
+      { signature: 'extract(pages, fieldGroup) → candidate[]  // two-pass: route pages, then extract per group' },
+      { signature: 'verify(candidate) → {value, confidence, evidence}  // grounding + verifier pass' },
+      { signature: 'persist(verified, runId, promptVersion) → extraction  // immutable, versioned rows' },
+      { signature: 'derive(extractions) → {dates[], flags[]}  // pure functions, no LLM call, blocks on low confidence' },
+      { signature: 'surface(document) → reviewUI  // PDF + extraction side by side, click-to-source' },
+    ],
+
+    dataModel: {
+      rows: [
+        { entity: 'documents', fields: 'id, slug, type, status, source_path' },
+        { entity: 'pages', fields: 'document_id, page_number, text, item_index' },
+        { entity: 'extractions', fields: 'field, value, evidence_text, page, confidence, run_id, prompt_version' },
+        { entity: 'derived_dates', fields: 'document_id, kind, date, status (ok / blocked), reason' },
+        { entity: 'risk_flags', fields: 'document_id, flag, present, source_extraction_id' },
+        { entity: 'gold_labels / eval_runs', fields: 'field, expected_value, run_id, field_score, date_score' },
+      ],
+      note: '`run_id` + `prompt_version` on every extraction is what makes a score regression traceable to the exact prompt change that caused it — without it, "accuracy dropped" has no owner.',
+    },
+
+    architecture: [
+      {
+        intro: 'A document either seeds from fixtures or is uploaded; both paths run the same six-stage pipeline. The eval harness reads through the same persistence layer as the app — never a parallel scoring path.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '⇧', label: 'Ingest', sub: 'pdf.js → text + coords' },
+              { icon: '⇄', label: 'Extract', sub: 'Claude, two-pass' },
+              { icon: '✓', label: 'Verify', sub: 'grounding + verifier pass', highlight: 'green' },
+            ],
+          },
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '▤', label: 'Persist', sub: 'SQLite, versioned', highlight: 'cyan' },
+              { icon: 'ƒ', label: 'Derive', sub: 'dates + risk flags' },
+              { icon: '⧉', label: 'Surface', sub: 'review UI' },
+            ],
+          },
+        ],
+        note: '↳ eval harness reads Persist directly — 20-doc gold set, field + derived-date accuracy, diffed by run',
+        caption: 'Fig. 5a — six-stage pipeline; the trust layer (green) is where grounding and verification gate every field before it reaches the UI.',
+      },
+    ],
+
+    decisions: [
+      {
+        color: 'var(--pink)',
+        label: 'Risk flags, not a composite score.',
+        text: 'A weighted risk score implies validated weights nobody — this build included — can actually justify. Individually-cited presence/absence flags let the reviewer judge risk instead of trusting an unverifiable number.',
+      },
+      {
+        color: 'var(--yellow)',
+        label: 'Owner/asset-manager point of view, stated explicitly.',
+        text: "Clauses like co-tenancy read as risk to one party and protection to the other. A perspective-agnostic tool isn't a neutral default — it's roughly double the scope. Named the lens in the UI rather than silently picking one while claiming objectivity.",
+      },
+      {
+        color: 'var(--purple)',
+        label: "Block, don't guess, on derived dates.",
+        text: 'If an input field feeding a critical-date calculation falls below confidence threshold, the date is `blocked` with a stated reason — not computed. Date errors compound silently across multiple fields; refusing is safer than guessing.',
+      },
+      {
+        color: 'var(--green)',
+        label: 'Direct Anthropic API, not Bedrock.',
+        text: 'Production would run on Bedrock for VPC posture and data residency. This build optimizes for a reviewer running it without provisioning AWS — a deliberate trade made for the audience, not a technical limitation.',
+      },
+      {
+        color: 'var(--orange)',
+        label: 'SQLite, not Postgres.',
+        text: 'Zero setup — the seeded database ships in the repo so the app runs with no external dependency and no API key required to browse existing documents.',
+      },
+      {
+        color: 'var(--cyan)',
+        label: 'Single document type: office leases only.',
+        text: 'No retail, no industrial, no amendment-chain resolution. Narrowed scope to put the majority of build time into the verification layer rather than extraction breadth.',
+      },
+    ],
+
+    lessonsLearned: {
+      heldUp: [
+        {
+          label: 'Grounding catches fabrication cheaply.',
+          text: 'String-matching evidence text against the source page is deterministic and free — it rejects a real class of hallucination before a value is ever persisted.',
+        },
+        {
+          label: 'The honest-gap split proved the thesis.',
+          text: 'Parties & premises scored 94% grounded; risk clauses scored 0% — not random error, but the system correctly refusing to assert an absent clause as a confirmed fact.',
+        },
+        {
+          label: 'Two-pass extraction paid for itself.',
+          text: 'Routing pages to field groups before extracting sharpened accuracy and cut cost versus one long-context prompt over the full document.',
+        },
+      ],
+      differently: [
+        {
+          label: 'Ship self-consistency scoring, not defer it.',
+          text: 'One of three planned trust signals was cut once grounding and the verifier pass caught most failures — a real gap that should close before this handles higher-stakes fields.',
+        },
+        {
+          label: 'Give extraction a way to say "confirmed absent."',
+          text: 'The current schema can\'t distinguish "not found in routed pages" from "clause confirmed absent" — the direct mechanism behind the 0% risk-clause number.',
+        },
+        {
+          label: 'Sequence backend before UI more strictly.',
+          text: "Building review-workspace screens ahead of the wired backend was a deliberate, logged deviation — it worked, but it's a sequencing risk I'd tighten next time.",
+        },
+      ],
+      ifStartedOver: "I'd design the negative-claim extraction path and lock the confidence threshold before writing a single prompt — both were discovered mid-build instead of decided up front.",
+    },
+
+    summary: {
+      system: 'Attest — Lease Intelligence',
+      primaryServices: 'Claude · pdf.js · Drizzle',
+      status: 'Built — portfolio demo',
+      type: 'Document intelligence pipeline',
     },
   },
 ];

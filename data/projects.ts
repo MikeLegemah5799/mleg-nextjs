@@ -27,6 +27,15 @@ export const ACCENTS = {
 
 export const PROJECTS: Project[] = [
   {
+    id: 'attest', featured: true, accent: 'accG',
+    title: 'Attest — Lease Intelligence',
+    tag: 'Document AI · Trust Infrastructure', tagColor: 'var(--green)',
+    desc: "A commercial lease abstraction tool where every extracted field is grounded, verified, and cited back to its source page before it's shown as fact — built to close the gap between AI adoption and AI trust in commercial real estate.",
+    stack: 'Next.js 16 · TypeScript · Claude · pdf.js · Drizzle · SQLite',
+    category: ['AI / ML', 'Document Intelligence', 'Full-Stack'],
+    highlights: ['▲ Grounded', '◎ Citation-verified', '↗ Eval-scored'],
+  },
+  {
     id: 'contact-center-agent', featured: true, accent: 'accP',
     title: 'Contact Center Agent & Test/Eval Pipeline',
     tag: 'AI · LLM · Real-time · RAG', tagColor: 'var(--purple)',

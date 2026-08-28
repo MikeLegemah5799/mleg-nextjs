@@ -135,8 +135,12 @@
   padding: 16px 18px; text-align: center;
 }
 .diagBoxOrch { border-color: rgba(171,157,242,0.5); background: rgba(171,157,242,0.06); }
+.diagBoxGreen { border-color: rgba(169,220,118,0.5); background: rgba(169,220,118,0.06); }
+.diagBoxCyan { border-color: rgba(120,220,232,0.5); background: rgba(120,220,232,0.06); }
 .diagIcon { font-size: 18px; color: var(--soft); margin-bottom: 8px; }
 .diagBoxOrch .diagIcon { color: var(--purple); }
+.diagBoxGreen .diagIcon { color: var(--green); }
+.diagBoxCyan .diagIcon { color: var(--cyan); }
 .diagLabel { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
 .diagSub { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
 .diagArrow { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 16px; flex: 0 0 24px; }
@@ -158,6 +162,7 @@
   font-family: var(--font-mono); font-size: 10px; color: var(--muted);
   border: 1px solid var(--border-md); border-radius: 20px; padding: 5px 12px;
 }
+.diagNote { font-family: var(--font-mono); font-size: 12px; color: var(--green); margin-top: 18px; }
 .archCaption { text-align: center; font-size: 12px; font-style: italic; color: var(--muted); margin-top: 18px; }
 
 /* DECISIONS */
