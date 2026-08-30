@@ -298,20 +298,23 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
             <div className={`${s.projCard} ${s.projCardFeatured}`}>
               <div className={`${s.projVis} ${s.projVisFeatured}`} style={{ background: 'linear-gradient(135deg,var(--bg-deep),#1c1830)' }}>
                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--cyan)', letterSpacing: '0.1em' }}>AI infrastructure at AWS</div>
-                <div style={{ fontFamily: 'var(--font-serif)', fontSize: 34, background: 'linear-gradient(120deg,var(--yellow),var(--orange))', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Contact Center Agent & Test/Eval Pipeline</div>
+                <div style={{ fontFamily: 'var(--font-serif)', fontSize: 34, background: 'linear-gradient(120deg,var(--yellow),var(--orange))', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Sentinel. Eval-AS-A-MCP</div>
                 <div style={{ display: 'flex', gap: 16, fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--muted)' }}>
-                  <span>▲ Real-time</span><span>◎ Agentic AI</span><span>↗ RAG</span>
+                  <span>▲ Eval</span><span>◎ Agentic AI</span><span>↗ MCP</span>
                 </div>
               </div>
               <div className={s.projBody}>
-                <div className={s.projTag}>AI · RAG · Real-time</div>
-                <h3 className={s.projT}>Contact Center Agent & Test/Eval Pipeline</h3>
+                <div className={s.projTag}>AI · EVAL · MCP</div>
+                <h3 className={s.projT}>Eval-as-a-MCP</h3>
                 <p className={s.projD}>
                   Built a contact center agent leveraging LLMs and RAG for customer support. Implemented a test and evaluation pipeline to assess model performance and improve response accuracy.</p>
                 <div className={s.projLinks}>
-                  <Link href="/projects/contact-center-agent" className={s.projLink}>View Case Study →</Link>
+                  <Link href="/projects/sentinela-mcp" className={s.projLink}>View Case Study →</Link>
+                  <Link href="https://sentinel-six-ruby.vercel.app/" className={s.projLink} target="_blank" rel="noopener noreferrer">
+                    View Demo →
+                  </Link>
                 </div>
-                <div className={s.projStack}>Amazon Connect · Lex · React · Bedrock · DynamoDB · S3 · Lambda · AppSync · DeepEval</div>
+                <div className={s.projStack}>Model Context Protocol · Next.js · React · mcp-handler · Anthropic API · node:test · Zod v4 </div>
               </div>
             </div>
 
@@ -330,13 +333,13 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
             </div>
 
             <div className={s.projCard}>
-              <div className={s.projVis}>🌆</div>
+              <div className={s.projVis}>🏢</div>
               <div className={s.projBody}>
-                <div className={s.projTag}>Full-Stack · SSR · GraphQL</div>
-                <h3 className={s.projT}>OMNY Platform</h3>
-                <p className={s.projD}>Led SSR component architecture and CMS integration for a high-traffic editorial platform.</p>
-                <div className={s.projLinks}><a href="https://omny.info/" className={s.projLink} target="_blank" rel="noopener noreferrer">View Site →</a></div>
-                <div className={s.projStack}>React · Laravel · GraphQL · PHP</div>
+                <div className={s.projTag}>Full-Stack · AI · RAG</div>
+                <h3 className={s.projT}>Attest Commerical Real Estate Lease Intelligence</h3>
+                <p className={s.projD}>A lease intelligence tool that extracts key terms from commercial lease PDFs, verifies every extracted value against the source document before trusting it, and derives critical dates and risk flags from that verified data — with a citation trail from any field back to the exact page and passage it came from.</p>
+                <div className={s.projLinks}><a href="https://github.com/MikeLegemah5799/attest" className={s.projLink} target="_blank" rel="noopener noreferrer">View Code →</a></div>
+                <div className={s.projStack}>React · TypeScript · NextJS · Anthropic API</div>
               </div>
             </div>
 

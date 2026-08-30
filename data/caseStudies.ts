@@ -47,6 +47,8 @@ export type CaseStudy = {
 
   decisions: { color: string; label: string; text: string }[];
 
+  guardrails?: { label: string; text: string }[];
+
   lessonsLearned?: {
     heldUp: { label: string; text: string }[];
     differently: { label: string; text: string }[];
@@ -57,6 +59,224 @@ export type CaseStudy = {
 };
 
 export const CASE_STUDIES: CaseStudy[] = [
+  {
+    projectId: 'priauthra',
+    breadcrumbLabel: 'PriAuthra — Prior-Authorization Agent',
+    eyebrow: 'Case Study · Healthcare AI · Agentic Orchestration',
+    title: 'PriAuthra — A Prior-Auth Agent That Shows Its Work',
+    subtitle: "A multi-agent system that automates the healthcare prior-authorization workflow — checking eligibility, matching submitted documentation against a payer's actual policy text, and drafting grounded appeals on denial — with a human reviewing and approving every decision before anything reaches a payer.",
+    techPills: [
+      { label: 'LangGraph', color: 'var(--cyan)' },
+      { label: 'FastAPI', color: 'var(--green)' },
+      { label: 'Claude', color: 'var(--purple)' },
+      { label: 'Pinecone', color: 'var(--yellow)' },
+      { label: 'Next.js', color: 'var(--pink)' },
+      { label: 'Voyage AI', color: 'var(--orange)' },
+      { label: 'Neon Postgres', color: 'var(--cyan)' },
+      { label: 'LangSmith', color: 'var(--green)' },
+    ],
+    meta: {
+      role: 'Full-stack build, agent orchestration & compliance design',
+      domain: 'Healthcare · prior authorization',
+      primaryServices: 'Claude API · LangGraph · Pinecone',
+    },
+
+    problem: {
+      functional: [
+        'Check coverage and whether PA is even required for the submitted procedure/diagnosis code — callable per case, not a blanket assumption',
+        "Retrieve the payer's actual policy text and assess submitted documentation against it — matched criteria, gaps, and citations, not a bare pass/fail",
+        'Draft an appeal on denial grounded in the same citations and specific gaps found, not a generic denial-response template',
+      ],
+      nonFunctional: [
+        { label: 'Grounding, not assertion', text: 'no clinical-criteria claim shown without a citation and similarity score tied to retrieved policy text' },
+        { label: 'Human-in-the-loop', text: 'nothing reaches a payer automatically — a reviewer approves, edits, or denies every case' },
+        { label: 'Isolation by construction', text: "a case for one payer structurally cannot retrieve another payer's criteria" },
+      ],
+    },
+
+    scale: {
+      intro: 'An MVP build: single developer, free-tier infrastructure everywhere except Anthropic, no BAA yet with any vendor. The numbers below are what the architecture had to hold under from day one — a hard gate on real PHI, not a scale target.',
+      stats: [
+        { value: '15', label: 'hard recursion limit before a case fails to needs_review', color: 'var(--cyan)' },
+        { value: '99', label: 'backend tests passing, ruff/mypy clean', color: 'var(--green)' },
+        { value: '2', label: 'real, live-only bugs found and fixed via full-loop testing', color: 'var(--purple)' },
+      ],
+    },
+
+    api: [
+      { signature: 'POST /pa-requests/{id}/run → 202 Accepted', desc: 'Starts the LangGraph state machine for a case. Supports an `Idempotency-Key` header so a retried request can\'t double-trigger a run.' },
+      { signature: 'GET /pa-requests/{id}/stream → SSE stream', desc: 'Live node start/end events as the supervisor routes the case: `{type: node_start|node_end|message|error|done, node, payload, timestamp}`.' },
+      { signature: 'POST /internal/policies/search → PolicyMatch[]', desc: 'Internal-only. Filters Pinecone retrieval server-side by `payer_id` + `procedure_code` pulled from the case record, never from LLM-generated query text.' },
+      { signature: 'PATCH /appeals/{id} → AppealCase', desc: 'Edit a drafted appeal or set `status: submitted|denied`. Requires an attestation flag before a submitted status is accepted.' },
+      { signature: 'POST /eligibility/check → EligibilityCheckResult', desc: 'Confirms coverage and whether PA is required at all for this procedure — a mocked payer-clearinghouse call in this MVP, swappable for a real X12 270/271 integration later.' },
+    ],
+
+    dataModel: {
+      rows: [
+        { entity: 'PriorAuthRequest', fields: 'Core case record. PK doubles as the LangGraph `thread_id`; its status enum drives supervisor termination.' },
+        { entity: 'Patient', fields: 'Minimized fields only — MRN encrypted at the field level, DOB, plan foreign key.' },
+        { entity: 'EligibilityCheckResult', fields: 'Coverage / PA-required outcome per request.' },
+        { entity: 'ClinicalCriteriaAssessment', fields: 'Matched criteria, gaps, citations, and confidence from the clinical-criteria node.' },
+        { entity: 'AppealCase', fields: 'Draft letter, status (`drafting` / `reviewed` / `submitted` / `denied`), outcome.' },
+        { entity: 'AuditLog', fields: 'Actor, role, action, resource, IP, timestamp — written on every PHI-touching read/write.' },
+        { entity: 'PARunState (LangGraph)', fields: 'In-flight working memory only — `request_id`, `documents` (refs, not raw text), `eligibility_result`, `criteria_assessment`, `next_step`.' },
+      ],
+      note: 'The API and frontend always read the domain tables, never live graph state — if the two ever disagree, the domain tables win. `PARunState` is checkpointed for resumability, not queried directly by anything a reviewer sees.',
+    },
+
+    architecture: [
+      {
+        label: 'Case routing flow',
+        intro: "Not every case needs all three specialists, and order isn't fixed — the supervisor inspects shared state and routes dynamically instead of following a linear pipeline.",
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '📋', label: 'Case created' },
+              { icon: '⊘', label: 'Supervisor', highlight: 'cyan' },
+              { icon: '⊙', label: 'specialist node' },
+              { icon: '⊘', label: 'Supervisor', highlight: 'cyan' },
+              { icon: '√', label: 'end' },
+            ],
+          },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '🩺', label: 'Eligibility node', sub: 'Confirms coverage and whether PA is required (mocked payer-clearinghouse call in this MVP)', highlight: 'cyan' },
+              { icon: '🔍', label: 'Clinical-criteria node', sub: 'Pinecone RAG retrieval of payer policy text, filtered server-side by payer + procedure code', highlight: 'green' },
+              { icon: '✍️', label: 'Appeals node', sub: 'Drafts a letter grounded in persisted citations — reuses retrieval, never re-queries', highlight: 'purple' },
+            ],
+          },
+        ],
+        note: "Routing is a real Claude call with forced structured output — not parsed free text, not a hand-rolled if/else — so a decision can't silently misfire. Each node is bound to its own tool list at graph-construction time; only the service layer holds API credentials.",
+        caption: 'Fig. 1a — The supervisor cycle repeats until case status reaches a terminal value or the recursion limit forces an exit.',
+      },
+      {
+        label: 'Deploy & observability topology',
+        intro: 'Every layer runs on free-tier infrastructure except Anthropic — a hard constraint on cost, and on what data is allowed to flow through it until BAAs are in place.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '▤', label: 'Next.js', sub: 'Vercel' },
+              { icon: '⚙', label: 'FastAPI', sub: 'Render', highlight: 'cyan' },
+              { icon: '🐘', label: 'Neon Postgres' },
+              { icon: '📦', label: 'Cloudflare R2' },
+            ],
+          },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '🔎', label: 'Pinecone' },
+              { icon: '🛰', label: 'LangSmith tracing' },
+              { icon: '🔁', label: 'GitHub Actions CI/CD' },
+            ],
+          },
+        ],
+        note: 'The frontend never talks to Anthropic, Pinecone, or the eligibility API directly — only the backend does, keeping every third-party credential server-side. Migrations run as a distinct pre-deploy CI step, never inline at app startup.',
+        caption: "Fig. 1b — Backend cold-starts after ~15 min idle on Render's free tier; an accepted trade-off for an MVP demo.",
+      },
+    ],
+
+    decisions: [
+      {
+        color: 'var(--orange)',
+        label: 'Trade-off. Supervisor + specialists, not a fixed pipeline.',
+        text: "Case flow branches — eligibility-only, denial → appeal, missing docs → awaiting input — a supervisor routing dynamically off shared state fits that; a linear chain doesn't.",
+      },
+      {
+        color: 'var(--purple)',
+        label: 'Invariant. Retrieval scoped from the case record, never from LLM-generated text.',
+        text: "The Pinecone filter comes from the DB record server-side, so a case for payer X structurally cannot retrieve payer Y's criteria — no prompt can override this.",
+      },
+      {
+        color: 'var(--pink)',
+        label: 'Constraint. Raw clinical text as a closure argument, not graph state.',
+        text: 'PHI is passed directly to the two nodes that need it rather than stored in `PARunState`, so it structurally can\'t appear in a LangSmith trace.',
+      },
+      {
+        color: 'var(--green)',
+        label: 'Bootstrap-first. No Redis or worker fleet for the MVP.',
+        text: "Runs execute inline in the async request handler; LangGraph's Postgres checkpoint makes a crashed request resumable without a queue — revisit only if multi-instance SSE fan-out becomes necessary.",
+      },
+      {
+        color: 'var(--yellow)',
+        label: 'Trade-off. Voyage AI for embeddings, not Anthropic-direct.',
+        text: "Anthropic has no embeddings endpoint; Voyage is Anthropic's recommended pairing, with OpenAI as fallback.",
+      },
+      {
+        color: 'var(--cyan)',
+        label: 'Verification. Proved the full loop live against real vendors, not just test fakes.',
+        text: "Driving the actual frontend in a headless-Chromium session against real Anthropic, Pinecone, and Voyage AI surfaced two real bugs unit tests hadn't caught.",
+      },
+    ],
+
+    guardrails: [
+      {
+        label: 'Human-in-the-loop before anything goes out',
+        text: 'An appeal can\'t be approved without an attestation checkbox — "submission" is a status change plus the letter, never automatic payer transmission.',
+      },
+      {
+        label: 'Grounding, not assertion',
+        text: 'Every clinical-criteria and appeal claim is tied to retrieved policy text with a citation and similarity score, shown in the UI as its own tool block.',
+      },
+      {
+        label: 'Bounded agent loop',
+        text: 'A hard recursion limit fails a case to needs_review instead of looping indefinitely if the supervisor bounces between specialists.',
+      },
+      {
+        label: 'Full audit trail',
+        text: 'Every read/write touching a PriorAuthRequest, Document, or AppealCase writes an AuditLog row — actor, role, action, resource, IP, timestamp.',
+      },
+      {
+        label: 'Role-based access',
+        text: "Providers see only their own requests; a provider probing another provider's request id gets a 404, never a 403.",
+      },
+      {
+        label: 'PHI kept out of observability by construction',
+        text: "Raw clinical documentation structurally can't appear in a LangSmith trace — it's never part of traced graph state.",
+      },
+    ],
+
+    lessonsLearned: {
+      heldUp: [
+        {
+          label: 'Per-node tool binding as a structural restriction, not a prompted one,',
+          text: "caught nothing in testing — but it's the reason a node can never call a tool it shouldn't, independent of what the prompt says.",
+        },
+        {
+          label: 'Keeping raw clinical text out of graph state entirely',
+          text: 'meant no extra filtering logic was needed when LangSmith tracing came online later — PHI was already structurally excluded, not scrubbed after the fact.',
+        },
+        {
+          label: 'Retrying the whole call, not just the request,',
+          text: 'in `call_with_tool_retry` fixed a real, live-only bug where a forced `draft_appeal` tool call intermittently omitted a required field.',
+        },
+      ],
+      differently: [
+        {
+          label: 'The payer-identifier bug',
+          text: "— a UUID FK threaded into graph state instead of the payer's string slug — silently returned empty retrieval for every real request, and wasn't caught until a live end-to-end run against real Pinecone.",
+        },
+        {
+          label: 'LangSmith tracing defaults off locally until a BAA is confirmed,',
+          text: "which is the right safety call but slowed down actually watching agent traces during early development. I'd stand up a throwaway non-PHI tracing project sooner.",
+        },
+        {
+          label: 'No automated frontend test framework yet',
+          text: "— verified instead by driving the full flow in a real browser, which worked but isn't repeatable the way Playwright would be.",
+        },
+      ],
+      ifStartedOver: 'thread `payer_id` as a typed, validated field into graph state from day one, instead of discovering the wrong identifier only when live retrieval silently came back empty.',
+    },
+
+    summary: {
+      system: 'PriAuthra — Prior-Authorization Agent',
+      primaryServices: 'Claude API · LangGraph · Pinecone',
+      status: 'Live end-to-end, not yet on staging — BAAs pending',
+      type: 'Healthcare AI · agentic orchestration',
+    },
+  },
   {
     projectId: 'rag-pipeline',
     breadcrumbLabel: 'RAG Ingestion Pipeline',

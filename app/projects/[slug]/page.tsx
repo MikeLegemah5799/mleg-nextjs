@@ -44,7 +44,7 @@ function DiagramRowView({ row }: { row: DiagramRow }) {
           <div key={g.label} className={s.diagGroupCol}>
             <div className={s.diagGroupTitle}>{g.label}</div>
             <div className={s.diagRow}>
-              {g.nodes.map((n) => <DiagramBox key={n.label} node={n} />)}
+              {g.nodes.map((n, i) => <DiagramBox key={`${n.label}-${i}`} node={n} />)}
             </div>
           </div>
         ))}
@@ -55,8 +55,8 @@ function DiagramRowView({ row }: { row: DiagramRow }) {
     return (
       <div className={s.diagRow}>
         {row.nodes.flatMap((n, i) => [
-          i > 0 ? <div key={`${n.label}-or`} className={s.diagOr}>or</div> : null,
-          <DiagramBox key={n.label} node={n} />,
+          i > 0 ? <div key={`or-${i}`} className={s.diagOr}>or</div> : null,
+          <DiagramBox key={`${n.label}-${i}`} node={n} />,
         ])}
       </div>
     );
@@ -65,8 +65,8 @@ function DiagramRowView({ row }: { row: DiagramRow }) {
   return (
     <div className={`${s.diagRow}${single ? ` ${s.diagRowCenter}` : ''}`}>
       {row.nodes.flatMap((n, i) => [
-        row.type === 'chain' && i > 0 ? <div key={`${n.label}-arrow`} className={s.diagArrow}>→</div> : null,
-        <DiagramBox key={n.label} node={n} />,
+        row.type === 'chain' && i > 0 ? <div key={`arrow-${i}`} className={s.diagArrow}>→</div> : null,
+        <DiagramBox key={`${n.label}-${i}`} node={n} />,
       ])}
     </div>
   );
@@ -128,6 +128,20 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                   <span key={label} className={s.techPill} style={{ color }}>{label}</span>
                 ))}
               </div>
+              {(project.codeUrl || project.siteUrl) && (
+                <div className={s.headerActions}>
+                  {project.codeUrl && (
+                    <a href={project.codeUrl} className={s.btnGithub} target="_blank" rel="noopener noreferrer">
+                      View on GitHub
+                    </a>
+                  )}
+                  {project.siteUrl && (
+                    <a href={project.siteUrl} className={s.btnLiveDemo} target="_blank" rel="noopener noreferrer">
+                      Live demo →
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className={s.metaBox}>
@@ -283,11 +297,32 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             </div>
           </section>
 
-          {/* 07 LESSONS LEARNED */}
-          {cs.lessonsLearned && (
+          {/* 07 GUARDRAILS */}
+          {cs.guardrails && (
             <section className={s.section}>
               <div className={s.sectionHead}>
                 <span className={s.sectionNum}>07</span>
+                <h2 className={s.sectionTitle}>Guardrails</h2>
+              </div>
+              <div className={s.guardrailsGrid}>
+                {cs.guardrails.map(({ label, text }) => (
+                  <div key={label} className={s.guardrailsCard}>
+                    <div className={s.guardrailsLabel}>
+                      <span className={s.guardrailsBullet} />
+                      {label}
+                    </div>
+                    <p className={s.guardrailsText}>{renderWithCode(text)}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* LESSONS LEARNED */}
+          {cs.lessonsLearned && (
+            <section className={s.section}>
+              <div className={s.sectionHead}>
+                <span className={s.sectionNum}>{cs.guardrails ? '08' : '07'}</span>
                 <h2 className={s.sectionTitle}>Lessons learned</h2>
               </div>
               <div className={s.lessonsGrid}>

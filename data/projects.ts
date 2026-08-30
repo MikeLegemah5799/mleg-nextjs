@@ -27,13 +27,28 @@ export const ACCENTS = {
 
 export const PROJECTS: Project[] = [
   {
+    id: 'priauthra', featured: true, accent: 'accO',
+    title: 'PriAuthra — A Prior-Auth Agent That Shows Its Work',
+    tag: 'Healthcare AI · Agentic Orchestration', tagColor: 'var(--orange)',
+    desc: 'A multi-agent system that automates the healthcare prior-authorization workflow — checking eligibility, matching submitted documentation against a payer\'s actual policy text, and drafting grounded appeals on denial — with a human reviewing and approving every decision before anything reaches a payer.',
+    stack: 'LangGraph · FastAPI · Claude · Pinecone · Next.js · Voyage AI · Neon Postgres · LangSmith',
+    siteUrl: 'https://priauthra.vercel.app',
+    codeUrl: 'https://github.com/MikeLegemah5799/priauthra',
+    category: ['AI / ML', 'Healthcare', 'Full-Stack'],
+    highlights: ['▲ Human-in-the-loop', '◎ Grounded citations', '↗ Live demo'],
+    emoji: '🏥'
+  },
+  {
     id: 'sentinel', featured: true, accent: 'accPk',
     title: 'Sentinel — Eval-as-MCP-Server',
     tag: 'AI Eval Infrastructure · MCP', tagColor: 'var(--pink)',
     desc: 'An MCP server that scores AI agent responses before they reach a user, not after. Deterministic checks resolve the obvious cases for free; only genuinely ambiguous responses escalate to a judge model.',
     stack: 'Model Context Protocol · TypeScript · Next.js · Vercel · mcp-handler · Zod v4 · Anthropic API',
+    siteUrl: 'https://sentinel-six-ruby.vercel.app/',
+    codeUrl: 'https://github.com/MikeLegemah5799/sentinel',
     category: ['AI / ML', 'Infrastructure', 'Full-Stack'],
     highlights: ['▲ Deterministic-first', '◎ Judge-escalated', '↗ Live demo'],
+    emoji: '🛡️',
   },
   {
     id: 'attest', featured: true, accent: 'accG',
@@ -41,8 +56,10 @@ export const PROJECTS: Project[] = [
     tag: 'Document AI · Trust Infrastructure', tagColor: 'var(--green)',
     desc: "A commercial lease abstraction tool where every extracted field is grounded, verified, and cited back to its source page before it's shown as fact — built to close the gap between AI adoption and AI trust in commercial real estate.",
     stack: 'Next.js 16 · TypeScript · Claude · pdf.js · Drizzle · SQLite',
+    codeUrl: 'https://github.com/MikeLegemah5799/attest',
     category: ['AI / ML', 'Document Intelligence', 'Full-Stack'],
     highlights: ['▲ Grounded', '◎ Citation-verified', '↗ Eval-scored'],
+    emoji: '🏢',
   },
   {
     id: 'contact-center-agent', featured: true, accent: 'accP',
@@ -52,6 +69,7 @@ export const PROJECTS: Project[] = [
     stack: 'Amazon Connect · Lex · React · Bedrock · DynamoDB · S3 · Lambda · AppSync · DeepEval',
     category: ['AI / ML', 'RAG', 'Infrastructure', 'Cloud', 'CI/CD', 'Real-time'],
     highlights: ['▲ Real-time', '◎ Eval-gated', '↗ RAG-grounded'],
+    emoji: '📞'
   },
   {
     id: 'rag-pipeline', featured: true, accent: 'accY',
@@ -61,6 +79,7 @@ export const PROJECTS: Project[] = [
     stack: 'AWS Textract · Bedrock Titan · OpenSearch · Step Functions · DynamoDB · S3 · Lambda',
     category: ['AI / ML', 'RAG', 'Infrastructure', 'Cloud'],
     highlights: ['▲ Ingestion', '◎ Retrieval', '↗ Multi-tenant'],
+    emoji: '📄',
   },
   {
     id: 'multi-agent-support', featured: true, accent: 'accC',
@@ -70,6 +89,7 @@ export const PROJECTS: Project[] = [
     stack: 'Bedrock Agents · OpenSearch · SQS · Lambda · DynamoDB',
     category: ['AI / ML', 'RAG', 'Infrastructure', 'Cloud'],
     highlights: ['▲ Multi-agent', '◎ Guardrailed', '↗ RAG-grounded'],
+    emoji: '🏘️'
   },
   {
     id: 'spacewatch', accent: 'accC',
