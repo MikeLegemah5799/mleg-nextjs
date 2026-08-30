@@ -27,6 +27,18 @@ export const ACCENTS = {
 
 export const PROJECTS: Project[] = [
   {
+    id: 'liquid-capital', featured: true, accent: 'accC',
+    title: "Liquid Capital — A Treasury Copilot That Can't Move Money Itself",
+    tag: 'FinTech AI · Agentic Orchestration', tagColor: 'var(--cyan)',
+    desc: 'A multi-agent LangGraph backend that analyzes liquidity, retrieves grounding policy, and proposes transfers — gated by a deterministic risk layer and a human-in-the-loop approval step before anything executes. A Next.js dashboard sits on top of it.',
+    stack: 'LangGraph · FastAPI · Claude · Pinecone · Next.js · SQLModel · LangSmith · Vitest',
+    siteUrl: 'https://liquid-capital.vercel.app/',
+    codeUrl: 'https://github.com/MikeLegemah5799/liquid-capital',
+    category: ['AI / ML', 'FinTech', 'Full-Stack'],
+    highlights: ['▲ Human-in-the-loop', '◎ Deterministic risk gate', '↗ Live demo'],
+    emoji: '💵'
+  },
+  {
     id: 'priauthra', featured: true, accent: 'accO',
     title: 'PriAuthra — A Prior-Auth Agent That Shows Its Work',
     tag: 'Healthcare AI · Agentic Orchestration', tagColor: 'var(--orange)',

@@ -1,4 +1,4 @@
-export type DiagramNode = { icon: string; label: string; sub?: string; highlight?: boolean | 'purple' | 'green' | 'cyan' | 'yellow' | 'pink' };
+export type DiagramNode = { icon?: string; label: string; sub?: string; highlight?: boolean | 'purple' | 'green' | 'cyan' | 'yellow' | 'pink' };
 
 export type DiagramRow =
   | { type: 'chain'; nodes: DiagramNode[]; arrowBefore?: boolean }
@@ -59,6 +59,226 @@ export type CaseStudy = {
 };
 
 export const CASE_STUDIES: CaseStudy[] = [
+  {
+    projectId: 'liquid-capital',
+    breadcrumbLabel: 'Liquid Capital — Treasury Operations Copilot',
+    eyebrow: 'Case Study · FinTech AI · Agentic Orchestration',
+    title: "Liquid Capital — A Treasury Copilot That Can't Move Money Itself",
+    subtitle: 'A multi-agent LangGraph backend that analyzes liquidity, retrieves grounding policy, and proposes transfers — gated by a deterministic risk layer and a human-in-the-loop approval step before anything executes. A Next.js dashboard sits on top of it.',
+    techPills: [
+      { label: 'LangGraph', color: 'var(--cyan)' },
+      { label: 'FastAPI', color: 'var(--green)' },
+      { label: 'Claude', color: 'var(--purple)' },
+      { label: 'Pinecone', color: 'var(--yellow)' },
+      { label: 'Next.js', color: 'var(--pink)' },
+      { label: 'SQLModel', color: 'var(--orange)' },
+      { label: 'LangSmith', color: 'var(--cyan)' },
+      { label: 'Vitest', color: 'var(--green)' },
+    ],
+    meta: {
+      role: 'Full-stack build, agent orchestration & guardrail design',
+      domain: 'FinTech · treasury operations',
+      primaryServices: 'Claude API · LangGraph · Pinecone',
+    },
+
+    problem: {
+      functional: [
+        'Analyze current liquidity position and cash forecast, grounding any recommendation in the applicable treasury policy text',
+        'Classify a free-text request into one of five intents — shortfall analysis, explicit transfer, status inquiry, payment inquiry, off-topic — and route accordingly',
+        'Propose a transfer recommendation with a from/to account, but never execute one without a human sign-off',
+      ],
+      nonFunctional: [
+        { label: 'Deterministic risk gate', text: 'transfer limits, reserve floor, and approval thresholds are decided by plain Python, never inferred by the model' },
+        { label: 'Structural tool boundary', text: 'only read tools are ever bindable to the LLM — nothing that moves money is a tool the model can call itself' },
+        { label: 'Server-side authorization', text: 'approver identity is checked in the API, not just gated in the UI' },
+      ],
+    },
+
+    scale: {
+      intro: 'A practice build for a live technical prototype challenge, scoped around a single rule from the original planning doc: "complexity has to buy something." SQLite over a hosted DB, Pinecone with an in-memory fallback — the project runs end-to-end with zero external setup beyond one Anthropic API key.',
+      stats: [
+        { value: '4', label: 'agent nodes fanning out in parallel from a single START', color: 'var(--purple)' },
+        { value: '10 + 42', label: 'backend pytest + frontend Vitest tests, all passing', color: 'var(--green)' },
+        { value: '5', label: 'golden-eval cases run through the real graph, one per intent', color: 'var(--purple)' },
+      ],
+    },
+
+    api: [
+      { signature: 'POST /api/analyze → 200 | 502', desc: "Runs the graph, persists a `Decision` + audit entry. Returns 502 with the graph's accumulated errors if the run failed without producing a recommendation — no fabricated fallback data." },
+      { signature: 'PATCH /api/approve/{decision_id} → Decision', desc: "Checks `get_user_permissions` before allowing an approve decision. `403` if the approver isn't authorized, `409` if the decision was already resolved." },
+      { signature: 'GET /api/liquidity → LiquiditySnapshot', desc: 'Read-only, using the same tools the Liquidity Agent calls — exposed directly so the dashboard renders before any chat turn happens.' },
+      { signature: 'GET /api/decisions/{decision_id} → Decision', desc: 'Fetch a persisted decision by id, including its current status and audit history.' },
+    ],
+
+    dataModel: {
+      rows: [
+        { entity: 'Decision', fields: 'Request, liquidity analysis, retrieved policies, and recommendation stored as JSON columns, plus `status: pending|executed|rejected`.' },
+        { entity: 'AuditLog', fields: 'One row per lifecycle event — `recommended`, `executed`, `rejected` — with the acting user.' },
+        { entity: 'GraphState (LangGraph)', fields: 'TypedDict with an `Annotated[list[str], operator.add]` reducer on `errors`, since multiple parallel branches can each append in the same step.' },
+      ],
+      note: "`intent`, `risk_assessment`, and `payment_analysis` are computed per-request and returned in the API response but intentionally not persisted — they're graph-internal reasoning, not the audit-relevant record. Only the decision and its lifecycle events are durable.",
+    },
+
+    architecture: [
+      {
+        label: 'Parallel fan-out, deterministic join',
+        intro: 'Four agents can run in parallel off a single request; one deterministic validator — not an LLM — is the only place that decides whether a human needs to sign off.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [{ icon: '▶', label: 'START', highlight: 'cyan' }],
+          },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '💰', label: 'liquidity_agent' },
+              { icon: '📄', label: 'policy_agent' },
+              { icon: '⚙', label: 'intent_parser' },
+              { icon: '🗄', label: 'payments_agent *' },
+            ],
+          },
+          {
+            type: 'chain',
+            nodes: [{ icon: '⊘', label: 'risk_validator', highlight: 'cyan' }],
+          },
+          {
+            type: 'grid',
+            nodes: [
+              { label: 'Liquidity Agent', sub: 'Reads balances + cash forecast, computes projected shortfall/surplus', highlight: 'cyan' },
+              { label: 'Policy Agent', sub: 'RAG retrieval of the top-k relevant policy chunks for the request', highlight: 'green' },
+              { label: 'Intent Parser', sub: "The graph's only LLM call — classifies into 1 of 5 types via structured output", highlight: 'purple' },
+              { label: 'Payments Agent *', sub: 'Conditional — joins only if a keyword pre-filter matches, no second LLM call', highlight: 'yellow' },
+            ],
+          },
+        ],
+        note: "`risk_validator` is pure deterministic Python, not an LLM call — it's the sole place `approval_required` gets set, branching on intent type against transfer limits, reserve floor, and a payment-batch approval threshold from `tools/limits.py`.",
+        caption: 'Fig. 1a — ★ Payments Agent joins the parallel wave only when a cheap keyword check on the raw request text matches, decided before any LLM call runs.',
+      },
+      {
+        label: 'Deploy topology',
+        intro: 'No CORS configuration on the backend by design — the frontend proxies through its own route handlers instead, so the backend URL is never exposed to the browser.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '▤', label: 'Next.js', sub: 'Vercel' },
+              { icon: '⇄', label: '/api/proxy/*', sub: 'same-origin', highlight: 'yellow' },
+              { icon: '⚙', label: 'FastAPI', sub: 'Render' },
+            ],
+          },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '🗄', label: 'SQLite', sub: 'local disk' },
+              { icon: '🔎', label: 'Pinecone', sub: 'optional' },
+              { icon: '🛰', label: 'LangSmith tracing', sub: 'env-var only' },
+            ],
+          },
+        ],
+        note: 'Every dependency past Claude itself is optional at runtime. No Pinecone key falls back to in-memory keyword-overlap retrieval over the same policy chunks; no LangSmith key silently skips tracing rather than failing requests.',
+        caption: "Fig. 1b — SQLite persists to local disk; doesn't survive a redeploy on a standard ephemeral-filesystem host without a persistent volume.",
+      },
+    ],
+
+    decisions: [
+      {
+        color: 'var(--orange)',
+        label: 'Trade-off. Payments Agent gated by a keyword pre-filter, not a second LLM call.',
+        text: 'A payment-related request phrased without any of those keywords skips the branch even if `intent_parser` would have classified it correctly — an accepted, documented gap rather than paying for a second classification call on every request.',
+      },
+      {
+        color: 'var(--purple)',
+        label: 'Invariant. Only read tools are ever bindable to the LLM.',
+        text: 'Transfer limits, reserve floors, and approval authorization live in plain Python called directly by `risk_validator` and `/api/approve` — never exposed as an LLM-callable tool. The model proposes; the code decides.',
+      },
+      {
+        color: 'var(--pink)',
+        label: 'Constraint. The payment-inquiry path never sets approval_required.',
+        text: 'It compares the aggregate against a policy threshold and states in the response text whether sign-off is needed, but stays informational-only since no transfer is actually being proposed.',
+      },
+      {
+        color: 'var(--green)',
+        label: 'Bootstrap-first. SQLite over a hosted DB, Pinecone with an in-memory fallback.',
+        text: 'Both chosen so the project runs with zero external setup beyond one Anthropic API key — complexity has to buy something, per the original scoping doc.',
+      },
+      {
+        color: 'var(--yellow)',
+        label: 'Trade-off. The Agent Activity Feed simulates the step sequence rather than truly streaming.',
+        text: 'The backend graph run is synchronous with no streaming endpoint, so the feed shows the known step order only for the duration of the actual in-flight request, then reconciles against what the response shows evidence of having run.',
+      },
+      {
+        color: 'var(--cyan)',
+        label: 'Verification. Every UI change verified against a real running app, not just type-checked.',
+        text: 'Both servers driven with a headless browser in light and dark mode, checking for console errors — a different signal than unit tests run in isolation.',
+      },
+    ],
+
+    guardrails: [
+      {
+        label: "Deterministic risk gate, not an LLM decision",
+        text: '`risk_validator` is pure Python — transfer limits, reserve floor, and approval thresholds are evaluated in code, never inferred by the model.',
+      },
+      {
+        label: "Model can't call money-moving tools",
+        text: 'Only `get_account_balances`, `get_cash_forecast`, and `get_upcoming_payments` are ever bindable to the LLM; `limits.py` is never exposed as a tool.',
+      },
+      {
+        label: 'Server-side authorization, not just a UI gate',
+        text: "`PATCH /api/approve` checks `get_user_permissions` — an operator attempting self-approval gets a real 403, not a hidden button.",
+      },
+      {
+        label: 'No fabricated fallback data',
+        text: '`/api/analyze` returns 502 with the graph\'s accumulated errors on failure, rather than a plausible-looking but invented recommendation.',
+      },
+      {
+        label: 'Double-approval protected',
+        text: 'Resolving an already-resolved decision returns 409, not a silent overwrite of the prior outcome.',
+      },
+      {
+        label: 'Audit trail on every lifecycle event',
+        text: "`AuditLog` records `recommended` / `executed` / `rejected` with actor, distinct from the Decision's own stored analysis.",
+      },
+    ],
+
+    lessonsLearned: {
+      heldUp: [
+        {
+          label: 'Keeping the risk boundary in `tools/limits.py` as plain, non-bindable Python',
+          text: "means the model literally cannot execute a transfer no matter how it's prompted — a structural guarantee, not a prompted one.",
+        },
+        {
+          label: 'Returning an identical response shape from both RAG paths (Pinecone vs. in-memory fallback)',
+          text: 'meant `policy_agent` never needed to know which backend served a request — zero external accounts required to demo the retrieval story end to end.',
+        },
+        {
+          label: 'Verifying every UI change against a real running app',
+          text: "— both servers, headless browser, light and dark mode — caught console errors that type-checking and isolated unit tests wouldn't have.",
+        },
+      ],
+      differently: [
+        {
+          label: "The Payments Agent's keyword gate is a known, documented gap, not a fixed one",
+          text: "— a payment request phrased without those specific words silently skips the branch. With more time I'd add a cheap classifier instead of hand-picked keywords.",
+        },
+        {
+          label: 'No real authentication',
+          text: "— the approver identity is a UI dropdown standing in for a session system. The authorization check itself is real and server-side; only the identification of who's asking isn't.",
+        },
+        {
+          label: 'The Agent Activity Feed simulates a step sequence rather than truly streaming,',
+          text: 'since the backend has no streaming endpoint. A real SSE/WebSocket stream would remove the reconciliation step entirely.',
+        },
+      ],
+      ifStartedOver: 'give the graph a real streaming endpoint from day one, so the frontend reflects actual node execution instead of simulating a known sequence and reconciling after the fact.',
+    },
+
+    summary: {
+      system: 'Liquid Capital — Treasury Operations Copilot',
+      primaryServices: 'Claude API · LangGraph · Pinecone',
+      status: 'Live demo on Vercel · SQLite non-durable across redeploys',
+      type: 'FinTech AI · agentic orchestration',
+    },
+  },
   {
     projectId: 'priauthra',
     breadcrumbLabel: 'PriAuthra — Prior-Authorization Agent',

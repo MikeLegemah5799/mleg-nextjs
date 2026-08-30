@@ -26,7 +26,7 @@ function DiagramBox({ node }: { node: DiagramNode }) {
     : '';
   return (
     <div className={`${s.diagBox}${highlightClass ? ` ${highlightClass}` : ''}`}>
-      <div className={s.diagIcon}>{node.icon}</div>
+      {node.icon && <div className={s.diagIcon}>{node.icon}</div>}
       <div className={s.diagLabel}>{node.label}</div>
       {node.sub && <div className={s.diagSub}>{node.sub}</div>}
     </div>
