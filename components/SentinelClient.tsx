@@ -175,7 +175,7 @@ export default function SentinelClient() {
                     <li>Walkthrough: adding a third metric</li>
                     <li>Email support for integration questions</li>
                   </ul>
-                  <Link className={`${s.btnPrimary} ${s.priceCta}`} href="/contact">
+                  <Link className={`${s.btnPrimary} ${s.priceCta}`} href="https://buy.stripe.com/4gM7sEg2ZbRqfpbfnwf7i00">
                     Get the License
                   </Link>
                 </div>
