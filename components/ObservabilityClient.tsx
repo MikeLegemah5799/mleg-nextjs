@@ -23,7 +23,7 @@ const LEVELS = [
     n: '1',
     accent: 'orange',
     name: 'Logged, Not Watched',
-    desc: 'Full input/output pairs are captured somewhere — but nobody, and nothing automated, is actually reviewing them.',
+    desc: 'Full input/output pairs are captured somewhere, but nobody, and nothing automated, is actually reviewing them.',
     inPlace: 'Prompts and responses are logged and retrievable after the fact, if someone thinks to look.',
     gap: 'Logging without review is an archive, not observability. Drift is invisible until a user reports it.',
     listDesc: "captured, but nobody's reviewing it",
@@ -32,7 +32,7 @@ const LEVELS = [
     n: '2',
     accent: 'yellow',
     name: 'Uptime Confused With Correctness',
-    desc: "Real dashboards exist — latency, error rate, cost, throughput. The team believes this counts as AI observability. It doesn't.",
+    desc: "Real dashboards exist. Latency, error rate, cost, throughput. The team believes this counts as AI observability. It doesn't.",
     inPlace: 'Traditional APM fully wired up: alerts on errors, latency percentiles, uptime SLAs tracked.',
     gap: 'A 200 response and a correct response are different things. Nothing here can tell them apart.',
     listDesc: 'APM everywhere, quality nowhere',
@@ -50,7 +50,7 @@ const LEVELS = [
     n: '4',
     accent: 'cyan',
     name: 'Closed-Loop Semantic Monitoring',
-    desc: 'Every response — or a statistically real sample — is scored automatically for groundedness and safety. Quality drift alerts the same way an error-rate spike would, and a bad output traces back to the exact prompt and model version that produced it.',
+    desc: 'Every response, or a statistically real sample is scored automatically for groundedness and safety. Quality drift alerts the same way an error-rate spike would, and a bad output traces back to the exact prompt and model version that produced it.',
     inPlace: null,
     gap: "The gap between 'shipped' and 'shipped correctly' closes to near zero — and closes automatically, not by luck.",
     gapLabel: 'THIS IS THE TARGET',
@@ -166,7 +166,7 @@ export default function ObservabilityClient() {
               <h1 className={s.heroTitle}>The AI Observability Maturity Model</h1>
               <p className={s.heroDesc}>
                 A free one-page framework for finding out where your AI system actually
-                sits — from no visibility at all to a closed loop that catches quality
+                sits. From no visibility at all to a closed loop that catches quality
                 drift before a customer does.{' '}
                 <strong>Uptime and correctness are different metrics.</strong>{' '}
                 Most teams&apos; dashboards only track the first one.
@@ -214,7 +214,7 @@ export default function ObservabilityClient() {
                 <div className={s.pdfCardFoot}>
                   Want to know exactly where your own system sits?{' '}
                   <Link href="/reliability-audit">The 50-Point AI Reliability Audit</Link>{' '}
-                  turns this model into 50 concrete, checkable items — or see{' '}
+                  turns this model into 50 concrete, checkable items, or see{' '}
                   <Link href="/sentinel">Sentinel</Link>, a free reference implementation
                   of Level 4.
                 </div>
@@ -229,7 +229,7 @@ export default function ObservabilityClient() {
               <h2 className={s.title}>Find your level in under a minute.</h2>
               <p className={s.subtitle}>
                 Each level maps what&apos;s actually in place against the specific gap
-                it leaves — so this isn&apos;t just a framework to admire, it&apos;s a
+                it leaves. So this isn&apos;t just a framework to admire, it&apos;s a
                 place to start.
               </p>
 
@@ -260,7 +260,7 @@ export default function ObservabilityClient() {
                   <strong>Michael Legemah</strong>{' '}
                   is a Principal AI Engineer who has
                   spent over a decade building production systems for AWS, the U.S.
-                  Army, and U.S. Space Force — the last several years focused
+                  Army, and U.S. Space Force. The last several years focused
                   specifically on agentic AI, RAG pipelines, and the evaluation
                   infrastructure that keeps them honest. This framework comes from the
                   same recurring gap he&apos;s diagnosed across real production systems:

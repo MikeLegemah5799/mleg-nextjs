@@ -46,7 +46,7 @@ const WHO_ITS_FOR = [
     text: (
       <>
         <strong>You&apos;ve shipped an LLM feature and have a nagging feeling you don&apos;t
-        actually know where it&apos;s fragile.</strong>{' '}
+          actually know where it&apos;s fragile.</strong>{' '}
         The demo worked. Production is a different question, and nobody&apos;s answered it yet.
       </>
     ),
@@ -56,7 +56,7 @@ const WHO_ITS_FOR = [
     text: (
       <>
         <strong>You found out about an AI failure from a customer, a Slack screenshot, or
-        a support ticket — not from your own monitoring.</strong>{' '}
+          a support ticket — not from your own monitoring.</strong>{' '}
         If that&apos;s happened once, it will happen again in the same blind spot.
       </>
     ),
@@ -66,7 +66,7 @@ const WHO_ITS_FOR = [
     text: (
       <>
         <strong>You&apos;re about to ship an agent, RAG pipeline, or AI copilot and want a
-        real gap-check before launch</strong>{' '}
+          real gap-check before launch</strong>{' '}
         — not a checklist that stops at &quot;did we write a good system prompt.&quot;
       </>
     ),
@@ -77,12 +77,12 @@ const CATEGORIES = [
   {
     accent: 'catCyan',
     label: 'Evaluation & Testing',
-    desc: 'Whether your eval set actually catches adversarial input — or only ever sees the happy path your demo used.',
+    desc: 'Whether your eval set actually catches adversarial input, or only ever sees the happy path your demo used.',
   },
   {
     accent: 'catPink',
     label: 'Guardrails & Safety',
-    desc: 'The fail-open-vs-fail-closed decision most teams never make on purpose — and what happens the first time it matters.',
+    desc: 'The fail-open-vs-fail-closed decision most teams never make on purpose, and what happens the first time it matters.',
   },
   {
     accent: 'catGreen',
@@ -92,7 +92,7 @@ const CATEGORIES = [
   {
     accent: 'catOrange',
     label: 'Observability & Monitoring',
-    desc: 'Why "the request succeeded" and "the answer was right" are different metrics — and why most dashboards only track the first one.',
+    desc: 'Why "the request succeeded" and "the answer was right" are different metrics, and why most dashboards only track the first one.',
   },
 ];
 
@@ -171,7 +171,7 @@ export default function ReliabilityAuditClient() {
             <div className={s.lightInner}>
               <div className={s.label}>{'// who this is for'}</div>
               <h2 className={s.title}>
-                Built for the team that already shipped — not the one still planning.
+                Built for the team that already shipped, not the one still planning.
               </h2>
 
               <div className={s.whoGrid} ref={whoRef}>
@@ -215,7 +215,7 @@ export default function ReliabilityAuditClient() {
                   <strong>Michael Legemah</strong>{' '}
                   is a Principal AI Engineer who has spent
                   over a decade building production systems for AWS, the U.S. Army, and
-                  U.S. Space Force — the last several years focused specifically on agentic
+                  U.S. Space Force. The last several years focused specifically on agentic
                   AI, RAG pipelines, and the evaluation infrastructure that keeps them
                   honest. This checklist comes directly from failures he&apos;s diagnosed
                   and fixed inside real production systems, not from a summary of someone
