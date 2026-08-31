@@ -129,7 +129,7 @@ function SignupForm({ id }: { id: string }) {
         autoComplete="email"
       />
       <button className={s.btnPrimary} type="submit" disabled={status === 'submitting'}>
-        {status === 'submitting' ? 'Sending…' : 'Get the Framework — Free'}
+        {status === 'submitting' ? 'Sending…' : 'Get the Framework Free'}
       </button>
       {status === 'error' && <div className={s.formError}>{errorMsg}</div>}
       <div className={s.trustLine}>
