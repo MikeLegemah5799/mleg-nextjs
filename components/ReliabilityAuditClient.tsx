@@ -125,7 +125,7 @@ export default function ReliabilityAuditClient() {
               </h1>
               <p className={s.heroDesc}>
                 A 50-point self-assessment checklist for teams shipping agents, RAG, and AI
-                copilots — built to surface the exact reliability gaps that traditional
+                copilots. Built to surface the exact reliability gaps that traditional
                 testing and APM can&apos;t see, before they become a production incident.
               </p>
               <div className={s.heroCtaRow}>
@@ -136,7 +136,7 @@ export default function ReliabilityAuditClient() {
                 <div className={s.trustLine}>
                   <span>Secure checkout via Stripe</span>
                   <span>Instant download</span>
-                  <span>No spam — ever</span>
+                  <span>No spam ever</span>
                 </div>
               </div>
             </div>
@@ -235,7 +235,7 @@ export default function ReliabilityAuditClient() {
                 <div className={s.finalTrustLine}>
                   <span>Secure checkout via Stripe</span>
                   <span>Instant download</span>
-                  <span>No spam — ever</span>
+                  <span>No spam ever</span>
                 </div>
               </div>
             </div>
