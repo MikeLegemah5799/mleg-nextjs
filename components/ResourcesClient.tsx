@@ -108,6 +108,23 @@ export default function ResourcesClient() {
                 <span className={s.featuredLink}>View on mleg.tech →</span>
               </Link>
 
+              {/* ── FEATURED: LANGGRAPH PATTERNS ── */}
+              <Link href="/langgraph-patterns" className={s.featured}>
+                <div className={s.featuredTop}>
+                  <div className={s.featuredLabel}>{'// free, open source'}</div>
+                  <span className={s.featuredBadge}>Free repo</span>
+                </div>
+                <h2 className={s.featuredTitle}>LangGraph Patterns</h2>
+                <p className={s.featuredDesc}>
+                  Real, compiled, tested LangGraph graphs for three of the five patterns
+                  in Agent Orchestration Patterns — supervisor/worker routing, a genuine
+                  human-in-the-loop pause-and-resume gate, and the same negation-aware
+                  escalation ladder as Sentinel. Free to clone and run — commercial
+                  license available for production use.
+                </p>
+                <span className={s.featuredLink}>View on mleg.tech →</span>
+              </Link>
+
               {/* ── RESOURCE GRID ── */}
               <div className={s.grid} ref={gridRef}>
                 {RESOURCES.map((r) => (
