@@ -24,6 +24,21 @@ const ENGAGEMENTS = [
     desc: 'Embedded senior capacity for teams that need this expertise regularly, without a full-time hire, or the six-month ramp-up.',
     scope: 'ONGOING, 2-3 DAYS/WEEK',
   },
+  {
+    icon: '📊', num: '04', title: 'Eval Infrastructure Build',
+    desc: 'Production LLM-as-Judge scoring, guardrails, confidence thresholds, and CI regression gates, built and wired into your pipeline, not prototyped in a notebook. ',
+    scope: '3-5 WEEK FIXED SCOPE',
+  },
+  {
+    icon: '📚', num: '05', title: 'RAG Pipeline Build',
+    desc: 'Retrieval-augmented generation over your enterprise knowledge base — vector search, chunking strategy, and groundedness checks included, so answers cite what\'s actually true.',
+    scope: '4-6 WEEK FIXED SCOPE',
+  },
+  {
+    icon: '📈', num: '06', title: 'AI Observability Setup',
+    desc: 'Semantic quality tracking, not just uptime. Drift alerting, per-feature cost tracking, and traceability from a bad output back to the prompt that caused it.',
+    scope: '2-3 WEEK BUILD',
+  },
 ];
 
 const STEPS = [
@@ -126,7 +141,7 @@ export default function ServicesClient() {
         {/* ── ENGAGEMENT TYPES ── */}
         <section className={s.engSection} id="engagement-types">
           <div className="section-label">Engagement Types</div>
-          <h2 className="section-title">Three ways to<br />work together</h2>
+          <h2 className="section-title">Six ways to<br />work together</h2>
           <p className="section-sub">Fixed-scope builds, a focused audit, or ongoing embedded capacity, depending on where you actually are.</p>
 
           <div className={`${s.engGrid} reveal`} ref={engRef}>
