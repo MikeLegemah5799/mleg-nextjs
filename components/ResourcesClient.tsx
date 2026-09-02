@@ -91,6 +91,23 @@ export default function ResourcesClient() {
                 <span className={s.featuredLink}>View on mleg.tech →</span>
               </Link>
 
+              {/* ── FEATURED: RAG REFERENCE PIPELINE ── */}
+              <Link href="/rag-reference-pipeline" className={s.featured}>
+                <div className={s.featuredTop}>
+                  <div className={s.featuredLabel}>{'// free, open source'}</div>
+                  <span className={s.featuredBadge}>Free repo</span>
+                </div>
+                <h2 className={s.featuredTitle}>The RAG Reference Pipeline</h2>
+                <p className={s.featuredDesc}>
+                  A tested RAG pipeline built from the nine decisions in the RAG
+                  Architecture Decision Template — structure-aware chunking, hybrid
+                  retrieval, and the same negation-aware groundedness check as
+                  Sentinel. Free to clone and run against your own documents —
+                  commercial license available for production use.
+                </p>
+                <span className={s.featuredLink}>View on mleg.tech →</span>
+              </Link>
+
               {/* ── RESOURCE GRID ── */}
               <div className={s.grid} ref={gridRef}>
                 {RESOURCES.map((r) => (
