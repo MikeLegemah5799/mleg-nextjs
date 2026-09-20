@@ -51,13 +51,13 @@ export const PROJECTS: Project[] = [
     emoji: '🏥'
   },
   {
-    id: 'sentinel', featured: true, accent: 'accPk',
-    title: 'Sentinel — Eval-as-MCP-Server',
+    id: 'quorel-free', featured: true, accent: 'accPk',
+    title: 'Quorel — Eval-as-MCP-Server(Coming Soon)',
     tag: 'AI Eval Infrastructure · MCP', tagColor: 'var(--pink)',
     desc: 'An MCP server that scores AI agent responses before they reach a user, not after. Deterministic checks resolve the obvious cases for free; only genuinely ambiguous responses escalate to a judge model.',
     stack: 'Model Context Protocol · TypeScript · Next.js · Vercel · mcp-handler · Zod v4 · Anthropic API',
     siteUrl: 'https://sentinel-six-ruby.vercel.app/',
-    codeUrl: 'https://github.com/MikeLegemah5799/sentinel',
+    codeUrl: 'https://github.com/MikeLegemah5799/quorel-free',
     category: ['AI / ML', 'Infrastructure', 'Full-Stack'],
     highlights: ['▲ Deterministic-first', '◎ Judge-escalated', '↗ Live demo'],
     emoji: '🛡️',

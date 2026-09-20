@@ -302,18 +302,18 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
             <div className={`${s.projCard} ${s.projCardFeatured}`}>
               <div className={`${s.projVis} ${s.projVisFeatured}`} style={{ background: 'linear-gradient(135deg,var(--bg-deep),#1c1830)' }}>
                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--cyan)', letterSpacing: '0.1em' }}>AI infrastructure at AWS</div>
-                <div style={{ fontFamily: 'var(--font-serif)', fontSize: 34, background: 'linear-gradient(120deg,var(--yellow),var(--orange))', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Sentinel. Eval-AS-A-MCP</div>
+                <div style={{ fontFamily: 'var(--font-serif)', fontSize: 34, background: 'linear-gradient(120deg,var(--yellow),var(--orange))', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Quorel. Eval-AS-AN-MCP(Coming Soon)</div>
                 <div style={{ display: 'flex', gap: 16, fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--muted)' }}>
                   <span>▲ Eval</span><span>◎ Agentic AI</span><span>↗ MCP</span>
                 </div>
               </div>
               <div className={s.projBody}>
                 <div className={s.projTag}>AI · EVAL · MCP</div>
-                <h3 className={s.projT}>Eval-as-a-MCP</h3>
+                <h3 className={s.projT}>Eval-as-an-MCP</h3>
                 <p className={s.projD}>
-                  Built a contact center agent leveraging LLMs and RAG for customer support. Implemented a test and evaluation pipeline to assess model performance and improve response accuracy.</p>
+                  Quorel is an MCP server that scores AI agent responses before they reach a user, a trust layer an agent calls mid-turn, not a dashboard someone checks after the fact.</p>
                 <div className={s.projLinks}>
-                  <Link href="/projects/sentinela-mcp" className={s.projLink}>View Case Study →</Link>
+                  <Link href="/projects/quorel-free" className={s.projLink}>View Case Study →</Link>
                   <Link href="https://sentinel-six-ruby.vercel.app/" className={s.projLink} target="_blank" rel="noopener noreferrer">
                     View Demo →
                   </Link>

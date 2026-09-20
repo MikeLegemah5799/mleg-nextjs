@@ -1154,10 +1154,10 @@ export const CASE_STUDIES: CaseStudy[] = [
     },
   },
   {
-    projectId: 'sentinel',
-    breadcrumbLabel: 'Sentinel — Eval-as-MCP-Server',
-    eyebrow: 'Case Study · AI Eval Infrastructure · Portfolio Project',
-    title: 'Sentinel — Eval-as-MCP-Server',
+    projectId: 'quorel-free',
+    breadcrumbLabel: 'Quorel — Eval-as-MCP-Server(Coming Soon)',
+    eyebrow: 'Case Study · AI Eval Infrastructure · SaaS',
+    title: 'Quorel — Eval-as-MCP-Server',
     subtitle: "An MCP server that scores AI agent responses before they reach a user, not after. Deterministic checks resolve the obvious cases for free; only genuinely ambiguous responses escalate to a judge model.",
     techPills: [
       { label: 'Model Context Protocol', color: 'var(--orange)' },
@@ -1357,7 +1357,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     },
 
     summary: {
-      system: 'Sentinel — Eval-as-MCP-Server',
+      system: 'Quorel — Eval-as-MCP-Server',
       primaryServices: 'MCP · Vercel · Anthropic API',
       status: 'Live demo, deployed on Vercel',
       type: 'AI eval infrastructure',

@@ -75,18 +75,18 @@ export default function ResourcesClient() {
           {/* ── RESOURCES ── */}
           <div className={s.lightSection}>
             <div className={s.lightInner}>
-              {/* ── FEATURED: SENTINEL ── */}
-              <Link href="/sentinel" className={s.featured}>
+              {/* ── FEATURED: QUOREL ── */}
+              <Link href="/quorel" className={s.featured}>
                 <div className={s.featuredTop}>
                   <div className={s.featuredLabel}>{'// free, open source'}</div>
                   <span className={s.featuredBadge}>Free repo</span>
                 </div>
-                <h2 className={s.featuredTitle}>Sentinel — an eval-as-MCP-server trust layer</h2>
+                <h2 className={s.featuredTitle}>Quorel — an eval-as-MCP-server trust layer</h2>
                 <p className={s.featuredDesc}>
                   A deterministic-first, judge-escalated scoring layer that catches
                   fabricated citations and prompt-injection compliance before a
                   response ships. Free to clone and run against your own agent —
-                  commercial license available for production use.
+                  commercial license available for production use and Saas coming soon.
                 </p>
                 <span className={s.featuredLink}>View on mleg.tech →</span>
               </Link>
@@ -102,7 +102,7 @@ export default function ResourcesClient() {
                   A tested RAG pipeline built from the nine decisions in the RAG
                   Architecture Decision Template — structure-aware chunking, hybrid
                   retrieval, and the same negation-aware groundedness check as
-                  Sentinel. Free to clone and run against your own documents —
+                  Quorel. Free to clone and run against your own documents —
                   commercial license available for production use.
                 </p>
                 <span className={s.featuredLink}>View on mleg.tech →</span>
@@ -119,7 +119,7 @@ export default function ResourcesClient() {
                   Real, compiled, tested LangGraph graphs for three of the five patterns
                   in Agent Orchestration Patterns — supervisor/worker routing, a genuine
                   human-in-the-loop pause-and-resume gate, and the same negation-aware
-                  escalation ladder as Sentinel. Free to clone and run — commercial
+                  escalation ladder as Quorel. Free to clone and run — commercial
                   license available for production use.
                 </p>
                 <span className={s.featuredLink}>View on mleg.tech →</span>

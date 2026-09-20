@@ -12,7 +12,7 @@ const CHECKOUT_URL = 'https://buy.stripe.com/eVqeV63gd3kU4Kx1wGf7i05';
 const PATTERNS_RUNNING = [
   { num: '01', label: 'supervisor/worker', value: 'real routing', accent: 'pcCyan' },
   { num: '04', label: 'human-in-the-loop', value: 'real interrupt()', accent: 'pcPink' },
-  { num: '05', label: 'det.-first escalation', value: "Sentinel's algorithm", accent: 'pcPurple' },
+  { num: '05', label: 'det.-first escalation', value: "Quorel's algorithm", accent: 'pcPurple' },
 ];
 
 const PATTERN_CARDS = [
@@ -44,7 +44,7 @@ const PATTERN_CARDS = [
     num: '05',
     accent: 'purple',
     title: 'Deterministic-First Escalation',
-    desc: 'The same negation-aware algorithm as Sentinel, this time as a real conditional edge between the deterministic check and the judge node.',
+    desc: 'The same negation-aware algorithm as Quorel, this time as a real conditional edge between the deterministic check and the judge node.',
   },
 ];
 
@@ -113,8 +113,8 @@ export default function LangGraphPatternsClient() {
                 </div>
                 <hr className={s.pcDivider} />
                 <span className={s.pcNote}>
-                  Same negation-aware escalation ladder as Sentinel and RAG Reference
-                  Pipeline — the third implementation of the same regression-tested logic.
+                  Same negation-aware escalation ladder as Quorel and RAG Reference
+                  Pipeline, the third implementation of the same regression-tested logic.
                   Zero API key required to run the tests.
                 </span>
               </div>
@@ -160,7 +160,7 @@ export default function LangGraphPatternsClient() {
               <div className={s.label}>{'// pricing'}</div>
               <h2 className={s.title}>Start free. Pay when it&apos;s carrying real traffic.</h2>
               <p className={s.sub}>
-                Same model as Sentinel and RAG Reference Pipeline — the free tier is the
+                Same model as Quorel and RAG Reference Pipeline. The free tier is the
                 actual patterns, not a crippled trial. Clone it, run it against your own
                 use case, decide if it fits before you owe anything.
               </p>
@@ -178,7 +178,7 @@ export default function LangGraphPatternsClient() {
                   <ul className={s.priceList}>
                     <li>Supervisor/Worker with real conditional routing</li>
                     <li>Human-in-the-Loop with real interrupt/resume</li>
-                    <li>Deterministic-First Escalation, Sentinel&apos;s algorithm</li>
+                    <li>Deterministic-First Escalation, Quorel&apos;s algorithm</li>
                     <li>19 passing tests, zero API key required</li>
                     <li className={s.priceListMuted}>Not licensed for production traffic</li>
                   </ul>

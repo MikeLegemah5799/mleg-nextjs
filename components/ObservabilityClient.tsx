@@ -215,7 +215,7 @@ export default function ObservabilityClient() {
                   Want to know exactly where your own system sits?{' '}
                   <Link href="/reliability-audit">The 50-Point AI Reliability Audit</Link>{' '}
                   turns this model into 50 concrete, checkable items, or see{' '}
-                  <Link href="/sentinel">Sentinel</Link>, a free reference implementation
+                  <Link href="/quorel">Quorel</Link>, a free reference implementation
                   of Level 4.
                 </div>
               </div>

@@ -48,14 +48,14 @@ export default function RagDecisionTemplateDownloadClient() {
           <div className={s.secondaryLabel}>{'// while you\'ve got five minutes'}</div>
 
           <div className={s.card}>
-            <div className={s.cardEyebrow}>Sentinel — an eval-as-MCP-server trust layer</div>
+            <div className={s.cardEyebrow}>Quorel — an eval-as-MCP-server trust layer</div>
             <h2 className={s.cardTitle}>See decision seven — groundedness — as working code, not just a template entry</h2>
             <p className={s.cardDesc}>
               A deterministic-first, judge-escalated scoring layer that catches
               fabricated citations and ungrounded answers before a response ships.
               Free to clone and run against your own retrieval pipeline.
             </p>
-            <Link className={s.cardLink} href="/sentinel">mleg.tech/sentinel</Link>
+            <Link className={s.cardLink} href="/quorel">mleg.tech/quorel</Link>
           </div>
 
           <p className={s.note}>

@@ -171,9 +171,9 @@ export default function AgentOrchestrationPatternsClient() {
                 <div className={s.pdfInPractice}>
                   <span className={s.pdfInPracticeLabel}>In practice</span>
                   <span className={s.pdfInPracticeText}>
-                    This is Sentinel&apos;s actual architecture — <code>flag_injection</code>{' '}
+                    This is Quorel&apos;s actual architecture — <code>flag_injection</code>{' '}
                     and <code>check_groundedness</code> both use exactly this escalation
-                    ladder. See <Link href="/sentinel">Sentinel</Link> for the working code.
+                    ladder. See <Link href="/quorel">Quorel</Link> for the working code.
                   </span>
                 </div>
 
@@ -252,7 +252,7 @@ export default function AgentOrchestrationPatternsClient() {
                   U.S. Space Force — the last several years focused specifically on
                   agentic AI, RAG pipelines, and the evaluation infrastructure that
                   keeps them honest. Pattern five in this reference is the actual
-                  architecture behind Sentinel, his own free eval-as-MCP-server tool —
+                  architecture behind Quorel, his own free eval-as-MCP-server tool —
                   not a diagram borrowed from someone else&apos;s writeup.
                 </p>
               </div>

@@ -47,20 +47,20 @@ export default function ReliabilityAuditDownloadClient() {
           <div className={s.secondaryLabel}>{'// while you\'ve got five minutes'}</div>
 
           <div className={s.card}>
-            <div className={s.cardEyebrow}>Sentinel — an eval-as-MCP-server trust layer</div>
+            <div className={s.cardEyebrow}>Quorel — an eval-as-MCP-server trust layer</div>
             <h2 className={s.cardTitle}>See sections 1–3 as working code, not just checklist items</h2>
             <p className={s.cardDesc}>
               A deterministic-first, judge-escalated scoring layer that catches
               fabricated citations and prompt-injection compliance before a response
               ships. Free to clone and run against your own agent.
             </p>
-            <Link className={s.cardLink} href="/sentinel">mleg.tech/sentinel</Link>
+            <Link className={s.cardLink} href="/quorel">mleg.tech/quorel</Link>
           </div>
 
           <p className={s.note}>
             Once you&apos;ve gone through the checklist, if your unchecked boxes turn
             out to be spread wide rather than clustered in one section, that&apos;s
-            usually a practice gap, not a tool gap — the most common reason I get
+            usually a practice gap, not a tool gap, the most common reason I get
             brought in directly. If that ends up being where you land,{' '}
             <Link href="/contact">reach out</Link>.
           </p>

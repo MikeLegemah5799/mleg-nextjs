@@ -47,7 +47,7 @@ export default function AgentOrchestrationPatternsDownloadClient() {
           <div className={s.secondaryLabel}>{'// while you\'ve got five minutes'}</div>
 
           <div className={s.card}>
-            <div className={s.cardEyebrow}>Sentinel — an eval-as-MCP-server trust layer</div>
+            <div className={s.cardEyebrow}>Quorel — an eval-as-MCP-server trust layer</div>
             <h2 className={s.cardTitle}>See pattern five — deterministic-first escalation — as working code</h2>
             <p className={s.cardDesc}>
               A deterministic-first, judge-escalated scoring layer that catches
@@ -55,7 +55,7 @@ export default function AgentOrchestrationPatternsDownloadClient() {
               ships — the exact escalation ladder from this reference, running for
               real. Free to clone and run against your own agent.
             </p>
-            <Link className={s.cardLink} href="/sentinel">mleg.tech/sentinel</Link>
+            <Link className={s.cardLink} href="/quorel">mleg.tech/quorel</Link>
           </div>
 
           <p className={s.note}>

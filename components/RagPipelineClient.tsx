@@ -22,7 +22,7 @@ const DECISIONS_TABLE = [
   { num: '3', label: 'Vector store', choice: 'In-memory by default, pgvector interface included' },
   { num: '4', label: 'Retrieval', choice: 'Hybrid — dense + BM25, fused with reciprocal rank fusion' },
   { num: '6', label: 'Context assembly', choice: 'Ranked concatenation, explicit seam for your own logic' },
-  { num: '7', label: 'Groundedness', choice: 'Negation-aware citation checking, ported from Sentinel' },
+  { num: '7', label: 'Groundedness', choice: 'Negation-aware citation checking, ported from Quorel' },
 ];
 
 const STATS = [
@@ -88,7 +88,7 @@ export default function RagPipelineClient() {
                 </div>
                 <hr className={s.dcDivider} />
                 <span className={s.dcNote}>
-                  Same negation-aware groundedness algorithm as Sentinel, ported directly —
+                  Same negation-aware groundedness algorithm as Quorel, ported directly —
                   not reinvented. Zero API key required to run the test suite.
                 </span>
               </div>
@@ -136,7 +136,7 @@ export default function RagPipelineClient() {
               <div className={s.label}>{'// pricing'}</div>
               <h2 className={s.title}>Start free. Pay when it&apos;s carrying real traffic.</h2>
               <p className={s.sub}>
-                Same model as Sentinel — the free tier is the actual pipeline, not a crippled
+                Same model as Quorel, the free tier is the actual pipeline, not a crippled
                 trial. Clone it, run it against your own documents, decide if the decisions
                 fit before you owe anything.
               </p>

@@ -6,14 +6,14 @@ import CustomCursor from '@/components/CustomCursor';
 import { useReveal } from '@/components/useReveal';
 import s from '@/styles/sentinel.module.css';
 
-const GITHUB_URL = 'https://github.com/MikeLegemah5799/sentinel';
+const GITHUB_URL = 'https://github.com/MikeLegemah5799/quorel-free';
 const DEMO_URL = 'https://sentinel-six-ruby.vercel.app/';
 
 const FEATURES = [
   {
     label: 'check_groundedness',
     title: 'Catches citations the context doesn’t actually support',
-    desc: 'A document that says "no section 9.2 exists" contains the literal substring "section 9.2." Sentinel scans for negation before it credits a citation — a claim that’s only ever negated counts as unresolved, same bucket as never appearing at all.',
+    desc: 'A document that says "no section 9.2 exists" contains the literal substring "section 9.2." Quorel scans for negation before it credits a citation. A claim that’s only ever negated counts as unresolved, same bucket as never appearing at all.',
   },
   {
     label: 'flag_injection',
@@ -56,7 +56,7 @@ export default function SentinelClient() {
                 A trust layer your agent calls before a response ships.
               </h1>
               <p className={s.heroDesc}>
-                Sentinel is an MCP server that scores agent responses mid-turn. Not a
+                Quorel is an MCP server that scores agent responses mid-turn. Not a
                 dashboard someone checks after the damage is done. It catches fabricated
                 citations and prompt-injection compliance before either reaches a user.
               </p>
@@ -100,9 +100,9 @@ export default function SentinelClient() {
               response before it goes out.
             </h2>
             <p className={s.sub}>
-              An agent or the orchestrator wrapping it calls a Sentinel tool
+              An agent or the orchestrator wrapping it calls a Quorel tool
               with the response it&apos;s about to send, plus the context it was grounded
-              in. Sentinel returns allow, warn, or block. It&apos;s a call in the request
+              in. Quorel returns allow, warn, or block. It&apos;s a call in the request
               path, cheap enough in the common case not to be a UX problem.
             </p>
 
@@ -164,7 +164,7 @@ export default function SentinelClient() {
                   <div className={s.priceTitle}>Production</div>
                   <div className={s.priceValue}>$499 <span>one-time</span></div>
                   <p className={s.priceDesc}>
-                    Everything you need to put Sentinel in front of real agent traffic,
+                    Everything you need to put Quorel in front of real agent traffic,
                     plus a worked example of extending it.
                   </p>
                   <ul className={s.priceList}>
@@ -235,7 +235,7 @@ export default function SentinelClient() {
 
         {/* ── FOOTER ── */}
         <footer className={s.footer}>
-          <div className={s.footerCopy}>Sentinel — built by Michael Legemah</div>
+          <div className={s.footerCopy}>Quorel — built by Michael Legemah</div>
           <a className={s.footerLink} href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
