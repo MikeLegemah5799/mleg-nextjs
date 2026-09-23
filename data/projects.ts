@@ -51,6 +51,18 @@ export const PROJECTS: Project[] = [
     emoji: '🏥'
   },
   {
+    id: 'stock-advisor-copilot', featured: true, accent: 'accY',
+    title: 'Stock Advisor Copilot — Cited Filing Research Behind an Approval Gate',
+    tag: 'FinTech AI · Multi-Agent · RAG', tagColor: 'var(--yellow)',
+    desc: 'A multi-agent copilot that gets a financial advisor up to speed on a stock in seconds — a live quote plus a cited, plain-English summary of the latest SEC 10-K — with an input guardrail in front and a compliance agent that pauses for advisor sign-off before anything is final.',
+    stack: 'LangGraph · FastAPI · Claude · Pinecone · Next.js · LangSmith · SSE',
+    siteUrl: 'https://frontend-three-psi-73.vercel.app',
+    codeUrl: 'https://github.com/MikeLegemah5799/stock-updates',
+    category: ['AI / ML', 'FinTech', 'RAG', 'Full-Stack'],
+    highlights: ['▲ Human-in-the-loop', '◎ Guardrailed', '↗ Live demo'],
+    emoji: '📈'
+  },
+  {
     id: 'quorel-free', featured: true, accent: 'accPk',
     title: 'Quorel — Eval-as-MCP-Server(Coming Soon)',
     tag: 'AI Eval Infrastructure · MCP', tagColor: 'var(--pink)',

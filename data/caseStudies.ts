@@ -498,6 +498,218 @@ export const CASE_STUDIES: CaseStudy[] = [
     },
   },
   {
+    projectId: 'stock-advisor-copilot',
+    breadcrumbLabel: 'Stock Advisor Copilot — Multi-Agent Research Assistant',
+    eyebrow: 'Case Study · FinTech AI · Multi-Agent · RAG',
+    title: 'Stock Advisor Copilot — Cited Filing Research Behind an Approval Gate',
+    subtitle: "A multi-agent LangGraph backend that pairs a live quote with a cited summary of a company's latest SEC 10-K — screened by an input guardrail up front and gated by a compliance agent that pauses for advisor sign-off before anything is treated as final.",
+    techPills: [
+      { label: 'LangGraph', color: 'var(--cyan)' },
+      { label: 'FastAPI', color: 'var(--green)' },
+      { label: 'Claude', color: 'var(--purple)' },
+      { label: 'Pinecone', color: 'var(--yellow)' },
+      { label: 'Next.js', color: 'var(--pink)' },
+      { label: 'LangSmith', color: 'var(--orange)' },
+      { label: 'SSE', color: 'var(--cyan)' },
+    ],
+    meta: {
+      role: 'Full-stack build, agent orchestration & guardrail design',
+      domain: 'FinTech · advisor research',
+      primaryServices: 'Claude API · LangGraph · Pinecone',
+    },
+
+    problem: {
+      functional: [
+        "Get an advisor up to speed on a ticker fast: a current quote plus a plain-English summary of what the company's latest 10-K says about its risks and MD&A",
+        'Route each question to only the specialists it needs — quote-only, filings-only, or both — from a single free-text message',
+        'Pause every filing summary for advisor sign-off (approve, edit, or reject) before it is treated as final',
+      ],
+      nonFunctional: [
+        { label: 'Grounding, not assertion', text: 'every summary carries citations back to the filing chunks it was built from' },
+        { label: 'Scoped by construction', text: 'off-topic requests, prompt injection, and insider-trading solicitations are blocked before any agent or tool runs' },
+        { label: 'Compliance-aware output', text: 'definitive-advice language forces the approval gate, and every note carries a not-investment-advice disclaimer' },
+      ],
+    },
+
+    scale: {
+      intro: 'A two-hour prototype with deliberately narrow scope. Mocked quotes and pre-seeded filings keep the demo independent of flaky external APIs, and Pinecone integrated embeddings keep Anthropic as the only paid vendor.',
+      stats: [
+        { value: '3', label: 'tickers with pre-ingested 10-K coverage — AAPL, TSLA, MSFT', color: 'var(--cyan)' },
+        { value: '8', label: 'eval cases through the real graph — 5 research + 3 guardrail triggers', color: 'var(--green)' },
+        { value: '2', label: 'guardrail layers in order: deterministic regex fast-path, then an LLM classifier', color: 'var(--purple)' },
+      ],
+    },
+
+    api: [
+      { signature: 'POST /api/query → SSE stream', desc: 'Runs the graph and streams one `update` event per node, then a final `done` event carrying status — `blocked`, `awaiting_approval`, or `complete` — plus the interrupt payload when a human needs to sign off.' },
+      { signature: 'POST /api/approve → {thread_id, status, values}', desc: 'Resumes the paused graph thread with the advisor\'s decision — `approve`, `reject`, or `edit` with replacement text — via a LangGraph `Command(resume=...)`.' },
+      { signature: 'GET /api/quote/{ticker} → TickerQuote', desc: "Exposes the same quote tool the Market Data Agent calls, so the UI can render a quote card directly. Mocked, but mirrors a real provider's response shape." },
+      { signature: 'GET|POST /api/watchlist/{advisor_id}', desc: "Reads an advisor's watchlist and recent queries, or adds/removes a ticker." },
+    ],
+
+    dataModel: {
+      rows: [
+        { entity: 'TickerQuote', fields: 'symbol, company_name, price, change, change_percent, day_high/low, volume, market_cap, as_of.' },
+        { entity: 'FilingChunk', fields: 'ticker, cik, filing_type, filing_date, section (e.g. Item 1A – Risk Factors), source_url, chunk_index, text.' },
+        { entity: 'FilingSummary', fields: 'key_points, risks, citations, generated_at, and `approval_status: pending|approved|rejected|edited`.' },
+        { entity: 'AdvisorProfile', fields: 'advisor_id, watchlist, recent_queries — a flat JSON file, not a database.' },
+        { entity: 'AgentState (LangGraph)', fields: 'TypedDict carrying messages, ticker, quote, retrieved chunks, summary, guardrail flags, `blocked` + `block_category`, and the approval decision.' },
+      ],
+      note: 'Thread state lives in LangGraph\'s in-process `MemorySaver`, so a paused approval survives across the two HTTP calls but not a backend restart — an accepted MVP cut.',
+    },
+
+    architecture: [
+      {
+        label: 'Guardrail, route, converge, approve',
+        intro: 'Every request is screened before it can cost anything. Survivors are routed to one or both specialists, which converge on a compliance agent that can pause the whole graph for a human.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '🛡', label: 'input_guardrail', sub: 'regex → LLM classifier', highlight: 'pink' },
+              { icon: '⊘', label: 'supervisor', sub: 'structured-output routing', highlight: 'cyan' },
+            ],
+          },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '💹', label: 'market_data_agent', sub: 'Quote for the routed ticker (mocked, real response shape)', highlight: 'yellow' },
+              { icon: '📄', label: 'filings_rag_agent', sub: 'Pinecone retrieval + cited 10-K summary', highlight: 'green' },
+            ],
+          },
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '⚖', label: 'compliance_agent', sub: 'flags advice language, interrupts for sign-off', highlight: 'purple' },
+              { icon: '👤', label: 'Advisor', sub: 'approve · edit · reject' },
+            ],
+          },
+        ],
+        note: 'The supervisor is a Claude Haiku call with forced structured output — a ticker plus `need_quote` / `need_filing_summary` booleans — and fans out to one or both specialists in parallel. The compliance agent uses LangGraph `interrupt()`, so the run is durably paused mid-graph rather than faked with a UI-only confirm button.',
+        caption: 'Fig. 1a — A blocked request short-circuits at the guardrail: no supervisor call, no retrieval, no quote lookup.',
+      },
+      {
+        label: 'Deploy topology',
+        intro: 'The backend is the only component that talks to Anthropic, Pinecone, and LangSmith. The Next.js frontend never holds a third-party credential.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '▤', label: 'Next.js', sub: 'chat · quote card · approvals queue', highlight: 'cyan' },
+              { icon: '⇄', label: 'SSE + REST' },
+              { icon: '⚙', label: 'FastAPI + LangGraph' },
+            ],
+          },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '🧠', label: 'Claude', sub: 'routing, guardrail, summarization' },
+              { icon: '🔎', label: 'Pinecone', sub: 'integrated embeddings' },
+              { icon: '🛰', label: 'LangSmith', sub: 'eval scoring + traces' },
+            ],
+          },
+        ],
+        note: 'Filings are ingested once, ahead of time, by `app/rag/ingest.py` — 10-Ks for AAPL, TSLA, and MSFT split by section — rather than fetched live per query, so latency and rate limits stay off the request path.',
+        caption: 'Fig. 1b — The frontend runs on Vercel; the backend ships without deployment config, so the live demo depends on where it is hosted.',
+      },
+    ],
+
+    decisions: [
+      {
+        color: 'var(--purple)',
+        label: 'Invariant. Guardrails run before the supervisor, not after.',
+        text: 'A bad request never reaches a tool call or spends an LLM call on real work. Refusals are category-specific — off-topic, prompt injection, insider trading — so the advisor learns what the assistant is scoped to.',
+      },
+      {
+        color: 'var(--orange)',
+        label: 'Trade-off. Regex first, then an LLM classifier.',
+        text: 'The regex layer catches the obvious cases for free and does not depend on a model call succeeding; the Haiku classifier handles subtler drift and softly-worded insider-trading asks. Regex alone is brittle, the LLM alone is slower and can fail open.',
+      },
+      {
+        color: 'var(--pink)',
+        label: 'Constraint. Filing summaries always require sign-off.',
+        text: 'This models the real compliance requirement for advisor-facing research notes. A recommendation-language flag forces the same gate even for quote-only answers.',
+      },
+      {
+        color: 'var(--green)',
+        label: 'Bootstrap-first. Mocked quotes and pre-seeded filings.',
+        text: "The quote tool mirrors a real API's response shape, so swapping in a provider like Finnhub is a one-file change. Pinecone's integrated embeddings avoid adding a second paid vendor.",
+      },
+      {
+        color: 'var(--yellow)',
+        label: 'Trade-off. Streamed node updates over a single blocking response.',
+        text: 'SSE lets the UI show which agent is running as it happens — the agent status stepper — and a `done` event reports whether the run finished, was blocked, or is waiting on the advisor.',
+      },
+      {
+        color: 'var(--cyan)',
+        label: 'Verification. An eval that includes attacks, not just happy paths.',
+        text: 'Of the 8 cases, 3 are guardrail triggers — off-topic, prompt injection, insider trading — so a change that weakens the input layer shows up as a score drop in LangSmith.',
+      },
+    ],
+
+    guardrails: [
+      {
+        label: 'Input screened before any agent runs',
+        text: 'Regex fast-path plus a temperature-0 Claude Haiku classifier blocks off-topic requests, prompt injection, and insider-trading solicitations.',
+      },
+      {
+        label: 'Human sign-off on every filing summary',
+        text: "The compliance agent calls `interrupt()`; the advisor's approve / edit / reject decision is recorded as the summary's `approval_status`.",
+      },
+      {
+        label: 'Recommendation-language check',
+        text: 'Patterns like "you should buy" and "guaranteed return" are flagged and force the approval gate regardless of the summary path.',
+      },
+      {
+        label: 'Only public data, stated plainly',
+        text: 'The insider-trading refusal says the assistant works only from market data and SEC filings, and cannot be used to source or act on material non-public information.',
+      },
+      {
+        label: 'Disclaimer on every note',
+        text: 'Each final output carries an informational-purposes-only, not-investment-advice disclaimer.',
+      },
+    ],
+
+    lessonsLearned: {
+      heldUp: [
+        {
+          label: 'Putting the guardrail node ahead of the supervisor',
+          text: "meant blocked requests cost nothing downstream and the supervisor's routing prompt never sees an injection attempt.",
+        },
+        {
+          label: 'Using `interrupt()` for approval rather than a UI-only confirm',
+          text: 'made the human gate a property of the graph itself — the summary cannot become final without a resume call.',
+        },
+        {
+          label: 'Mirroring a real quote API\'s shape in the mock',
+          text: 'kept the demo reliable without making the eventual provider swap a rewrite.',
+        },
+      ],
+      differently: [
+        {
+          label: 'Compliance checks are regex patterns,',
+          text: 'so advice phrased outside those patterns slips past the extra flag. The always-on summary sign-off is the real backstop; a classifier would be the better long-term check.',
+        },
+        {
+          label: 'State is in-memory and the watchlist is a JSON file',
+          text: '— fine for a prototype, but an approval pending at restart is lost. A Postgres-backed LangGraph checkpointer is the obvious next step.',
+        },
+        {
+          label: 'The eval is a manual harness, not a CI gate,',
+          text: 'and covers only 8 cases across 3 tickers. It shows the shape of the loop but would not yet catch a subtle regression on its own.',
+        },
+      ],
+      ifStartedOver: 'stand up the persistent checkpointer and a CI-gated eval on day one, so the approval flow and the guardrail regression tests are durable and repeatable instead of manual.',
+    },
+
+    summary: {
+      system: 'Stock Advisor Copilot — Multi-Agent Research Assistant',
+      primaryServices: 'Claude API · LangGraph · Pinecone',
+      status: 'Live frontend demo · quotes mocked, 3 tickers, in-memory state',
+      type: 'FinTech AI · multi-agent orchestration',
+    },
+  },
+  {
     projectId: 'rag-pipeline',
     breadcrumbLabel: 'RAG Ingestion Pipeline',
     eyebrow: 'Case Study · Data / AI Infrastructure',
