@@ -1,4 +1,6 @@
 import s from '@/styles/blog-post.module.css';
+import { Embed } from '@/components/BlogEmbed';
+import { CostCalculator } from '@/components/BlogCostCalculator';
 
 // MDX's JSX-expression attributes (`prop={...}`) don't survive this MDX pipeline's
 // compile step — they arrive as empty props. Plain quoted attributes do, so callers
@@ -64,4 +66,15 @@ function Callout({ children }: { children: React.ReactNode }) {
   return <div className={s.callout}>{children}</div>;
 }
 
-export const mdxComponents = { DiffBlock, Callout };
+// Markdown images and GFM tables render as bare elements; wrap them so they're
+// responsive (images) and horizontally scrollable (tables) inside the prose column.
+function Img({ src, alt }: { src?: string | Blob; alt?: string }) {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={typeof src === 'string' ? src : undefined} alt={alt ?? ''} loading="lazy" className={s.img} />;
+}
+
+function Table(props: React.ComponentProps<'table'>) {
+  return <div className={s.tableWrap}><table {...props} /></div>;
+}
+
+export const mdxComponents = { DiffBlock, Callout, Embed, CostCalculator, img: Img, table: Table };

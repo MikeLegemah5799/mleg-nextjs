@@ -1,0 +1,118 @@
+---
+title: "I swapped my eval judge for a System-1 model. Here is what I'm testing."
+slug: "swapping-my-eval-judge-for-a-system-1-model"
+category: "Eval & testing"
+date: "2026-09-23"
+desc: "I'm running Jev, TypeSafe AI's textless System-1 model, as the judge in my eval harnesses to see if evals can run on every commit instead of once a night."
+featured: true
+tags: ["LLM-as-a-judge", "Jev", "CI/CD", "Evals"]
+meta-keywords: LLM-as-a-judge,Jev,System-1,CI/CD,Evals
+meta-og:title: "I swapped my eval judge for a System-1 model. Here is what I'm testing."
+meta-og:description: "I'm running Jev, TypeSafe AI's textless System-1 model, as the judge in my eval harnesses to see if evals can run on every commit instead of once a night."
+meta-og:image: /blog/images/jev_eval_before_after.png
+meta-og:type: article
+meta-twitter:card: summary_large_image
+meta-twitter:title: "I swapped my eval judge for a System-1 model. Here is what I'm testing."
+meta-twitter:description: "I'm running Jev, TypeSafe AI's textless System-1 model, as the judge in my eval harnesses to see if evals can run on every commit instead of once a night."
+meta-twitter:image: /blog/images/jev_eval_before_after.png
+meta-viewport: width=device-width, initial-scale=1
+---
+
+I'm running Jev, TypeSafe AI's textless "System-1" model, as the judge inside my eval harnesses. The question: can evals run on every commit instead of once a night?
+
+<Callout>
+**Where this stands.** I'm mid-experiment. Speed, cost and calibration figures below are Jev's claimed specs, not my measurements. I'll update this post as I collect my own results.
+</Callout>
+
+<Embed file="jev-judge-swap" caption="Fig 1. The judge swap at the center of the experiment." />
+
+## Why my evals ran nightly
+
+LLM-as-a-judge is the default way to grade AI output, and it has been quietly shaping how I schedule evals. Three things push it out of the commit path:
+
+- **It's slow.** A generative model writes a verdict token by token, so each judgment takes seconds.
+- **It's expensive at PR volume.** Multiply per-judgment cost by every commit, every test case and every rubric, and sampling starts to look sensible.
+- **It's brittle.** The verdict comes back as text, so I parse it. One malformed JSON blob can fail an entire run.
+
+The result is a release gate. Regressions show up a day later, in a run that no longer maps to one commit.
+
+## What Jev is, as described
+
+Jev is a textless, non-autoregressive "System-1" foundation model. It's built for fast, calibrated decisions rather than generated prose. For a judge, that means the model skips the "write a verdict, then parse it" step. One call returns typed primitives in parallel:
+
+- `Choice`: pick from a set of options
+- `Score`: a numeric rating
+- `Noul`: a yes/no
+
+Each comes with a probability calibrated using RLCD. Those probabilities are the part I care about most, because they give me something principled to put a threshold on.
+
+The claimed specs:
+
+- **20-200x** faster than a traditional LLM judge
+- **40-400x** cheaper than a traditional LLM judge
+- **$0.042 per million** input tokens, output tokens free
+- **70-500ms** latency per call
+
+These are Jev's stated numbers. I'm verifying them in my own setups.
+
+## The hypothesis
+
+If a judgment is cheap and returns in well under a second, an eval suite stops being a delayed release gate and becomes a line item in CI/CD. Every commit gets scored, and a regression is caught in the PR that caused it.
+
+### How I'm testing it
+
+The setup is deliberately boring. Take a human-labeled golden set, judge it with my current LLM judge and with Jev, then compare the two on agreement, calibration, latency and cost.
+
+<Embed file="jev-experiment-design" caption="Fig 2. Same inputs, two judges, four things to measure." />
+
+## Where the judge sits in CI
+
+Jev only changes one layer of the pipeline. The commit, the agent under test, the dataset and the gate stay the same. That matters, because a judge swap I can revert in an afternoon is a lot easier to try than a new eval stack.
+
+<Embed file="jev-ci-architecture" caption="Fig 3. Jev slots in at the judge layer. Everything around it is unchanged." />
+
+## The harnesses I'm wiring it into
+
+I'm not tied to one eval tool, so I'm trying the judge swap across the ones I use or want to compare: LangSmith, Langfuse, Braintrust, Amazon Bedrock AgentCore Evaluations, Strands Evals and DeepEval.
+
+The pattern is the same everywhere: a thin custom scorer or evaluator calls Jev and maps the typed result back into the harness's own score format.
+
+<Embed file="jev-harness-adapter" caption="Fig 4. One adapter pattern, six harnesses." />
+
+Harnesses tend to think in three kinds of results: categories, numbers and pass/fail. Jev's primitives line up with those, so the adapter is mostly a rename plus a threshold:
+
+<Embed file="jev-primitive-mapping" caption="Fig 5. The adapter is mostly a rename plus a threshold." />
+
+Every primitive carries a calibrated probability, so gates can threshold on p.
+
+## Back-of-envelope cost
+
+The price is $0.042 per million input tokens with free output. The formula is judgments × tokens ÷ 1,000,000 × $0.042.
+
+Pick a workload below to see what Jev-as-a-judge costs. The two implied rows show what the "40-400x cheaper" claim would mean for a traditional judge on the same workload. That is arithmetic on a claim, not a measurement.
+
+<CostCalculator />
+
+## What I'm watching for
+
+A fast, cheap judge is only useful if it's also right. These are the questions I'm trying to answer, and where things stand:
+
+| Question | Status | What I found |
+| --- | --- | --- |
+| Does Jev agree with my current LLM judge on labeled data? | Running | Pending |
+| What latency do I see end to end in CI? | Running | Pending |
+| Are the probabilities actually calibrated on my data? | Next | Pending |
+| What does a full per-commit run cost me? | Next | Pending |
+| Does per-commit evaluation change how I ship? | Next | Pending |
+
+### Where I'm skeptical
+
+- **No written rationale.** A judge that doesn't generate prose likely can't explain itself in prose. I expect to keep a slower LLM judge for spot checks and for failures I need to debug.
+- **Calibration is a claim until it's checked.** I'll test it on my own data instead of trusting it.
+- **Speed only helps if the harness keeps up.** If my pipeline, not the judge, is the bottleneck, the win shrinks.
+
+## What's next
+
+I'll fill in the results as they come in, and share the adapter pattern for each harness once I trust it. If you run evals in LangSmith, Langfuse, Braintrust, Bedrock AgentCore Evaluations, Strands Evals or DeepEval and want a particular case tested, send it over and I'll run it.
+
+*Jev is a model from TypeSafe AI. This is an independent experiment, not an official benchmark.*

@@ -1,0 +1,36 @@
+<svg viewBox="0 0 760 260" role="img" aria-labelledby="t3 d3">
+<title id="t3">Eval pipeline in CI with Jev as the judge layer</title>
+<desc id="d3">A commit triggers an agent run, which feeds the eval harness. The harness calls Jev as judge, which returns Choice, Score and Noul. A CI gate applies thresholds on the calibrated probabilities. Only the harness-to-judge layer changes.</desc>
+<defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="298" y="40" width="322" height="104" rx="10" fill="none" stroke="var(--yellow)" stroke-width=".5" stroke-dasharray="5 4"/>
+<text class="s-mono" x="459" y="30" text-anchor="middle" fill="var(--yellow)">only this layer changes</text>
+<rect x="10" y="62" width="120" height="60" rx="8" fill="var(--bg-card)" stroke="var(--border-md)" stroke-width=".5"/>
+<text class="s-lbl" x="70" y="84" text-anchor="middle" dominant-baseline="central">Commit / PR</text>
+<text class="s-sub" x="70" y="104" text-anchor="middle" dominant-baseline="central">every push</text>
+<rect x="165" y="62" width="120" height="60" rx="8" fill="var(--bg-card)" stroke="var(--border-md)" stroke-width=".5"/>
+<text class="s-lbl" x="225" y="84" text-anchor="middle" dominant-baseline="central">Agent run</text>
+<text class="s-sub" x="225" y="104" text-anchor="middle" dominant-baseline="central">system under test</text>
+<rect x="320" y="62" width="120" height="60" rx="8" fill="var(--bg-card)" stroke="var(--cyan)" stroke-width=".5"/>
+<text class="s-lbl" x="380" y="84" text-anchor="middle" dominant-baseline="central">Eval harness</text>
+<text class="s-sub" x="380" y="104" text-anchor="middle" dominant-baseline="central">dataset + scorers</text>
+<rect x="475" y="62" width="120" height="60" rx="8" fill="var(--bg-card)" stroke="var(--green)" stroke-width=".5"/>
+<text class="s-lbl" x="535" y="84" text-anchor="middle" dominant-baseline="central">Jev judge</text>
+<text class="s-sub" x="535" y="104" text-anchor="middle" dominant-baseline="central">70-500ms a call</text>
+<rect x="630" y="62" width="120" height="60" rx="8" fill="var(--bg-card)" stroke="var(--border-md)" stroke-width=".5"/>
+<text class="s-lbl" x="690" y="84" text-anchor="middle" dominant-baseline="central">CI gate</text>
+<text class="s-sub" x="690" y="104" text-anchor="middle" dominant-baseline="central">thresholds on p</text>
+<line x1="132" y1="92" x2="161" y2="92" class="s-arr" marker-end="url(#a3)"/>
+<line x1="287" y1="92" x2="316" y2="92" class="s-arr" marker-end="url(#a3)"/>
+<line x1="442" y1="92" x2="471" y2="92" class="s-arr" marker-end="url(#a3)"/>
+<line x1="597" y1="92" x2="626" y2="92" class="s-arr" marker-end="url(#a3)"/>
+<rect x="420" y="180" width="70" height="34" rx="6" fill="var(--bg-card)" stroke="var(--yellow)" stroke-width=".5"/>
+<text class="s-mono" x="455" y="197" text-anchor="middle" dominant-baseline="central" fill="var(--yellow)">Choice</text>
+<rect x="500" y="180" width="70" height="34" rx="6" fill="var(--bg-card)" stroke="var(--orange)" stroke-width=".5"/>
+<text class="s-mono" x="535" y="197" text-anchor="middle" dominant-baseline="central" fill="var(--orange)">Score</text>
+<rect x="580" y="180" width="70" height="34" rx="6" fill="var(--bg-card)" stroke="var(--purple)" stroke-width=".5"/>
+<text class="s-mono" x="615" y="197" text-anchor="middle" dominant-baseline="central" fill="var(--purple)">Noul</text>
+<line x1="515" y1="124" x2="463" y2="178" class="s-arr" stroke="var(--green)" marker-end="url(#a3)"/>
+<line x1="535" y1="124" x2="535" y2="178" class="s-arr" stroke="var(--green)" marker-end="url(#a3)"/>
+<line x1="555" y1="124" x2="607" y2="178" class="s-arr" stroke="var(--green)" marker-end="url(#a3)"/>
+<text class="s-sub" x="535" y="240" text-anchor="middle">typed, parallel, RLCD-calibrated</text>
+</svg>
