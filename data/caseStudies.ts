@@ -863,6 +863,13 @@ export const CASE_STUDIES: CaseStudy[] = [
       { label: 'Cognito / IAM', color: 'var(--green)' },
       { label: 'Glue ETL + Athena', color: 'var(--purple)' },
       { label: 'Contact Lens transcripts', color: 'var(--yellow)' },
+      { label: 'Nova Sonic', color: 'var(--cyan)' },
+      { label: 'Strands SDK', color: 'var(--green)' },
+      { label: 'AgentCore Gateway + MCP', color: 'var(--orange)' },
+      { label: 'Kinesis Firehose + KMS', color: 'var(--purple)' },
+      { label: 'Comprehend + QuickSight', color: 'var(--pink)' },
+      { label: 'CloudFront', color: 'var(--yellow)' },
+      { label: 'OpenSearch Serverless / Aurora PostgreSQL / S3 Vectors', color: 'var(--soft)' },
       { label: 'Python', color: 'var(--orange)' },
       { label: 'TypeScript', color: 'var(--pink)' },
 
@@ -879,6 +886,9 @@ export const CASE_STUDIES: CaseStudy[] = [
         'Engineers add or edit test cases two ways: upload a file (.xlsx/.json/.jsonl/.csv) through the React/AppSync frontend, or edit in the codebase via a git diff on test-case files',
         'Either path triggers an automated eval run. DeepEval metrics, a RAG groundedness checker, and a KB retrieval check, per agent the test case is associated with',
         'Results (scores, turns, ground truth, Bedrock Guardrails info) are queryable in CI logs, S3, DynamoDB, and the frontend dashboard',
+        'Support speech-to-speech voice interactions (Nova Sonic) alongside text, and let agents call customer and third-party APIs, data sources, and other agents through AgentCore Gateway using Model Context Protocol',
+        'System admins manage model selections, prompts, parameters, and feature flags from a config UI without a redeploy',
+        'Instrumented conversation logs feed a conversation analytics pipeline for product owners, plus an asynchronous auditor that flags policy violations',
       ],
       nonFunctional: [
         {
@@ -887,6 +897,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         { label: 'CI/CD gate', text: 'pipeline flags or blocks deployment on score regression' },
         { label: 'CI-vendor agnostic', text: 'works across GitLab-CI, GitHub Actions, and CodeBuild, not locked to one platform' },
         { label: 'Isolation', text: 'CI eval traffic against Bedrock must not compete with production contact center traffic' },
+        { label: 'Configurability', text: 'model, prompt, parameter, and feature-flag changes are made by admins at runtime, and every change is versioned against the agent config' },
+        { label: 'Data protection', text: 'conversation logs are encrypted with a customer-managed KMS key end to end' },
         { label: 'Auditability', text: 'CloudWatch logs and CloudFormation-provisioned infra, reproducible end to end' },
       ],
     },
@@ -959,14 +971,19 @@ export const CASE_STUDIES: CaseStudy[] = [
           },
           {
             type: 'grid',
-            nodes: [{ icon: '⇄', label: 'AppSync API + React dashboard', sub: 'IAM + Cognito auth, CloudWatch + CloudFormation' }],
+            nodes: [
+              { icon: '⇄', label: 'AppSync API + React dashboard', sub: 'IAM + Cognito auth, CloudWatch + CloudFormation' },
+              { icon: '🌐', label: 'CloudFront + S3 web app bucket', sub: 'hosts the tester UI' },
+              { icon: '▤', label: 'CloudWatch log group', sub: 'run logs, feeds conversation analytics' },
+            ],
           },
+          { type: 'label', text: 'LLM-as-a-Judge / LLM-as-a-Tester · DeepEval agent evaluation (Harmonix)' },
         ],
         caption: 'Fig. 3a: Test entry (upload or git diff) converges on S3, runs through a CI test stage, and surfaces back in the same frontend.',
       },
       {
         label: 'Production runtime',
-        intro: 'Connect handles the channel and routing. Lex resolves simple intents directly, and complex or knowledge-dependent queries escalate to the Bedrock agent, which draws on both a knowledge base and Lambda-backed tools.',
+        intro: 'Connect handles the channel and routing. Lex resolves simple intents directly, and complex or knowledge-dependent queries escalate to Lambda and the Strands SDK, which draw on Bedrock models, knowledge bases with vector stores, and MCP tools through AgentCore Gateway.',
         rows: [
           {
             type: 'chain',
@@ -983,26 +1000,119 @@ export const CASE_STUDIES: CaseStudy[] = [
               {
                 label: 'Intent & fulfillment',
                 nodes: [
-                  { icon: '🗣', label: 'Lex bot', sub: 'intent classification' },
-                  { icon: 'ƒ', label: 'Lambda tools', sub: 'business logic' },
+                  { icon: '🗣', label: 'Lex bot', sub: 'intent + contact flows' },
+                  { icon: 'ƒ', label: 'Lambda + Strands SDK', sub: 'orchestration, semantic search, LLM access' },
+                  { icon: '🎙', label: 'Nova Sonic', sub: 'speech-to-speech voice' },
                 ],
               },
               {
                 label: 'Reasoning & knowledge',
                 nodes: [
-                  { icon: '🧠', label: 'Bedrock agent', sub: 'LLM + guardrails' },
-                  { icon: '📚', label: 'Knowledge base', sub: 'RAG retrieval' },
+                  { icon: '🧠', label: 'Bedrock models', sub: 'Nova, Claude, Llama, Pixtral, Jamba' },
+                  { icon: '📚', label: 'Knowledge bases', sub: 'RAG retrieval' },
+                  { icon: '∷', label: 'Embeddings', sub: 'Nova, Cohere, Marengo' },
+                ],
+              },
+            ],
+          },
+          {
+            type: 'groups',
+            groups: [
+              {
+                label: 'Vector stores',
+                nodes: [
+                  { icon: '🔎', label: 'OpenSearch Serverless', sub: '' },
+                  { icon: '▦', label: 'Aurora PostgreSQL', sub: 'pgvector' },
+                  { icon: '▤', label: 'S3 Vectors', sub: '' },
+                ],
+              },
+              {
+                label: 'Agentic tool calling',
+                nodes: [
+                  { icon: '⇄', label: 'AgentCore Gateway', sub: 'Model Context Protocol' },
+                  { icon: '⚙', label: 'Customer + 3rd-party APIs', sub: '' },
+                  { icon: '🗄', label: 'Data sources + system interfaces', sub: '' },
+                  { icon: '🤖', label: 'Third-party agents', sub: '' },
                 ],
               },
             ],
           },
         ],
-        tags: ['Contact Lens transcripts', 'Glue ETL + Athena analytics', 'CloudWatch dashboards', 'CloudFormation IaC'],
-        caption: 'Fig. 3b: Lex resolves intent directly; complex queries escalate to the Bedrock agent for RAG-backed reasoning.',
+        tags: ['Contact Lens transcripts', 'CloudWatch dashboards', 'CloudFormation IaC'],
+        caption: 'Fig. 3b: Lex resolves intent directly; Lambda orchestrates Bedrock models, knowledge bases, and gateway-brokered tools, with Nova Sonic for voice.',
+      },
+      {
+        label: 'Conversation analytics',
+        intro: 'Instrumented conversation logs, Contact Lens data, and Contact Trace Records stream through Firehose into a data lake that product owners explore in QuickSight.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '☰', label: 'CloudWatch logs', sub: 'instrumented conversation data' },
+              { icon: '⇉', label: 'Data Firehose', sub: 'encrypted with KMS CMK', highlight: true },
+              { icon: 'ƒ', label: 'Lambda', sub: 'transform' },
+              { icon: '▤', label: 'S3', sub: 'data lake' },
+            ],
+          },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '🧠', label: 'Comprehend', sub: 'sentiment / entities' },
+              { icon: '⚙', label: 'Glue', sub: 'catalog + ETL' },
+              { icon: '🔎', label: 'Athena', sub: 'SQL' },
+              { icon: '📊', label: 'QuickSight (Q)', sub: 'dashboards for product owners' },
+            ],
+          },
+        ],
+        caption: 'Fig. 3c: Conversation and Contact Lens data flow into a KMS-encrypted lake and out to product-owner dashboards.',
+      },
+      {
+        label: 'Auditing & monitoring',
+        intro: 'Application logs and audit requests queue asynchronously, an auditor function scores each conversation with a Bedrock LLM, and alarms notify product owners of violations.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: 'ƒ', label: 'Lambda', sub: 'app logs + audit requests' },
+              { icon: '☰', label: 'SQS queue', sub: '' },
+              { icon: 'ƒ', label: 'Auditor function', sub: '', highlight: true },
+              { icon: '🧠', label: 'Bedrock LLM', sub: 'judge' },
+              { icon: '🔔', label: 'CloudWatch alarms', sub: 'violations, Lambda + pipeline errors' },
+            ],
+          },
+        ],
+        caption: 'Fig. 3d: Asynchronous conversation audit keeps judging off the live response path.',
+      },
+      {
+        label: 'Configuration management',
+        intro: 'System admins tune the accelerator through a React UI backed by AppSync and DynamoDB, without touching the deployment.',
+        rows: [
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '👤', label: 'System admins', sub: '' },
+              { icon: '🌐', label: 'CloudFront + S3', sub: 'React web app' },
+              { icon: '🔒', label: 'Cognito', sub: 'auth' },
+              { icon: '⇄', label: 'AppSync', sub: '', highlight: true },
+              { icon: '▦', label: 'DynamoDB', sub: 'models, prompts, params, flags' },
+            ],
+          },
+        ],
+        caption: 'Fig. 3e: Runtime configuration is data, editable by admins and read by the agent Lambda.',
       },
     ],
 
     decisions: [
+      {
+        color: 'var(--cyan)',
+        label: 'Tool access through a gateway, not per-agent glue.',
+        text: 'Agents built with the Strands SDK reach customer APIs, data sources, and third-party agents through AgentCore Gateway over MCP, so tool auth and routing live in one place instead of in every Lambda.',
+      },
+      {
+        color: 'var(--purple)',
+        label: 'Config as data.',
+        text: 'Model selections, prompts, parameters, and feature flags live in DynamoDB behind an AppSync admin UI. Runtime changes never need a redeploy, and each one is versioned so eval results stay attributable.',
+      },
       {
         color: 'var(--yellow)',
         label: 'Bottleneck. Per-agent fan-out in the test stage.',

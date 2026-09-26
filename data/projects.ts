@@ -89,8 +89,8 @@ export const PROJECTS: Project[] = [
     id: 'contact-center-agent', featured: true, accent: 'accP',
     title: 'Contact Center Agent & Test/Eval Pipeline',
     tag: 'AI · LLM · Real-time · RAG', tagColor: 'var(--purple)',
-    desc: 'Built a contact center agent leveraging LLMs and RAG for customer support. Implemented a test and evaluation pipeline to assess model performance and improve response accuracy.',
-    stack: 'Amazon Connect · Lex · React · Bedrock · DynamoDB · S3 · Lambda · AppSync · DeepEval',
+    desc: 'Built a voice and chat contact center agent leveraging LLMs, RAG, and MCP-based tool calling for customer support, with conversation analytics, automated auditing, an admin config UI, and a test and evaluation pipeline that gates every change.',
+    stack: 'Amazon Connect · Lex · Nova Sonic · Strands SDK · Bedrock · AgentCore Gateway · React · DynamoDB · S3 · Lambda · AppSync · DeepEval · Firehose · Athena · QuickSight',
     category: ['AI / ML', 'RAG', 'Infrastructure', 'Cloud', 'CI/CD', 'Real-time'],
     highlights: ['▲ Real-time', '◎ Eval-gated', '↗ RAG-grounded'],
     emoji: '📞'
