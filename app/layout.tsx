@@ -6,7 +6,7 @@ import { AUTHOR_NAME, SITE_NAME, SITE_URL, SOCIAL_LINKS } from '@/lib/seo';
 export const metadata: Metadata = {
   metadataBase: new URL('https://mleg.tech'),
   title: {
-    default: 'Michael Legemah — AI Engineer',
+    default: 'Michael Legemah — Principal AI Engineer',
     template: '%s — Michael Legemah',
   },
   description: 'AI Engineer specializing in LLM architecture, RAG systems, and AI product engineering. 10+ years building for AWS, AstraZeneca, US Space Force, and more.',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 },
   },
   openGraph: {
-    title: 'Michael Legemah — AI Engineer',
+    title: 'Michael Legemah — Principal AI Engineer',
     description: 'LLM architecture, RAG systems, and AI product engineering.',
     url: '/',
     siteName: SITE_NAME,
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Michael Legemah — AI Engineer',
+    title: 'Michael Legemah — Principal AI Engineer',
     description: 'LLM architecture, RAG systems, and AI product engineering.',
     images: ['/twitter-image'],
   },
