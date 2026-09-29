@@ -7,11 +7,13 @@ import FeedSourcePreview from '@/components/FeedSourcePreview';
 import { CATEGORY_COLORS } from '@/lib/blog-shared';
 import { FEED_URL, getFeedPosts, buildFeedPreviewXml } from '@/lib/feed';
 import s from '@/styles/rss.module.css';
+import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = {
+export const metadata: Metadata = pageMetadata('/rss', {
   title: 'RSS Feed',
   description: 'Subscribe to the mleg.tech RSS feed for new writing on agentic AI, RAG pipelines, and eval-driven development.',
-};
+});
 
 function formatDate(iso: string) {
   return new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });

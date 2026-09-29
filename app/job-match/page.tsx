@@ -3,12 +3,13 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CustomCursor from '@/components/CustomCursor';
 import { JobMatchAnalyzer } from '@/components/JobMatchAnalyzer';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata('/job-match', {
   title: 'Job Match',
   description:
     'Paste a job description and get an instant, evidence-backed breakdown of how it matches my experience.',
-};
+});
 
 export default function JobMatchPage() {
   return (

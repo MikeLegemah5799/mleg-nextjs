@@ -13,6 +13,8 @@ import NewsletterForm from '@/components/NewsletterForm';
 import { mdxComponents } from '@/components/BlogMDXComponents';
 import { getAllPosts, getPostBySlug, getRelatedPosts, CATEGORY_COLORS } from '@/lib/blog';
 import { LOGO_URL } from '@/lib/constants';
+import JsonLd from '@/components/JsonLd';
+import { AUTHOR_NAME, SITE_NAME, SITE_URL, absoluteUrl, breadcrumbJsonLd } from '@/lib/seo';
 import s from '@/styles/blog-post.module.css';
 import b from '@/styles/blog.module.css';
 
@@ -28,15 +30,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   if (!postExists(slug)) return { title: 'Post not found' };
   const post = getPostBySlug(slug);
+  const path = `/blog/${slug}`;
   return {
     title: post.title,
     description: post.desc,
     keywords: post.tags,
+    authors: [{ name: AUTHOR_NAME, url: SITE_URL }],
+    alternates: { canonical: path },
     openGraph: {
       title: post.title,
       description: post.desc,
+      url: path,
+      siteName: SITE_NAME,
+      locale: 'en_US',
       type: 'article',
       publishedTime: post.date,
+      authors: [AUTHOR_NAME],
+      section: post.category,
       tags: post.tags,
       images: ['/opengraph-image'],
     },
@@ -63,6 +73,30 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <>
+      <JsonLd
+        data={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.title,
+            description: post.desc,
+            datePublished: post.date,
+            dateModified: post.date,
+            keywords: post.tags.join(', '),
+            articleSection: post.category,
+            inLanguage: 'en-US',
+            image: absoluteUrl('/opengraph-image'),
+            mainEntityOfPage: absoluteUrl(`/blog/${slug}`),
+            author: { '@id': `${SITE_URL}/#person`, '@type': 'Person', name: AUTHOR_NAME, url: SITE_URL },
+            publisher: { '@id': `${SITE_URL}/#person` },
+          },
+          breadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Blog', path: '/blog' },
+            { name: post.title, path: `/blog/${slug}` },
+          ]),
+        ]}
+      />
       <CustomCursor />
       <Navbar />
 

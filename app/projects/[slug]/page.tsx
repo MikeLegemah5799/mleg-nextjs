@@ -6,6 +6,8 @@ import Footer from '@/components/Footer';
 import CustomCursor from '@/components/CustomCursor';
 import { PROJECTS } from '@/data/projects';
 import { CASE_STUDIES, type DiagramNode, type DiagramRow } from '@/data/caseStudies';
+import JsonLd from '@/components/JsonLd';
+import { AUTHOR_NAME, SITE_URL, absoluteUrl, breadcrumbJsonLd, pageMetadata } from '@/lib/seo';
 import s from '@/styles/case-study.module.css';
 
 function renderWithCode(text: string) {
@@ -81,13 +83,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const cs = CASE_STUDIES.find((c) => c.projectId === slug);
   if (!cs) return { title: 'Case Study' };
 
-  const title = `${cs.title} — Case Study`;
-  return {
-    title,
-    description: cs.subtitle,
-    openGraph: { title, description: cs.subtitle, type: 'article', images: ['/opengraph-image'] },
-    twitter: { card: 'summary_large_image', title, description: cs.subtitle, images: ['/twitter-image'] },
-  };
+  return pageMetadata(`/projects/${slug}`, { title: `${cs.title} — Case Study`, description: cs.subtitle }, 'article');
 }
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -103,6 +99,25 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
 
   return (
     <>
+      <JsonLd
+        data={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'TechArticle',
+            headline: cs.title,
+            description: cs.subtitle,
+            image: absoluteUrl('/opengraph-image'),
+            mainEntityOfPage: absoluteUrl(`/projects/${slug}`),
+            inLanguage: 'en-US',
+            author: { '@id': `${SITE_URL}/#person`, '@type': 'Person', name: AUTHOR_NAME, url: SITE_URL },
+          },
+          breadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Projects', path: '/projects' },
+            { name: cs.title, path: `/projects/${slug}` },
+          ]),
+        ]}
+      />
       <CustomCursor />
       <Navbar />
 

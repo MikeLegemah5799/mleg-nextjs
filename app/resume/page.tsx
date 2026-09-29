@@ -3,11 +3,13 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CustomCursor from '@/components/CustomCursor';
 import s from '@/styles/resume.module.css';
+import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = {
+export const metadata: Metadata = pageMetadata('/resume', {
   title: 'Résumé',
   description: "Michael Legemah's résumé — 13+ years shipping AI and full-stack systems for AWS, AstraZeneca, US Space Force, and more.",
-};
+});
 
 const PILLS = [
   { label: '13+ yrs shipping', cls: s.pillG },
