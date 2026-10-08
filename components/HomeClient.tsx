@@ -146,7 +146,7 @@ export default function HomeClient({ posts }: { posts: Post[] }) {
           <div className={s.orbYellow} />
 
           <div className={s.heroLeft}>
-            <div className={s.heroBadge}>AI/Full-Stack Engineer</div>
+            <div className={s.heroBadge}>Principal AI/Full-Stack Engineer</div>
             <h1 className={s.heroName}>
               Michael<br />
               <em className={s.heroNameEm}>Legemah</em>
