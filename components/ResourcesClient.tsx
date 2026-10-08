@@ -125,6 +125,27 @@ export default function ResourcesClient() {
                 <span className={s.featuredLink}>View on mleg.tech →</span>
               </Link>
 
+              {/* ── FEATURED: PROVING GROUND ── */}
+              <a
+                href="https://github.com/MikeLegemah5799/proving-ground"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={s.featured}
+              >
+                <div className={s.featuredTop}>
+                  <div className={s.featuredLabel}>{'// free, open source'}</div>
+                  <span className={s.featuredBadge}>Free repo</span>
+                </div>
+                <h2 className={s.featuredTitle}>Proving Ground — a gated model release template</h2>
+                <p className={s.featuredDesc}>
+                  A template repository that ships a model only when the evidence says
+                  so: eight config-driven gates, shadow then canary, drift monitoring,
+                  a hash-chained audit log, and a tested one-command rollback. Free to
+                  clone and adapt for your own release pipeline.
+                </p>
+                <span className={s.featuredLink}>View on GitHub →</span>
+              </a>
+
               {/* ── RESOURCE GRID ── */}
               <div className={s.grid} ref={gridRef}>
                 {RESOURCES.map((r) => (
