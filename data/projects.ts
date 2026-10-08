@@ -75,6 +75,18 @@ export const PROJECTS: Project[] = [
     emoji: '🛡️',
   },
   {
+    id: 'proving-ground', featured: true, accent: 'accO',
+    title: 'Proving Ground — A Gated Model Release Template',
+    tag: 'MLOps · Release Engineering', tagColor: 'var(--orange)',
+    desc: 'A template repository that ships a model only when the evidence says so: eight config-driven gates, shadow then canary, drift monitoring, a hash-chained audit log, and a tested one-command rollback — with a static report viewer that turns the evidence into one offline HTML page.',
+    stack: 'Python · scikit-learn · LightGBM · FastAPI · Pandera · DVC · Evidently · GitHub Actions',
+    siteUrl: 'https://mikelegemah5799.github.io/proving-ground/viewer/index.html',
+    codeUrl: 'https://github.com/MikeLegemah5799/proving-ground',
+    category: ['AI / ML', 'MLOps', 'Infrastructure'],
+    highlights: ['▲ Gate-enforced', '◎ Audit-chained', '↗ Live report'],
+    emoji: '🚦',
+  },
+  {
     id: 'attest', featured: true, accent: 'accG',
     title: 'Attest — Lease Intelligence',
     tag: 'Document AI · Trust Infrastructure', tagColor: 'var(--green)',

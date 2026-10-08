@@ -1685,4 +1685,222 @@ export const CASE_STUDIES: CaseStudy[] = [
       type: 'AI eval infrastructure',
     },
   },
+  {
+    projectId: 'proving-ground',
+    breadcrumbLabel: 'Proving Ground — Gated Model Release Template',
+    eyebrow: 'Case Study · MLOps · Release Engineering',
+    title: 'Proving Ground — Ship a Model Only When the Evidence Says So',
+    subtitle: 'A template repository for releasing a model through explicit, config-driven gates, a shadow then canary stage, drift monitoring, a hash-chained audit log, and a tested one-command rollback. A worked motor-insurance claim-frequency example and an offline report viewer ship with it.',
+    techPills: [
+      { label: 'Python', color: 'var(--cyan)' },
+      { label: 'LightGBM', color: 'var(--green)' },
+      { label: 'FastAPI', color: 'var(--purple)' },
+      { label: 'Pandera', color: 'var(--yellow)' },
+      { label: 'DVC', color: 'var(--pink)' },
+      { label: 'Evidently', color: 'var(--orange)' },
+      { label: 'GitHub Actions', color: 'var(--cyan)' },
+      { label: 'pytest', color: 'var(--green)' },
+    ],
+    meta: {
+      role: 'Solo design & implementation',
+      domain: 'MLOps · insurance claim frequency',
+      primaryServices: 'FastAPI · LightGBM · GitHub Actions',
+    },
+
+    problem: {
+      functional: [
+        'Train a constant baseline, a Poisson GLM and LightGBM, then run every candidate through gates G1–G8 before it can be registered',
+        'Promote through shadow and a 10% canary using stable-hash routing, with no promotion unless a passing gate report exists for that exact candidate',
+        'Monitor windows of served traffic for drift, move ok → watch → alert, and write a rollback recommendation to the audit log',
+        'Roll back to the previous champion with one command, verified through the serving health endpoint',
+        'Render all release evidence into a single static, offline HTML report',
+      ],
+      nonFunctional: [
+        { label: 'No force flag', text: 'every stage transition re-checks the gate report, the candidate hash, the data version and the current gates.yaml hash' },
+        { label: 'Tamper-evident audit', text: 'append-only log where each entry hashes the previous one, serialized canonically so Python and the viewer agree byte for byte' },
+        { label: 'Holdout discipline', text: 'the holdout is scored once per candidate, tuning uses cross-validation inside the training split only, and a ledger records it' },
+        { label: 'Honest data labeling', text: 'synthetic traffic and drift are always flagged as synthetic in every artifact and in the viewer banner' },
+      ],
+    },
+
+    scale: {
+      intro: 'A template, not a production system, so the numbers below are what the evidence rests on: a real public dataset, a grouped holdout, and a demo cheap enough to run on every CI push.',
+      stats: [
+        { value: '8', label: 'Gates, G1 data validation through G8 model card, all of which must pass', color: 'var(--orange)', accentBorder: true },
+        { value: '57', label: 'Automated tests covering core, claims example and viewer, including rollback exercised in CI', color: 'var(--green)', accentBorder: true },
+        { value: '84s', label: 'End-to-end demo on a laptop: train, gate, shadow, canary, promote, drift, rollback, report', color: 'var(--cyan)', accentBorder: true },
+        { value: '102,035', label: 'Policies in the grouped holdout, scored with exposure weighting and 95% bootstrap CIs', color: 'var(--purple)', accentBorder: true },
+      ],
+    },
+
+    apiSectionTitle: 'Interfaces & Endpoints',
+    api: [
+      { signature: 'ModelProject (protocol)', desc: 'The one interface a fork implements. The template core never imports examples/, which a structure test enforces.' },
+      { signature: 'make demo', desc: 'Runs the full release story: train, gate, reject a degraded challenger, shadow, canary, promote, inject drift, roll back, verify the audit chain, build the viewer.' },
+      { signature: 'POST /predict', desc: 'Validates the record against the project Pandera schema. Invalid records get a structured error, are counted, and become a monitor signal.' },
+      { signature: 'GET /health', desc: 'Reports the serving model hash. Rollback calls it to verify the restored champion is actually the one answering.' },
+      { signature: 'POST /admin/reload', desc: 'Local-only, token-guarded hot reload used by rollback. No image redeploy, and a second rollback call is a no-op.' },
+    ],
+
+    dataModel: {
+      rows: [
+        { entity: 'Candidate', fields: 'Project, model family, params, seed, data version, and a prediction fingerprint. Its hash is SHA-256 over the canonical JSON of those fields.' },
+        { entity: 'GateReport', fields: 'Per-gate pass/fail/warn/skip plus the gates.yaml hash it ran under. Changing a threshold invalidates older reports.' },
+        { entity: 'Registry', fields: 'File-based. Aliases candidate, champion and previous_champion, plus a release stage from registered through stable or aborted.' },
+        { entity: 'AuditEntry', fields: 'Canonical JSON with prev_entry_hash and entry_hash. The first entry chains from 64 zeros.' },
+        { entity: 'MonitorWindow', fields: 'Per-feature PSI, KS or chi-squared, new-category and out-of-range rates, prediction PSI, validation-failure rate, and label drift. Schema-versioned and flagged synthetic.' },
+      ],
+      note: 'The registry is a plain file rather than MLflow on purpose. Rollback is a two-field edit and the demo needs no database. MLflow is an opt-in mirror, never the source of truth.',
+    },
+
+    architecture: [
+      {
+        label: 'Release pipeline',
+        intro: 'Every transition re-checks the evidence. A candidate cannot skip a stage, and there is no override.',
+        rows: [
+          { type: 'chain', nodes: [{ icon: '🧪', label: 'Train candidates', sub: 'baseline · GLM · LightGBM' }] },
+          { type: 'chain', nodes: [{ icon: '#', label: 'Candidate hash', sub: 'params · seed · data version · fingerprint', highlight: 'purple' }] },
+          { type: 'label', text: 'Gates G1–G8 · one holdout evaluation per candidate' },
+          {
+            type: 'grid',
+            nodes: [
+              { icon: '📋', label: 'G1 Data', sub: 'schema · no id in two splits' },
+              { icon: '📏', label: 'G2 Floors', sub: 'absolute metrics' },
+              { icon: '📉', label: 'G3 Regression', sub: 'paired bootstrap vs champion' },
+              { icon: '🎯', label: 'G4 Calibration' },
+              { icon: '🍰', label: 'G5 Slices', sub: 'age · region' },
+              { icon: '⏱', label: 'G6 Budget', sub: 'p95 latency · size' },
+              { icon: '🔁', label: 'G7 Repro', sub: 'same seed, same hash' },
+              { icon: '📄', label: 'G8 Model card' },
+            ],
+          },
+          {
+            type: 'alt',
+            nodes: [
+              { icon: '✗', label: 'Rejected, audited', sub: 'named failing gates', highlight: 'pink' },
+              { icon: '✓', label: 'Registered', sub: 'gate report attached', highlight: 'green' },
+            ],
+          },
+          {
+            type: 'chain',
+            nodes: [
+              { icon: '👥', label: 'Shadow', sub: 'champion answers, candidate logged' },
+              { icon: '🐤', label: 'Canary 10%', sub: 'sha256 bucket routing' },
+              { icon: '🏆', label: 'Champion', sub: 'promoted', highlight: 'green' },
+            ],
+          },
+        ],
+        caption: 'Fig. 2a — The gates run in order and all must pass. A rejected candidate leaves an audit entry naming the gates it failed.',
+      },
+      {
+        label: 'Monitor, rollback & evidence',
+        intro: 'Drift detection feeds the same audit log that rollback and the report viewer read from.',
+        rows: [
+          { type: 'chain', nodes: [{ icon: '🌐', label: 'Serving', sub: 'FastAPI · /predict · /health', highlight: 'yellow' }] },
+          { type: 'chain', nodes: [{ icon: '📈', label: 'Windowed drift monitor', sub: 'PSI · KS · chi² · label drift', highlight: 'purple' }] },
+          {
+            type: 'alt',
+            nodes: [
+              { icon: '👀', label: 'watch', sub: 'surfaced everywhere', highlight: 'yellow' },
+              { icon: '🚨', label: 'alert', sub: 'hold + rollback recommendation', highlight: 'pink' },
+            ],
+          },
+          { type: 'chain', nodes: [{ icon: '↩', label: 'Rollback', sub: 'alias flip · hot reload · health check', highlight: 'cyan' }] },
+          {
+            type: 'groups',
+            groups: [
+              {
+                label: 'Evidence',
+                nodes: [
+                  { icon: '🔗', label: 'Hash-chained audit log' },
+                  { icon: '🧾', label: 'Incident before/during/after' },
+                ],
+              },
+              {
+                label: 'Output',
+                nodes: [
+                  { icon: '🖥', label: 'Static report viewer' },
+                  { icon: '🔐', label: 'CSP + script hash, offline' },
+                ],
+              },
+            ],
+          },
+        ],
+        tags: ['9 drift scenarios', 'Evidently (optional)', 'GitHub Pages', 'MLflow mirror (opt-in)'],
+        caption: 'Fig. 2b — The viewer is rendered by Python, escapes all input, and only uses JavaScript for tabs, sorting and optional in-browser chain verification.',
+      },
+    ],
+
+    decisions: [
+      {
+        color: 'var(--yellow)',
+        label: 'Trap. The first drift alert fired on noise.',
+        text: 'Alerting whenever the actual-to-expected claims ratio moved 20% raised an early false alert on silent_decay. With roughly 130 claims per window, noise alone moves it about 10%. Label drift now requires the 99% bootstrap CI to exclude the reference value, which costs sensitivity to small base-rate shifts and is stated as a limit.',
+      },
+      {
+        color: 'var(--pink)',
+        label: 'Invariant. No promotion without evidence, and no force flag.',
+        text: 'Promotion requires a passing gate report that names this candidate hash, this data version and the current gates.yaml hash. Editing a threshold invalidates every older report, so gates must re-run rather than being quietly re-interpreted.',
+      },
+      {
+        color: 'var(--cyan)',
+        label: 'Trade-off. File registry first, MLflow as a mirror.',
+        text: 'Rollback is a two-field file edit with a hot reload and a health check, and the whole demo needs no database. The cost is that the registry is single-writer and local.',
+      },
+      {
+        color: 'var(--green)',
+        label: 'Constraint. The dataset has no timestamps.',
+        text: 'freMTPL2freq has no date column, so the split is grouped by policy and risk profile rather than by time. Every artifact says temporal generalization was not evaluated, and no policy id appears in two splits.',
+      },
+      {
+        color: 'var(--purple)',
+        label: 'Detail. Canonical serialization shared across two languages.',
+        text: 'The audit chain uses sorted keys, fixed separators and no floats so the Python writer and the viewer JavaScript compute identical hashes, and a test checks that they do. A hostile-input test once caught U+2028 splitting an entry when the log was read with splitlines().',
+      },
+      {
+        color: 'var(--orange)',
+        label: 'Honesty. Limits are written down, not implied.',
+        text: 'The audit log is tamper-evident, not tamper-proof. Traffic and drift are simulated. Driver age and region are kept but reported by slice, with the proxy risk stated in the model card. Fairness and compliance are explicitly not claimed.',
+      },
+    ],
+
+    lessonsLearned: {
+      heldUp: [
+        {
+          label: "Declaring each drift scenario's expected outcome before running it",
+          text: 'made the scenario matrix a real test. The recorded run met every declared expectation, and the misses that remained are listed as limits.',
+        },
+        {
+          label: 'Exercising rollback in CI',
+          text: 'turned it from a runbook claim into a tested path, including the idempotent second call.',
+        },
+        {
+          label: 'Hashing the gates config into every report',
+          text: 'closed the quiet loophole of loosening a threshold and promoting on an old green report.',
+        },
+      ],
+      differently: [
+        {
+          label: 'The GitHub Actions workflows ran locally before they ran on GitHub.',
+          text: 'I would push a minimal workflow on day one so CI is a real signal rather than something I wrote and have not watched execute.',
+        },
+        {
+          label: "Detection thresholds were set from one dataset's reference noise.",
+          text: 'They are sensitive to window size, and I would test them against more than one dataset before treating the numbers as anything but a starting point.',
+        },
+        {
+          label: 'Exposure is not proportional to claims in this data,',
+          text: 'so it is also used as a covariate. That is a pragmatic fix, documented, but not a pricing-grade treatment.',
+        },
+      ],
+      ifStartedOver: 'put the audit chain and the canonical serialization in first, then build every other stage as a function that appends to it, so the evidence trail is the spine of the system rather than something the viewer reconstructs afterward.',
+    },
+
+    summary: {
+      system: 'Proving Ground — Gated Model Release Template',
+      primaryServices: 'FastAPI · LightGBM · GitHub Actions',
+      status: 'Open source template, live sample report on GitHub Pages',
+      type: 'MLOps release engineering',
+    },
+  },
 ];
